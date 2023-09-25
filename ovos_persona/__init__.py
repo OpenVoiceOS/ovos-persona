@@ -78,7 +78,7 @@ class PersonaService:
         context = {"lang": lang} if lang else {}
         if persona not in self.personas:
             raise ValueError(f"unknown persona, choose one of {self.personas.keys()}")
-        return self.personas[persona].spoken_answer(prompt, context)
+        return self.personas[persona].complete(prompt, context)
 
 
 if __name__ == "__main__":
