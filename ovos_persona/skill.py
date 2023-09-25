@@ -12,6 +12,7 @@ from ovos_workshop.skills.fallback import FallbackSkill
 from ovos_persona import PersonaService
 
 
+# TODO - refactor into a PipelinePlugin
 class PersonaSkill(FallbackSkill):
 
     @classproperty
@@ -49,6 +50,7 @@ class PersonaSkill(FallbackSkill):
         for lang in self._native_langs:
             # TODO - base skill class should allow this better and support a list of samples
             # had to copy paste code around just to add aliases support to underlying method
+
             # register adapt Persona voc with names of defined personas
             keyword_type = self._alphanumeric_skill_id + "Persona"
             if len(names) == 1:

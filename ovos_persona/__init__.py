@@ -22,7 +22,18 @@ class Persona:
                 plugs[plug_name] = config.get(plug_name) or {"enabled": True}
         self.solvers = QuestionSolversService(config=plugs)
 
-    def spoken_answer(self, prompt, context):
+    def complete(self, prompt: str, context: dict = None):
+        return self.solvers.spoken_answer(prompt, context)
+
+    def chat(self, messages: list = None, context: dict = None):
+        # TODO - message history solver
+        #messages = [
+        #    {"role": "system", "content": "You are a helpful assistant."},
+        #    {"role": "user", "content": "Knock knock."},
+        #    {"role": "assistant", "content": "Who's there?"},
+        #    {"role": "user", "content": "Orange."},
+        #]
+        prompt = messages[-1]["content"]
         return self.solvers.spoken_answer(prompt, context)
 
 
