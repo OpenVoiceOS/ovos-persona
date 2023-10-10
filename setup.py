@@ -43,8 +43,6 @@ def get_version():
     return version
 
 
-PLUGIN_ENTRY_POINT = f'persona.openvoiceos=ovos_persona.skill:PersonaSkill'
-
 setup(
     name='ovos-persona',
     version=get_version(),
@@ -58,5 +56,5 @@ setup(
     install_requires=required("requirements.txt"),
     long_description="ovos persona",
     long_description_content_type='text/markdown',
-    entry_points={'ovos.plugin.skill': PLUGIN_ENTRY_POINT}
+    entry_points={}
 )
