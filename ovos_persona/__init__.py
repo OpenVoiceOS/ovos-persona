@@ -4,7 +4,8 @@ from os.path import join, dirname
 from typing import Optional, Dict, List, Union
 
 from ovos_bus_client.client import MessageBusClient
-from ovos_bus_client.message import Message
+from ovos_bus_client.message import Message, dig_for_message
+from ovos_bus_client.session import SessionManager
 from ovos_config.config import Configuration
 from ovos_config.locations import get_xdg_config_save_path
 from ovos_plugin_manager.persona import find_persona_plugins
@@ -37,20 +38,10 @@ class Persona:
         return f"Persona({self.name}:{list(self.solvers.loaded_modules.keys())})"
 
     def chat(self, messages: list = None, lang: str = None) -> str:
-        # TODO - message history solver
-        # messages = [
-        #    {"role": "system", "content": "You are a helpful assistant."},
-        #    {"role": "user", "content": "Knock knock."},
-        #    {"role": "assistant", "content": "Who's there?"},
-        #    {"role": "user", "content": "Orange."},
-        # ]
-        prompt = messages[-1]["content"]
-        return self.solvers.spoken_answer(prompt, lang)
+        return self.solvers.chat_completion(messages, lang)
 
 
 class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
-    intents = ["ask.intent", "summon.intent"]
-    intent_matchers = {}
 
     def __init__(self, bus: Optional[Union[MessageBusClient, FakeBus]] = None,
                  config: Optional[Dict] = None):
@@ -59,13 +50,17 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
             self, bus=bus or FakeBus(), skill_id="persona.openvoiceos",
             resources_dir=f"{dirname(__file__)}")
         PipelineStageConfidenceMatcher.__init__(self, bus, config)
+        self.sessions = {}
         self.personas = {}
+        self.intent_matchers = {}
         self.blacklist = self.config.get("persona_blacklist") or []
         self.load_personas(self.config.get("personas_path"))
         self.active_persona = None
         self.add_event('persona:answer', self.handle_persona_answer)
         self.add_event('persona:summon', self.handle_persona_summon)
         self.add_event('persona:release', self.handle_persona_release)
+        self.add_event("speak", self.handle_speak)
+        self.add_event("recognizer_loop:utterance", self.handle_utterance)
 
     @classmethod
     def load_resource_files(cls):
@@ -78,7 +73,7 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
             if locale_folder is not None:
                 for f in os.listdir(locale_folder):
                     path = join(locale_folder, f)
-                    if f in cls.intents:
+                    if f in ["ask.intent", "summon.intent"]:
                         with open(path) as intent:
                             samples = intent.read().split("\n")
                             for idx, s in enumerate(samples):
@@ -86,18 +81,16 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
                             intents[lang][f] = samples
         return intents
 
-    @classmethod
-    def load_intent_files(cls):
-        intent_files = cls.load_resource_files()
-
+    def load_intent_files(self):
+        intent_files = self.load_resource_files()
         for lang, intent_data in intent_files.items():
             lang = standardize_lang_tag(lang)
-            cls.intent_matchers[lang] = IntentContainer()
-            for intent_name in cls.intents:
+            self.intent_matchers[lang] = IntentContainer()
+            for intent_name in ["ask.intent", "summon.intent"]:
                 samples = intent_data.get(intent_name)
                 if samples:
                     LOG.debug(f"registering OCP intent: {intent_name}")
-                    cls.intent_matchers[lang].add_intent(
+                    self.intent_matchers[lang].add_intent(
                         intent_name.replace(".intent", ""), samples)
 
     @property
@@ -136,13 +129,50 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
             self.personas.pop(name)
 
     # Chatbot API
-    def chatbox_ask(self, prompt: str, persona: Optional[str] = None, lang: Optional[str] = None) -> Optional[str]:
+    def chatbox_ask(self, prompt: str,
+                    persona: Optional[str] = None,
+                    lang: Optional[str] = None,
+                    message: Message = None) -> Optional[str]:
         persona = persona or self.active_persona or self.default_persona
         if persona not in self.personas:
             LOG.error(f"unknown persona, choose one of {self.personas.keys()}")
             return None
-        messages = [{"role": "user", "content": prompt}]
+        messages = []
+        message = message or dig_for_message()
+        if message:
+            for q, a in self._build_msg_history(message):
+                messages.append({"role": "user", "content": q})
+                messages.append({"role": "assistant", "content": a})
+        messages.append({"role": "user", "content": prompt})
+
         return self.personas[persona].chat(messages, lang)
+
+    def _build_msg_history(self, message: Message):
+        sess = SessionManager.get(message)
+        if sess.session_id not in self.sessions:
+            return []
+        messages = []  # tuple of question, answer
+
+        q = None
+        ans = None
+        for m in self.sessions[sess.session_id]:
+            if m[0] == "user":
+                if ans is not None and q is not None:
+                    # save previous q/a pair
+                    messages.append((q, ans))
+                    q = None
+                ans = None
+                q = m[1]  # track question
+            elif m[0] == "ai":
+                if ans is None:
+                    ans = m[1]  # track answer
+                else:  # merge multi speak answers
+                    ans = f"{ans}. {m[1]}"
+
+        # save last q/a pair
+        if ans is not None and q is not None:
+            messages.append((q, ans))
+        return messages
 
     # Abstract methods
     def match_high(self, utterances: List[str], lang: Optional[str] = None,
@@ -221,6 +251,20 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
                                       match_data={"answer": ans},
                                       skill_id="persona.openvoiceos",
                                       utterance=utterances[0])
+
+    # bus events
+    def handle_utterance(self, message):
+        utt = message.data.get("utterances")[0]
+        sess = SessionManager.get(message)
+        if sess.session_id not in self.sessions:
+            self.sessions[sess.session_id] = []
+        self.sessions[sess.session_id].append(("user", utt))
+
+    def handle_speak(self, message):
+        utt = message.data.get("utterance")
+        sess = SessionManager.get(message)
+        if sess.session_id in self.sessions:
+            self.sessions[sess.session_id].append(("ai", utt))
 
     def handle_persona_answer(self, message):
         utt = message.data["answer"]
