@@ -17,10 +17,8 @@ def required(requirements_file):
                 if pkg.strip() and not pkg.startswith("#")]
 
 
-
 def get_version():
     """ Find the version of the package"""
-    version = None
     version_file = os.path.join(BASEDIR, 'ovos_persona', 'version.py')
     major, minor, build, alpha = (None, None, None, None)
     with open(version_file) as f:
@@ -43,6 +41,8 @@ def get_version():
     return version
 
 
+PLUGIN_ENTRY_POINT = 'ovos-persona-pipeline-plugin=ovos_persona:PersonaService'
+
 setup(
     name='ovos-persona',
     version=get_version(),
@@ -56,5 +56,5 @@ setup(
     install_requires=required("requirements.txt"),
     long_description="ovos persona",
     long_description_content_type='text/markdown',
-    entry_points={}
+    entry_points={'opm.pipeline': PLUGIN_ENTRY_POINT},
 )
