@@ -1,0 +1,18 @@
+{
+    "Release.voc": [
+        "(finish|close|cease|exit|end|quit|abort|terminate|discontinue|disengage|disable|deactivate) (chatbot|persona|AI|LLM) activity",
+        "(cease|finish|exit|close|end|quit|abort|terminate|discontinue|disengage|disable|deactivate) (the|) (interaction|conversation|discussion)",
+        "go (away|back to your grave|dormant|into hibernation)",
+        "halt (the|) (interaction|conversation|discussion)",
+        "leave me alone",
+        "enough talking",
+        "put (chatbot|persona|AI|LLM) to sleep",
+        "(release|remove|halt) (chatbot|persona|AI|LLM)",
+        "retreat",
+        "return to the abyss",
+        "shut (up|your mouth)",
+        "stop (chatting|communicating|responding|talking)",
+        "(turn|switch) off (chatbot|persona|AI|LLM)",
+        "terminate"
+    ]
+}
