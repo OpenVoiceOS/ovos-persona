@@ -117,11 +117,6 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
     def load_personas(self, personas_path: Optional[str] = None):
         personas_path = personas_path or get_xdg_config_save_path("ovos_persona")
         LOG.info(f"Personas path: {personas_path}")
-        # load personas provided by packages
-        for name, persona in find_persona_plugins().items():
-            if name in self.blacklist:
-                continue
-            self.personas[name] = Persona(name, persona)
 
         # load user defined personas
         os.makedirs(personas_path, exist_ok=True)
@@ -133,6 +128,17 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
                 continue
             with open(f"{personas_path}/{p}") as f:
                 persona = json.load(f)
+            LOG.info(f"Found persona (user defined): {name}")
+            self.personas[name] = Persona(name, persona)
+
+        # load personas provided by packages
+        for name, persona in find_persona_plugins().items():
+            if name in self.blacklist:
+                continue
+            if name in self.personas:
+                LOG.info(f"Ignoring persona (provided via plugin): {name}")
+                continue
+            LOG.info(f"Found persona (provided via plugin): {name}")
             self.personas[name] = Persona(name, persona)
 
     def register_persona(self, name, persona):
@@ -306,8 +312,7 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
 
 
 if __name__ == "__main__":
-    b = PersonaService(FakeBus(),
-                       config={"personas_path": "/home/miro/PycharmProjects/ovos-persona/personas"})
+    b = PersonaService(FakeBus())
     print(b.personas)
 
     print(b.match_low(["what is the speed of light"]))

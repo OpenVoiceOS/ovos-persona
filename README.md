@@ -18,11 +18,11 @@ pip install ovos-persona
 
 ### Configuring Personas
 
-Personas are loaded from configuration files, which can either be directly provided by plugins or user-defined JSON files. 
+Personas are loaded from configuration files, which can either be [directly provided by plugins](https://github.com/OpenVoiceOS/ovos-solver-openai-persona-plugin/pull/12) or user-defined JSON files. 
 
 By default, personas are loaded from the XDG configuration directory, just create .json files under `~/.config/ovos_persona`
 
-Personas are mainly defined via [solver plugins](https://openvoiceos.github.io/ovos-technical-manual/solvers/), each plugin is tried by order until one provides an answer
+Personas work via [solver plugins](https://openvoiceos.github.io/ovos-technical-manual/solvers/), each plugin is tried by order until one provides an answer
 
 Find solver plugins [here](https://github.com/OpenVoiceOS?q=solver&type=all), some solvers may also use other solvers internally, such as a [MOS (Mixture Of Solvers)](https://github.com/TigreGotico/ovos-MoS)
 
