@@ -18,6 +18,11 @@ from ovos_workshop.app import OVOSAbstractApplication
 from padacioso import IntentContainer
 
 from ovos_persona.solvers import QuestionSolversService
+try:
+    from ovos_plugin_manager.solvers import find_chat_solver_plugins
+except ImportError:
+    def find_chat_solver_plugins():
+        return {}
 
 
 class Persona:
@@ -28,6 +33,11 @@ class Persona:
         persona = config.get("solvers") or ["ovos-solver-failure-plugin"]
         plugs = {}
         for plug_name, plug in find_question_solver_plugins().items():
+            if plug_name not in persona or plug_name in blacklist:
+                plugs[plug_name] = {"enabled": False}
+            else:
+                plugs[plug_name] = config.get(plug_name) or {"enabled": True}
+        for plug_name, plug in find_chat_solver_plugins().items():
             if plug_name not in persona or plug_name in blacklist:
                 plugs[plug_name] = {"enabled": False}
             else:

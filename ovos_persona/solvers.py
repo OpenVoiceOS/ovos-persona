@@ -5,11 +5,15 @@ from ovos_plugin_manager.solvers import find_question_solver_plugins
 from ovos_utils.log import LOG
 from ovos_utils.messagebus import FakeBus
 try:
+    from ovos_plugin_manager.solvers import find_chat_solver_plugins
     from ovos_plugin_manager.templates.solvers import ChatMessageSolver
 except ImportError:
     # using outdated ovos-plugin-manager
     class ChatMessageSolver:
         pass
+
+    def find_chat_solver_plugins():
+        return {}
 
 
 class QuestionSolversService:
@@ -31,6 +35,17 @@ class QuestionSolversService:
                 LOG.info(f"loaded question solver plugin: {plug_name}")
             except Exception as e:
                 LOG.exception(f"Failed to load question solver plugin: {plug_name}")
+
+        for plug_name, plug in find_chat_solver_plugins().items():
+            config = self.config.get(plug_name) or {}
+            if not config.get("enabled", True):
+                continue
+            try:
+                LOG.debug(f"loading chat plugin with cfg: {config}")
+                self.loaded_modules[plug_name] = plug(config=config)
+                LOG.info(f"loaded chat solver plugin: {plug_name}")
+            except Exception as e:
+                LOG.exception(f"Failed to load chat solver plugin: {plug_name}")
 
     @property
     def modules(self):
