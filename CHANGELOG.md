@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.0a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.2.0a1) (2024-11-13)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.1.0a1...0.2.0a1)
+
+**Implemented enhancements:**
+
+- Add intent to "chat with persona" [\#1](https://github.com/OpenVoiceOS/ovos-persona/issues/1)
+
+**Merged pull requests:**
+
+- feat:intents [\#7](https://github.com/OpenVoiceOS/ovos-persona/pull/7) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.1.0a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.1.0a1) (2024-11-13)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.0.0a2...0.1.0a1)
