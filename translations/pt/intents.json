@@ -1,0 +1,19 @@
+{
+  "summon.intent": [
+    "(habilitar|acessar|ativar|acordar|despertar|trazer à tona|chamar|conjurar|convocar|invocar|engajar) (o|a|) {persona} (IA|bot|persona|agente|assistente|chatbot|) (virtual|) ",
+    "(iniciar|iniciar|começar|entrar|estabelecer) (a|) (bate-papo|discussão|conversa|diálogo) com (o|a|) {persona}",
+    "(deixa-me|deixe-me) (conversar|interagir) com (o|a|) {persona}",
+    "(conecta-me|quero falar) com (o|a|) {persona}",
+    "(iniciar|começar (bate-papo|conversa|interação|comunicação|diálogo) com (o|a|) {persona}"
+  ],
+  "ask.intent": [
+    "pergunte a {persona} sobre {utterance}",
+    "(pergunta|perguntar|pergunte) (a|ao) {persona} (o|por) (sua|seu|) (análise|comentário|impressão|interpretação|percepção|reação|ponto de vista) (sobre|de) {utterance}",
+    "pergunte a {persona} (sobre|para compartilhar|) sua (perspectiva|opinião) (sobre|de|sobre) {utterance}",
+    "pergunte a {persona} o que (tem a dizer|pensa) sobre {utterance}",
+    "o que {persona} (pensa|diz) sobre {utterance}",
+    "(consulta|sonda|solicita|busca|questiona|pergunta|interroga) {persona} qual a opinião (sobre|quanto a|a respeito de) {utterance}",
+    "(consulta|sonda|solicita|busca|questiona|pergunta|interroga) {persona} {persona} (a respeito de|sobre) {utterance}",
+    "(consulta|sonda|solicita|busca|questiona|pergunta|interroga) {persona} (a perspectiva|a opinião|os pensamentos|o ponto de vista|feedback|posição|visão) (de|sobre) {utterance}"
+  ]
+}
