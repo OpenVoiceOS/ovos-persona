@@ -5,7 +5,8 @@ This repository provides the `PersonaPipeline` for OpenVoiceOS (OVOS), which fac
 ## Features
 
 - **Multiple Personas**: Manage a list of personas, each defined by a set of question-solving plugins.
-- **Conversational**: Summon/Release persona on demand
+- **Dynamic**: Switch personas on demand
+- **Conversational**: Summon/Release personas to handle utterances instead of triggering intents
 - **Personalize**: Create your own persona via .json files
 
 
@@ -71,7 +72,7 @@ The `PersonaService` class manages the overall persona system. It allows you to 
 
 > **NOT YET FUNCTIONAL** TODO: pending PR: https://github.com/OpenVoiceOS/ovos-core/pull/570
 
-The configuration file can specify:
+The `mycroft.conf` configuration file can specify:
 - The path to persona files (`personas_path`).
 - A list of blacklisted personas (`persona_blacklist`) to not load.
 - The default persona (`default_persona`).
