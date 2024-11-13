@@ -1,7 +1,7 @@
 import json
 import os
 from os.path import join, dirname
-from typing import Optional, Dict, List, Union
+from typing import Optional, Dict, List, Union, Iterable
 
 from ovos_bus_client.client import MessageBusClient
 from ovos_bus_client.message import Message, dig_for_message
@@ -50,6 +50,9 @@ class Persona:
 
     def chat(self, messages: list = None, lang: str = None) -> str:
         return self.solvers.chat_completion(messages, lang)
+
+    def stream(self, messages: list = None, lang: str = None) -> Iterable[str]:
+        return self.solvers.stream_completion(messages, lang)
 
 
 class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
@@ -143,7 +146,8 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
     def chatbox_ask(self, prompt: str,
                     persona: Optional[str] = None,
                     lang: Optional[str] = None,
-                    message: Message = None) -> Optional[str]:
+                    message: Message = None,
+                    stream: bool = True) -> Iterable[str]:
         persona = persona or self.active_persona or self.default_persona
         if persona not in self.personas:
             LOG.error(f"unknown persona, choose one of {self.personas.keys()}")
@@ -155,8 +159,11 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
                 messages.append({"role": "user", "content": q})
                 messages.append({"role": "assistant", "content": a})
         messages.append({"role": "user", "content": prompt})
-
-        return self.personas[persona].chat(messages, lang)
+        if stream:
+            yield from self.personas[persona].stream(messages, lang)
+        ans = self.personas[persona].chat(messages, lang)
+        if ans:
+            yield ans
 
     def _build_msg_history(self, message: Message):
         sess = SessionManager.get(message)
@@ -276,12 +283,12 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
             self.speak_dialog("unknown_persona", {"persona": persona})
             return
 
-        # TODO - streaming support
-        ans = self.chatbox_ask(utt, lang=lang, persona=persona)
-        if not ans:
-            self.speak_dialog("persona_error")
-        else:
+        handled = False
+        for ans in self.chatbox_ask(utt, lang=lang, persona=persona):
             self.speak(ans)
+            handled = True
+        if not handled:
+            self.speak_dialog("persona_error")
 
     def handle_persona_summon(self, message):
         persona = message.data["persona"]
