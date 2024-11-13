@@ -73,7 +73,6 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         langs = Configuration().get('secondary_langs', []) + [Configuration().get('lang', "en-US")]
         langs = set([standardize_lang_tag(l) for l in langs])
         for lang in langs:
-            lang = standardize_lang_tag(lang)
             intents[lang] = {}
             locale_folder = get_language_dir(join(dirname(__file__), "locale"), lang)
             if locale_folder is not None:
