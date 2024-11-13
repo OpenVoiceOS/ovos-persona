@@ -5,14 +5,14 @@
     "(vai|vá) (para longe|de volta para o túmulo|dormir|hibernar)",
     "(pára|pare|parar) (a|) (interação|conversa|discussão)",
     "deixa-me em paz",
-    null,
-    null,
-    null,
+    "chega de conversa",
+    "colocar (chatbot|persona|AI|LLM) para dormir",
+    "(liberar|remover|parar) (chatbot|persona|IA|LLM)",
     "retira-te",
     "(volta|retorna) (para o|ao) abismo",
     "(cala-te|cala a boca)",
     "(pára|pare|parar) (de conversar|comunicar|responder|falar)",
     "(desliga|desligar|desligue) (chatbot|persona|IA|LLM)",
-    null
+    "terminar"
   ]
 }
