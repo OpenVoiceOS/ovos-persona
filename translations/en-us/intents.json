@@ -1,0 +1,19 @@
+{
+    "summon.intent": [
+        "(enable|access|activate|awake|awaken|bring forth|call upon|conjure|summon|invoke|engage) (the|) {persona} (virtual|) (AI|bot|persona|agent|assistant|chatbot|)",
+        "(start|initiate|begin|enter|establish) (a|) (chat|discussion|conversation|dialogue) with {persona}",
+        "let me (chat|talk|interact) (to|with) {persona}",
+        "(connect me|i want to talk) (to|with) {persona}",
+        "(initiate|start|begin|enter|open) (chat|talk|interaction|communication|conversation|dialogue) (to|with) {persona}"
+    ],
+    "ask.intent": [
+        "ask {persona} about {utterance}",
+        "ask {persona} for (their|) (insights|analysis|comment|impression|interpretation|perception|reaction|standpoint|take|thoughts|understanding|viewpoint) (on|of) {utterance}",
+        "ask {persona} (about|to share|) their (perspective|opinion) (about|of|on) {utterance}",
+        "ask {persona} what they (have to say|think) about {utterance}",
+        "what does {persona} (think|say) about {utterance}",
+        "(query|probe|request|seek|question|ask|inquire|interrogate) {persona} for their views on {utterance}",
+        "(query|probe|request|seek|question|ask|inquire|interrogate|pose a question to) {persona} (regarding|about) {utterance}",
+        "(query|probe|request|seek|question|ask|inquire|get) {persona} (perspective|opinion|thoughts|viewpoint|interpretation|feedback|stance|view) (of|on) {utterance}"
+    ]
+}

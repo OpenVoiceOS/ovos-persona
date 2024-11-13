@@ -1,47 +1,8 @@
-ask {name} about {utterance}
-what does {name} (say|think) about {utterance}
-ask {name} about {utterance}
-what does {name} say about {utterance}
-what does {name} think about {utterance}
-get {name}'s opinion on {utterance}
-ask {name} for their thoughts on {utterance}
-inquire {name} about {utterance}
-find out what {name} thinks about {utterance}
-ask {name} their perspective on {utterance}
-request {name}'s view on {utterance}
-seek {name}'s opinion on {utterance}
-question {name} regarding {utterance}
-interrogate {name} about {utterance}
-discover {name}'s thoughts on {utterance}
-probe {name} for their thoughts on {utterance}
-ask {name} for insights on {utterance}
-pose a question to {name} about {utterance}
-query {name} about {utterance}
-explore {name}'s viewpoint on {utterance}
-inquire of {name} their opinion on {utterance}
-ask {name} what they think about {utterance}
-request {name}'s perspective on {utterance}
-ask {name} for their take on {utterance}
-seek {name}'s viewpoint on {utterance}
-question {name} on {utterance}
-ask {name} for their thoughts regarding {utterance}
-ask {name} to share their opinion on {utterance}
-find out what {name} says about {utterance}
-get {name}'s take on {utterance}
-ask {name} for their viewpoint on {utterance}
-inquire {name} for their perspective on {utterance}
-request {name}'s stance on {utterance}
-seek {name}'s thoughts on {utterance}
-ask {name} for their reaction to {utterance}
-ask {name} for their interpretation of {utterance}
-ask {name} what they have to say about {utterance}
-ask {name} for their analysis of {utterance}
-question {name} for their views on {utterance}
-ask {name} for their impression of {utterance}
-inquire {name} for their thoughts on {utterance}
-ask {name} for their standpoint on {utterance}
-request {name}'s feedback on {utterance}
-seek {name}'s interpretation of {utterance}
-ask {name} for their comment on {utterance}
-ask {name} for their understanding of {utterance}
-ask {name} for their perception of {utterance}
+ask {persona} about {utterance}
+ask {persona} for (their|) (insights|analysis|comment|impression|interpretation|perception|reaction|standpoint|take|thoughts|understanding|viewpoint) (on|of) {utterance}
+ask {persona} (about|to share|) their (perspective|opinion) (about|of|on) {utterance}
+ask {persona} what they (have to say|think) about {utterance}
+what does {persona} (think|say) about {utterance}
+(query|probe|request|seek|question|ask|inquire|interrogate) {persona} for their views on {utterance}
+(query|probe|request|seek|question|ask|inquire|interrogate|pose a question to) {persona} (regarding|about) {utterance}
+(query|probe|request|seek|question|ask|inquire|get) {persona} (perspective|opinion|thoughts|viewpoint|interpretation|feedback|stance|view) (of|on) {utterance}
