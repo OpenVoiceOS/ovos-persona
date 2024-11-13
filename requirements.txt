@@ -1,2 +1,2 @@
-ovos-solver-failure-plugin
-ovos-solver-rivescript-plugin
+ovos-plugin-manager
+ovos-solver-openai-persona-plugin

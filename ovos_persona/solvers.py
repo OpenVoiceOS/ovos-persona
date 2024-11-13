@@ -1,3 +1,5 @@
+from typing import Optional
+
 from ovos_config import Configuration
 from ovos_plugin_manager.solvers import find_question_solver_plugins
 from ovos_utils.log import LOG
@@ -36,10 +38,23 @@ class QuestionSolversService:
             except:
                 pass
 
-    def spoken_answer(self, utterance, context=None):
+    def spoken_answer(self, query: str,
+                      lang: Optional[str] = None,
+                      units: Optional[str] = None) -> Optional[str]:
+        """
+        Obtain the spoken answer for a given query.
+
+        Args:
+            query (str): The query text.
+            lang (Optional[str]): Optional language code. Defaults to None.
+            units (Optional[str]): Optional units for the query. Defaults to None.
+
+        Returns:
+            str: The spoken answer as a text response.
+        """
         for module in self.modules:
             try:
-                ans = module.spoken_answer(utterance, context)
+                ans = module.spoken_answer(query, lang=lang)
                 if ans:
                     return ans
             except Exception as e:

@@ -1,9 +1,18 @@
 import json
 import os
 from os.path import dirname
+from typing import Optional, Dict, List, Union
 
+from ovos_bus_client.client import MessageBusClient
+from ovos_bus_client.message import Message
+from ovos_config.config import Configuration
+from ovos_config.locations import get_xdg_config_save_path
+from ovos_plugin_manager.persona import find_persona_plugins
 from ovos_plugin_manager.solvers import find_question_solver_plugins
+from ovos_plugin_manager.templates.pipeline import PipelineStageMatcher, IntentHandlerMatch, ConfidenceMatcherPipeline
+from ovos_utils.fakebus import FakeBus
 from ovos_utils.log import LOG
+from ovos_workshop.app import OVOSAbstractApplication
 
 from ovos_persona.solvers import QuestionSolversService
 
@@ -22,37 +31,49 @@ class Persona:
                 plugs[plug_name] = config.get(plug_name) or {"enabled": True}
         self.solvers = QuestionSolversService(config=plugs)
 
-    def complete(self, prompt: str, context: dict = None):
-        return self.solvers.spoken_answer(prompt, context)
+    def __repr__(self):
+        return f"Persona({self.name}:{list(self.solvers.loaded_modules.keys())})"
 
-    def chat(self, messages: list = None, context: dict = None):
+    def chat(self, messages: list = None, lang: str = None) -> str:
         # TODO - message history solver
-        #messages = [
+        # messages = [
         #    {"role": "system", "content": "You are a helpful assistant."},
         #    {"role": "user", "content": "Knock knock."},
         #    {"role": "assistant", "content": "Who's there?"},
         #    {"role": "user", "content": "Orange."},
-        #]
+        # ]
         prompt = messages[-1]["content"]
-        return self.solvers.spoken_answer(prompt, context)
+        return self.solvers.spoken_answer(prompt, lang)
 
 
-class PersonaService:
-    def __init__(self, personas_path, persona_blacklist=None):
+class PersonaService(PipelineStageMatcher, OVOSAbstractApplication):
+    def __init__(self, bus: Optional[Union[MessageBusClient, FakeBus]] = None,
+                 config: Optional[Dict] = None):
+        config = config or Configuration().get("persona", {})
+        OVOSAbstractApplication.__init__(
+            self, bus=bus or FakeBus(), skill_id="persona.openvoiceos",
+            resources_dir=f"{dirname(__file__)}")
+        PipelineStageMatcher.__init__(self, bus, config)
         self.personas = {}
-        self.blacklist = persona_blacklist or []
-        self.load_personas(personas_path)
+        self.blacklist = self.config.get("persona_blacklist") or []
+        self.load_personas(self.config.get("personas_path"))
+        self.add_event('persona:answer', self.handle_persona_answer)
 
-    def load_personas(self, personas_path):
+    @property
+    def default_persona(self) -> Optional[str]:
+        persona = self.config.get("default_persona")
+        if not persona and self.personas:
+            persona = list(self.personas.keys())[0]
+        return persona
+
+    def load_personas(self, personas_path: Optional[str] = None):
+        personas_path = personas_path or get_xdg_config_save_path("ovos_persona")
+        LOG.info(f"Personas path: {personas_path}")
         # load personas provided by packages
-        try:
-            from ovos_plugin_manager.persona import find_persona_plugins
-            for name, persona in find_persona_plugins().items():
-                if name in self.blacklist:
-                    continue
-                self.personas[name] = Persona(name, persona)
-        except ImportError:
-            LOG.error("update ovos-plugin-manager for persona plugin support")
+        for name, persona in find_persona_plugins().items():
+            if name in self.blacklist:
+                continue
+            self.personas[name] = Persona(name, persona)
 
         # load user defined personas
         os.makedirs(personas_path, exist_ok=True)
@@ -74,34 +95,43 @@ class PersonaService:
             self.personas.pop(name)
 
     # Chatbot API
-    def chatbox_ask(self, prompt, persona="eliza", lang=None):
-        context = {"lang": lang} if lang else {}
+    def chatbox_ask(self, prompt: str, persona: Optional[str] = None, lang: Optional[str] = None) -> Optional[str]:
+        persona = persona or self.default_persona
         if persona not in self.personas:
-            raise ValueError(f"unknown persona, choose one of {self.personas.keys()}")
-        return self.personas[persona].complete(prompt, context)
+            LOG.error(f"unknown persona, choose one of {self.personas.keys()}")
+            return None
+        messages = [{"role": "user", "content": prompt}]
+        return self.personas[persona].chat(messages, lang)
+
+    def match(self, utterances: List[str], lang: Optional[str] = None, message: Optional[Message] = None) -> Optional[IntentHandlerMatch]:
+        """
+        Args:
+            utterances (list):  list of utterances
+            lang (string):      4 letter ISO language code
+            message (Message):  message to use to generate reply
+
+        Returns:
+            IntentMatch if handled otherwise None.
+        """
+        ans = self.chatbox_ask(utterances[0], lang=lang)
+        if ans:
+            return IntentHandlerMatch(match_type='persona:answer',
+                                      match_data={"answer": ans},
+                                      skill_id="persona.openvoiceos",
+                                      utterance=utterances[0])
+
+    def handle_persona_answer(self, message):
+        utt = message.data["answer"]
+        self.speak(utt)
 
 
 if __name__ == "__main__":
-    b = PersonaService(f"{dirname(dirname(__file__))}/personas",
-                       persona_blacklist=["omniscient oracle"])
+    b = PersonaService(FakeBus(),
+                       config={"personas_path": "/home/miro/PycharmProjects/ovos-persona/personas"})
+    print(b.personas)
 
+    print(b.match(["what is the speed of light"]))
 
-    def test_persona(persona="eliza"):
-        print(b.chatbox_ask("what is the speed of light", persona))
-        print(b.chatbox_ask("who invented the telephone", persona))
-        print(b.chatbox_ask("who is stephen hawking", persona))
-        print(b.chatbox_ask("what is the meaning of life?", persona))
-        print(b.chatbox_ask("what is your favorite animal?", persona))
-
-
-    test_persona("eliza")
-    # What answer would please you most?
-    # What comes to mind when you ask that?
-    # What comes to mind when you ask that?
-    # What answer would please you most?
-    # Why do you ask?
-
-    test_persona("webdude")
     # The speed of light has a value of about 300 million meters per second
     # The telephone was invented by Alexander Graham Bell
     # Stephen William Hawking (8 January 1942 – 14 March 2018) was an English theoretical physicist, cosmologist, and author who, at the time of his death, was director of research at the Centre for Theoretical Cosmology at the University of Cambridge.
