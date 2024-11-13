@@ -14,11 +14,18 @@ This repository provides the `PersonaPipeline` for OpenVoiceOS (OVOS), which fac
 ```bash
 pip install ovos-persona
 ```
+
 ### Configuring Personas
 
-Personas are loaded from configuration files, which can either be provided by plugins or user-defined JSON files. 
+Personas are loaded from configuration files, which can either be directly provided by plugins or user-defined JSON files. 
 
 By default, personas are loaded from the XDG configuration directory, just create .json files under `~/.config/ovos_persona`
+
+Personas are mainly defined via [solver plugins](https://openvoiceos.github.io/ovos-technical-manual/solvers/), each plugin is tried by order until one provides an answer
+
+Find solver plugins [here](https://github.com/OpenVoiceOS?q=solver&type=all), some solvers may also use other solvers internally, such as a [MOS (Mixture Of Solvers)](https://github.com/TigreGotico/ovos-MoS)
+
+> some repos and skills also provide solvers, such as ovos-classifiers (wordnet), skill-ddg, skill-wikipedia and skill-wolfie
 
 Example to use a local OpenAI compatible server, `~/.config/ovos_persona/llm.json`
 
@@ -35,6 +42,28 @@ Example to use a local OpenAI compatible server, `~/.config/ovos_persona/llm.jso
   }
 }
 ```
+> personas **don't need** to use LLMs, you don't necessarily need a beefy GPU to use ovos-persona
+
+```json
+{
+  "name": "OldSchoolBot",
+  "solvers": [
+    "ovos-solver-wikipedia-plugin",
+    "ovos-solver-ddg-plugin",
+    "ovos-solver-plugin-wolfram-alpha",
+    "ovos-solver-wordnet-plugin",
+    "ovos-solver-rivescript-plugin",
+    "ovos-solver-failure-plugin"
+  ],
+  "ovos-solver-plugin-wolfram-alpha": {"appid": "Y7353-xxxxxx"}
+}
+```
+
+this persona would:
+- search online knowledge bases (wolfram alpha, wikipedia...)
+- fall back to wordnet when offline for dictionary look up
+- finally use a local chatbot (rivescript) for general chitchat
+- the failure solver ensures the persona speaks an error if all solvers fail
 
 ## Pipeline Usage
 
