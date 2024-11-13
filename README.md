@@ -120,7 +120,7 @@ print(response)
 
 ## Events
 
-- **persona:answer**: Sent when a persona provides an answer to a query.
+- **persona:query**: Sent to submit a query to a persona.
 - **persona:summon**: Sent when a persona is summoned.
 - **persona:release**: Sent when a persona is released.
 

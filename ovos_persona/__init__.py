@@ -18,6 +18,7 @@ from ovos_workshop.app import OVOSAbstractApplication
 from padacioso import IntentContainer
 
 from ovos_persona.solvers import QuestionSolversService
+
 try:
     from ovos_plugin_manager.solvers import find_chat_solver_plugins
 except ImportError:
@@ -66,7 +67,7 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         self.blacklist = self.config.get("persona_blacklist") or []
         self.load_personas(self.config.get("personas_path"))
         self.active_persona = None
-        self.add_event('persona:answer', self.handle_persona_answer)
+        self.add_event('persona:query', self.handle_persona_query)
         self.add_event('persona:summon', self.handle_persona_summon)
         self.add_event('persona:release', self.handle_persona_release)
         self.add_event("speak", self.handle_speak)
@@ -216,28 +217,17 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
                                           utterance=utterances[0])
             elif match["name"] == "ask":
                 utterance = match["entities"].pop("query")
-                ans = self.chatbox_ask(utterance,
-                                       lang=lang,
-                                       persona=persona)
-                if ans:
-                    return IntentHandlerMatch(match_type='persona:answer',
-                                              match_data={"answer": ans,
-                                                          "persona": persona},
-                                              skill_id="persona.openvoiceos",
-                                              utterance=utterances[0])
-
-        # override regular intent parsing, handle utterance until persona release
-        if self.active_persona:
-            LOG.debug(f"Persona is active: {self.active_persona}")
-            ans = self.chatbox_ask(utterances[0],
-                                   lang=lang,
-                                   persona=self.active_persona)
-            if ans:
-                return IntentHandlerMatch(match_type='persona:answer',
-                                          match_data={"answer": ans,
-                                                      "persona": self.active_persona},
+                return IntentHandlerMatch(match_type='persona:query',
+                                          match_data={"utterance": utterance,
+                                                      "lang": lang,
+                                                      "persona": persona},
                                           skill_id="persona.openvoiceos",
                                           utterance=utterances[0])
+
+        # override regular intent parsing, handle utterance until persona is released
+        if self.active_persona:
+            LOG.debug(f"Persona is active: {self.active_persona}")
+            return self.match_low(utterances, lang, message)
 
     def match_medium(self, utterances: List[str], lang: str, message: Message) -> None:
         return self.match_high(utterances, lang, message)
@@ -255,12 +245,13 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         Returns:
             IntentMatch if handled otherwise None.
         """
-        ans = self.chatbox_ask(utterances[0], lang=lang)
-        if ans:
-            return IntentHandlerMatch(match_type='persona:answer',
-                                      match_data={"answer": ans},
-                                      skill_id="persona.openvoiceos",
-                                      utterance=utterances[0])
+        # always matches! use as last resort in pipeline
+        return IntentHandlerMatch(match_type='persona:query',
+                                  match_data={"utterance": utterances[0],
+                                              "lang": lang,
+                                              "persona": self.active_persona},
+                                  skill_id="persona.openvoiceos",
+                                  utterance=utterances[0])
 
     # bus events
     def handle_utterance(self, message):
@@ -276,20 +267,33 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         if sess.session_id in self.sessions:
             self.sessions[sess.session_id].append(("ai", utt))
 
-    def handle_persona_answer(self, message):
-        utt = message.data["answer"]
-        self.speak(utt)
+    def handle_persona_query(self, message):
+        utt = message.data["utterance"]
+        lang = message.data["lang"]
+        persona = message.data["persona"]
+
+        if persona not in self.personas:
+            self.speak_dialog("unknown_persona", {"persona": persona})
+            return
+
+        # TODO - streaming support
+        ans = self.chatbox_ask(utt, lang=lang, persona=persona)
+        if not ans:
+            self.speak_dialog("persona_error")
+        else:
+            self.speak(ans)
 
     def handle_persona_summon(self, message):
         persona = message.data["persona"]
         if persona not in self.personas:
-            self.speak_dialog("unknown_persona")
+            self.speak_dialog("unknown_persona", {"persona": persona})
         else:
             self.active_persona = persona
             LOG.info(f"Summoned Persona: {self.active_persona}")
 
     def handle_persona_release(self, message):
         LOG.info(f"Releasing Persona: {self.active_persona}")
+        self.speak_dialog("release_persona", {"persona": self.active_persona})
         self.active_persona = None
 
 
