@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.0a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.1.0a1) (2024-11-13)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.0.0a2...0.1.0a1)
+
+**Merged pull requests:**
+
+- feat:intents [\#6](https://github.com/OpenVoiceOS/ovos-persona/pull/6) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.0.0a2](https://github.com/OpenVoiceOS/ovos-persona/tree/0.0.0a2) (2024-11-13)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/12bb4b5826d5b44a1ca1db5fb2cf422ab7e053c4...0.0.0a2)
