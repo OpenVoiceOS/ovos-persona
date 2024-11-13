@@ -1,0 +1,8 @@
+(consulta|sondeja|sol·licita|busca|cerca|pregunta|demana|obté|obtén) (el |la |es |sa |els |les |ses |l'|s')(perspectiva|opinió|pensaments|punt de vista|interpretació|feedback|postura|vista) (|de |d') {persona} (referent|referent a|sobre|de) {utterance}
+(consulta|sondeja|sol·licita|busca|cerca|pregunta|interroga) (|a |al |a la|as |a sa|a l'|a s'){persona} sobre ([ls]es se[uv]es opinions|[ls]a se[uv]a opinió) sobre {utterance}
+(consulta|sondeja|sol·licita|busca|cerca|pregunta|interroga|fes una pregunta a) (|a |al |a la|as |a l'|a s'){persona} (respecte|respecte a|sobre) {utterance}
+(pregunta|demana|consulta|qüestiona) (|a |al |a la |as |a sa |a l'|a s') {persona} (el seu|la seva|pel seu|per la seva|els seus|les seves|pels seus|per les seves) (perspectives|anàlisi|comentari|impressió|interpretació|percepció|reacció|punt de vista|pensaments|comprensió) (a|de|sobre) {utterance}
+(pregunta|demana|consulta|qüestiona) (|a |al |a la |as |a sa |a l'|a s') {persona} (sobre|(de|) compartir|) (la se[uv]a |la |sa se[uv]a| sa |) (perspectiva|opinió) (sobre |de |en |d') {utterance}
+(pregunta|demana|consulta|qüestiona) (|a |al |a la |as |a sa |a l'|a s') {persona} què (diu|pensa|ha de dir|pensar) sobre {utterance}
+(pregunta|demana|consulta|qüestiona) (|a |al |a la |as |a sa |a l'|a s') {persona} sobre {utterance}
+què (pensa|diu) (|el |la |es |sa |l'|s'){persona} sobre {utterance}
