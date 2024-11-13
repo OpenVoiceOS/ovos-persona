@@ -161,9 +161,10 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         messages.append({"role": "user", "content": prompt})
         if stream:
             yield from self.personas[persona].stream(messages, lang)
-        ans = self.personas[persona].chat(messages, lang)
-        if ans:
-            yield ans
+        else:
+            ans = self.personas[persona].chat(messages, lang)
+            if ans:
+                yield ans
 
     def _build_msg_history(self, message: Message):
         sess = SessionManager.get(message)
@@ -256,7 +257,7 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         return IntentHandlerMatch(match_type='persona:query',
                                   match_data={"utterance": utterances[0],
                                               "lang": lang,
-                                              "persona": self.active_persona},
+                                              "persona": self.active_persona or self.default_persona},
                                   skill_id="persona.openvoiceos",
                                   utterance=utterances[0])
 
@@ -310,7 +311,8 @@ if __name__ == "__main__":
     print(b.personas)
 
     print(b.match_low(["what is the speed of light"]))
-
+    for ans in b.chatbox_ask("what is the speed of light"):
+        print(ans)
     # The speed of light has a value of about 300 million meters per second
     # The telephone was invented by Alexander Graham Bell
     # Stephen William Hawking (8 January 1942 – 14 March 2018) was an English theoretical physicist, cosmologist, and author who, at the time of his death, was director of research at the Centre for Theoretical Cosmology at the University of Cambridge.
