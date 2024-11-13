@@ -1,9 +1,10 @@
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, Iterable
 
 from ovos_config import Configuration
 from ovos_plugin_manager.solvers import find_question_solver_plugins
 from ovos_utils.log import LOG
 from ovos_utils.messagebus import FakeBus
+
 try:
     from ovos_plugin_manager.solvers import find_chat_solver_plugins
     from ovos_plugin_manager.templates.solvers import ChatMessageSolver
@@ -11,6 +12,7 @@ except ImportError:
     # using outdated ovos-plugin-manager
     class ChatMessageSolver:
         pass
+
 
     def find_chat_solver_plugins():
         return {}
@@ -60,42 +62,31 @@ class QuestionSolversService:
                 pass
 
     def chat_completion(self, messages: List[Dict[str, str]],
-                      lang: Optional[str] = None,
-                      units: Optional[str] = None) -> Optional[str]:
+                        lang: Optional[str] = None,
+                        units: Optional[str] = None) -> Optional[str]:
         for module in self.modules:
             try:
                 if isinstance(module, ChatMessageSolver):
-                    ans = module.get_chat_completion(messages=messages,
-                                                     lang=lang)
+                    ans = module.get_chat_completion(messages=messages, lang=lang, units=units)
                 else:
                     LOG.debug(f"{module} does not supported chat history!")
                     query = messages[-1]["content"]
-                    ans = module.spoken_answer(query, lang=lang)
+                    ans = module.spoken_answer(query, lang=lang, units=units)
                 if ans:
                     return ans
             except Exception as e:
                 LOG.error(e)
-                pass
 
-    def spoken_answer(self, query: str,
-                      lang: Optional[str] = None,
-                      units: Optional[str] = None) -> Optional[str]:
-        """
-        Obtain the spoken answer for a given query.
-
-        Args:
-            query (str): The query text.
-            lang (Optional[str]): Optional language code. Defaults to None.
-            units (Optional[str]): Optional units for the query. Defaults to None.
-
-        Returns:
-            str: The spoken answer as a text response.
-        """
+    def stream_completion(self, messages: List[Dict[str, str]],
+                          lang: Optional[str] = None,
+                          units: Optional[str] = None) -> Iterable[str]:
         for module in self.modules:
             try:
-                ans = module.spoken_answer(query, lang=lang)
-                if ans:
-                    return ans
+                if isinstance(module, ChatMessageSolver):
+                    yield from module.stream_chat_utterances(messages=messages, lang=lang, units=units)
+                else:
+                    LOG.debug(f"{module} does not supported chat history!")
+                    query = messages[-1]["content"]
+                    yield from module.stream_utterances(query, lang=lang, units=units)
             except Exception as e:
                 LOG.error(e)
-                pass
