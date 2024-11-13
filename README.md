@@ -68,7 +68,7 @@ this persona would:
 
 ## Pipeline Usage
 
-The `PersonaService` class manages the overall persona system. It allows you to load personas, handle intents, and interact with personas using the chatbot API.
+When configuring your pipeline it is suggested that `"ovos-persona-pipeline-plugin-high"` comes just before `"fallback_high"` and that  `"ovos-persona-pipeline-plugin-low"` comes just before `"fallback_low"`
 
 > **NOT YET FUNCTIONAL** TODO: pending PR: https://github.com/OpenVoiceOS/ovos-core/pull/570
 
@@ -79,15 +79,28 @@ The `mycroft.conf` configuration file can specify:
 
 ```json
 {
-  "persona": {
-    "personas_path": "/path/to/personas",
-    "persona_blacklist": [
-      "persona_to_exclude"
+  "intents": {
+      "pipeline": [
+        "...",
+        "adapt_high",
+        "...",
+        "ovos-persona-pipeline-plugin-high",
+        "...",
+        "padatious_medium",
+        "...",
+        "ovos-persona-pipeline-plugin-low",
+        "fallback_low"
     ],
-    "default_persona": "default_persona"
+    "ovos-persona-pipeline-plugin": {
+      "personas_path": "/path/to/personas",
+      "persona_blacklist": ["persona_to_exclude"],
+      "default_persona": "default_persona"
+    }
   }
 }
 ```
+
+> NOTE: there is no "ovos-persona-pipeline-plugin-medium"
 
 #### Direct Usage
 
