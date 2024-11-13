@@ -1,0 +1,18 @@
+{
+  "Release.voc": [
+    "(atura|acaba|tanca|cessa|surt|ix|avorta|termina|interromp|desactiva|apaga) (l'|s'|)activitat (del|des|) (xatbot|chatbot|persona|AI|IA|I A|LLM)",
+    "(atura|acaba|surt|ix|tanca|avorta|interromp|desactiva) (el| la |es |sa |l'|s'|) (interacció|conversa|diàleg|debat)",
+    "(ves|vés|torna) (lluny|a pastar (|fang)|a fer nonon|al teu cau|a dormir|a hivernar)",
+    "(atura|para) (el |la |es |sa |l'|s'|) (interacció|conversa|debat|diàleg)",
+    "deixa'm (tot|) (sol|sola)",
+    "prou de (parlar|xarrera)",
+    "posa (el |la |es |sa |l'|s')(xatbot|chatbot|persona|AI|IA|I A|LLM) a dormir",
+    "(allibera|elimina|atura|para) (|el |la |es |sa |l'|s')(xatbot|chatbot|persona|AI|IA|I A|LLM)",
+    "retira't",
+    "torna a (l'|s')abisme",
+    "(calla|calla (la|sa) boca|tanca (la|sa) boca)",
+    "(atura|para de|prou de) (xerrar|comunicar|respondre|parlar)",
+    "(desactiva|apaga) (|el |la |es |sa |l'|s')(xatbot|chatbot|persona|AI|IA|I A|LLM)",
+    "(termina|finalitza)"
+  ]
+}
