@@ -158,10 +158,16 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         Returns:
             IntentMatch if handled otherwise None.
         """
+        if self.active_persona and self.voc_match(utterances[0], "Release", lang):
+            return IntentHandlerMatch(match_type='persona:release',
+                                      match_data={"persona": self.active_persona},
+                                      skill_id="persona.openvoiceos",
+                                      utterance=utterances[0])
+
         match = self.intent_matchers[lang].calc_intent(utterances[0].lower())
 
         if match["name"]:
-            LOG.info(f"Persona exact match: {match}")
+            LOG.info(f"Persona intent exact match: {match}")
             persona = match["entities"].pop("persona")
             if match["name"] == "summon":
                 return IntentHandlerMatch(match_type='persona:summon',
@@ -180,11 +186,18 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
                                               skill_id="persona.openvoiceos",
                                               utterance=utterances[0])
 
-        if self.active_persona and self.voc_match(utterances[0], "Release", lang):
-            return IntentHandlerMatch(match_type='persona:release',
-                                      match_data={"persona": self.active_persona},
-                                      skill_id="persona.openvoiceos",
-                                      utterance=utterances[0])
+        # override regular intent parsing, handle utterance until persona release
+        if self.active_persona:
+            LOG.debug(f"Persona is active: {self.active_persona}")
+            ans = self.chatbox_ask(utterances[0],
+                                   lang=lang,
+                                   persona=self.active_persona)
+            if ans:
+                return IntentHandlerMatch(match_type='persona:answer',
+                                          match_data={"answer": ans,
+                                                      "persona": self.active_persona},
+                                          skill_id="persona.openvoiceos",
+                                          utterance=utterances[0])
 
     def match_medium(self, utterances: List[str], lang: str, message: Message) -> None:
         return self.match_high(utterances, lang, message)
@@ -219,8 +232,10 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
             self.speak_dialog("unknown_persona")
         else:
             self.active_persona = persona
+            LOG.info(f"Summoned Persona: {self.active_persona}")
 
     def handle_persona_release(self, message):
+        LOG.info(f"Releasing Persona: {self.active_persona}")
         self.active_persona = None
 
 
