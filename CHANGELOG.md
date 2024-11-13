@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.0a2](https://github.com/OpenVoiceOS/ovos-persona/tree/0.2.0a2) (2024-11-13)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.2.0a1...0.2.0a2)
+
+**Merged pull requests:**
+
+- chat history [\#9](https://github.com/OpenVoiceOS/ovos-persona/pull/9) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.2.0a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.2.0a1) (2024-11-13)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.1.0a1...0.2.0a1)
