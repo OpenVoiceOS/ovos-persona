@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.1a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.3.1a1) (2024-11-13)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.3.0a2...0.3.1a1)
+
+**Merged pull requests:**
+
+- fix:clashing persona names [\#17](https://github.com/OpenVoiceOS/ovos-persona/pull/17) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.3.0a2](https://github.com/OpenVoiceOS/ovos-persona/tree/0.3.0a2) (2024-11-13)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.3.0a1...0.3.0a2)
