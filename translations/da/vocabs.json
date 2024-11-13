@@ -1,0 +1,18 @@
+{
+  "Release.voc": [
+    "(afslut|luk|ophør|afslut|afslut|afbryd|afslut|afbryd|frakoble|deaktiver|deaktiver) (chatbot|persona|AI|LLM) aktivitet",
+    "(ophør|afslut|afslut|luk|afslut|afbryd|afslut|afbryd|frakoble|deaktiver|deaktiver) (den|) (interaktion|samtale|diskussion)",
+    "gå (bort|tilbage til din grav|sovende|ind i dvale)",
+    "stands (den|) (interaktion|interaktionen|samtale|samtalen|diskussion|diskutionen)",
+    "lad mig være i fred",
+    "nok snak",
+    "sæt (chatbot|persona|AI|LLM) i dvale",
+    "(frigør|fjern|stop) (chatbot|persona|AI|LLM)",
+    "tilbagetog",
+    "vende tilbage til afgrunden",
+    "hold (kæft|din mund)",
+    "stop (med at) (chat|chatte|kommunikerer|kommunikation|svarer|svar|tale)",
+    "(sluk|stop) (chatbot|persona|AI|LLM)",
+    "afbryd"
+  ]
+}
