@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.0a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.3.0a1) (2024-11-13)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.2.1a1...0.3.0a1)
+
+**Merged pull requests:**
+
+- feat:streaming support [\#13](https://github.com/OpenVoiceOS/ovos-persona/pull/13) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.2.1a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.2.1a1) (2024-11-13)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.2.0a2...0.2.1a1)
