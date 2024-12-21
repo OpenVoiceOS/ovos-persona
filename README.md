@@ -140,9 +140,53 @@ print(response)
 
 ## 📡 Messagebus Events
 
+You can control the persona service via bus messages
+
 - **`persona:query`**: Submit a query to a persona.  
 - **`persona:summon`**: Summon a persona.  
 - **`persona:release`**: Release a persona.  
+
+---
+
+## 🗣️ Persona Intents
+
+The Persona Service supports a set of core voice intents to manage persona interactions seamlessly. These intents correspond to the **messagebus events** but are designed for **voice-based activation**.  
+
+These intents provide **out-of-the-box functionality** for controlling the Persona Service, ensuring smooth integration with the conversational pipeline and enhancing user experience.
+
+### **1. Activate a Persona**
+Allows users to summon a persona for interactive conversation.  
+
+**Example Utterances**:
+- "Connect me to {persona}"  
+- "Enable {persona}"  
+- "Awaken the {persona} assistant"  
+- "Start a conversation with {persona}"  
+- "Let me chat with {persona}"  
+
+---
+
+### **2. Single-Shot Persona Questions**
+Enables users to query a persona directly without entering an interactive session.  
+
+**Example Utterances**:
+- "Ask {persona} what they think about {utterance}"  
+- "What does {persona} say about {utterance}?"  
+- "Query {persona} for insights on {utterance}"  
+- "Ask {persona} for their perspective on {utterance}"  
+
+---
+
+### **3. Stop Conversation**
+Allows users to terminate the current conversation with a persona.  
+
+**Example Utterances**:
+- "Stop the interaction"  
+- "Terminate the persona activity"  
+- "Deactivate the chatbot"  
+- "Go dormant"  
+- "Enough talking"  
+- "Shut up"  
 
 ---
 
@@ -150,7 +194,3 @@ print(response)
 
 Got ideas or found bugs?  
 Submit an issue or create a pull request to help us improve! 🌟  
-
---- 
-
-This updated README is designed to be approachable and highlights key functionality with subtle use of emojis. Let me know if you'd like any changes!
