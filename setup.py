@@ -42,6 +42,7 @@ def get_version():
 
 
 PLUGIN_ENTRY_POINT = 'ovos-persona-pipeline-plugin=ovos_persona:PersonaService'
+HM_PLUGIN_ENTRY_POINT = 'hivemind-persona-agent-plugin=ovos_persona.hpm:PersonaProtocol'
 
 setup(
     name='ovos-persona',
@@ -56,5 +57,6 @@ setup(
     install_requires=required("requirements.txt"),
     long_description="ovos persona",
     long_description_content_type='text/markdown',
-    entry_points={'opm.pipeline': PLUGIN_ENTRY_POINT},
+    entry_points={'opm.pipeline': PLUGIN_ENTRY_POINT,
+                  'hivemind.agent.protocol': HM_PLUGIN_ENTRY_POINT},
 )
