@@ -70,6 +70,13 @@ Save this in `~/.config/ovos_persona/llm.json`:
 
 ---
 
+## 📡 HiveMind Integration
+
+This project includes a native [hivemind-plugin-manager](https://github.com/JarbasHiveMind/hivemind-plugin-manager) integration, providing seamless interoperability with the HiveMind ecosystem.
+
+- **Agent Protocol**: Provides `hivemind-persona-agent-plugin` allowing to connect satellites directly to a persona
+  
+
 ## 🛠️ Pipeline Usage
 
 > 🚧 **NOT YET FUNCTIONAL**: pending PR: https://github.com/OpenVoiceOS/ovos-core/pull/570 🚧 
