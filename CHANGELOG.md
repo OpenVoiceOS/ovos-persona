@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.0a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.4.0a1) (2024-12-29)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.3.1a2...0.4.0a1)
+
+**Closed issues:**
+
+- The Persona Sprint [\#4](https://github.com/OpenVoiceOS/ovos-persona/issues/4)
+
+**Merged pull requests:**
+
+- feat:hivemind [\#22](https://github.com/OpenVoiceOS/ovos-persona/pull/22) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.3.1a2](https://github.com/OpenVoiceOS/ovos-persona/tree/0.3.1a2) (2024-11-13)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.3.1a1...0.3.1a2)
