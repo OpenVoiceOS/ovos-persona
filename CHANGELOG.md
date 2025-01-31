@@ -1,20 +1,12 @@
 # Changelog
 
-## [0.4.1a2](https://github.com/OpenVoiceOS/ovos-persona/tree/0.4.1a2) (2025-01-31)
+## [0.4.3a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.4.3a1) (2025-01-31)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.4.1a1...0.4.1a2)
-
-**Merged pull requests:**
-
-- fix: better error handling [\#26](https://github.com/OpenVoiceOS/ovos-persona/pull/26) ([JarbasAl](https://github.com/JarbasAl))
-
-## [0.4.1a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.4.1a1) (2025-01-31)
-
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.4.0...0.4.1a1)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.4.2...0.4.3a1)
 
 **Merged pull requests:**
 
-- fix:intents [\#24](https://github.com/OpenVoiceOS/ovos-persona/pull/24) ([JarbasAl](https://github.com/JarbasAl))
+- Fix/match low [\#28](https://github.com/OpenVoiceOS/ovos-persona/pull/28) ([JarbasAl](https://github.com/JarbasAl))
 
 
 
