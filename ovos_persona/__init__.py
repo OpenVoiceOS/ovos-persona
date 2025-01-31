@@ -168,6 +168,7 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
                 continue
             with open(f"{personas_path}/{p}") as f:
                 persona = json.load(f)
+            name = persona.get("name", name)
             LOG.info(f"Found persona (user defined): {name}")
             try:
                 self.personas[name] = Persona(name, persona)
@@ -301,13 +302,15 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
                                           skill_id="persona.openvoiceos",
                                           utterance=utterances[0])
             elif name == "ask.intent":
-                utterance = match["entities"].pop("query")
-                return IntentHandlerMatch(match_type='persona:query',
-                                          match_data={"utterance": utterance,
-                                                      "lang": lang,
-                                                      "persona": persona},
-                                          skill_id="persona.openvoiceos",
-                                          utterance=utterances[0])
+                persona = self.get_persona(persona)
+                if persona: # else the name isnt a persona, so dont match
+                    utterance = match["entities"].pop("query")
+                    return IntentHandlerMatch(match_type='persona:query',
+                                              match_data={"utterance": utterance,
+                                                          "lang": lang,
+                                                          "persona": persona},
+                                              skill_id="persona.openvoiceos",
+                                              utterance=utterances[0])
 
         # override regular intent parsing, handle utterance until persona is released
         if self.active_persona:
@@ -434,13 +437,16 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
 
 if __name__ == "__main__":
     LOG.set_level("DEBUG")
-    b = PersonaService(FakeBus(), config={"personas_path": "/home/miro/PycharmProjects/HiveMind-rpi-hub/overlays/home/ovos/.config/ovos_persona"})
+    b = PersonaService(FakeBus(),
+                       config={
+                           "default_persona": "ChatBot",
+                           "personas_path": "/home/miro/PycharmProjects/HiveMind-rpi-hub/overlays/home/ovos/.config/ovos_persona"})
     print("Personas:", b.personas)
 
     print(b.match_high(["enable remote llama"]))
 
 #    b.handle_persona_query(Message("", {"utterance": "tell me about yourself"}))
-    for ans in b.chatbox_ask("what are you"):
+    for ans in b.chatbox_ask("what is the speed of light"):
         print(ans)
     # The speed of light has a value of about 300 million meters per second
     # The telephone was invented by Alexander Graham Bell
