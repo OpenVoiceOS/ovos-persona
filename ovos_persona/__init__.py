@@ -19,7 +19,7 @@ from ovos_plugin_manager.templates.pipeline import PipelineStageConfidenceMatche
 from ovos_utils.fakebus import FakeBus
 from ovos_utils.lang import standardize_lang_tag, get_language_dir
 from ovos_utils.log import LOG
-from ovos_utils.parse import match_one
+from ovos_utils.parse import match_one, MatchStrategy
 from ovos_workshop.app import OVOSAbstractApplication
 
 try:
@@ -151,8 +151,11 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
     def get_persona(self, persona: str):
         if not persona:
             return self.active_persona or self.default_persona
-        match, score = match_one(persona.title(), list(self.personas))
-        return match if score >= 0.75 else None
+        # TODO - add ignorecase flag to match_one in ovos_utils
+        match, score = match_one(persona, list(self.personas),
+                                 strategy=MatchStrategy.PARTIAL_TOKEN_SET_RATIO)
+        LOG.debug(f"Closest persona: {match} - {score}")
+        return match if score >= 0.7 else None
 
     def load_personas(self, personas_path: Optional[str] = None):
         personas_path = personas_path or get_xdg_config_save_path("ovos_persona")
