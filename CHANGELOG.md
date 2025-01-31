@@ -1,12 +1,12 @@
 # Changelog
 
-## [0.6.2a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.2a1) (2025-01-31)
+## [0.6.3a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.3a1) (2025-01-31)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.1...0.6.2a1)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.2...0.6.3a1)
 
 **Merged pull requests:**
 
-- fix:persona name [\#38](https://github.com/OpenVoiceOS/ovos-persona/pull/38) ([JarbasAl](https://github.com/JarbasAl))
+- fix:persona name matching [\#40](https://github.com/OpenVoiceOS/ovos-persona/pull/40) ([JarbasAl](https://github.com/JarbasAl))
 
 
 
