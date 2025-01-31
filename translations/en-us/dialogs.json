@@ -1,0 +1,58 @@
+{
+    "activated_persona.dialog": [
+        "{persona} activated",
+        "{persona} enabled",
+        "{persona} has been activated.",
+        "{persona} has been enabled.",
+        "{persona} has been initialized.",
+        "{persona} has been turned on.",
+        "{persona} is now activated.",
+        "{persona} is now active",
+        "{persona} is now enabled",
+        "{persona} is now fully enabled.",
+        "{persona} is now live.",
+        "{persona} is now online.",
+        "{persona} is now ready to go.",
+        "{persona} is now up and running."
+    ],
+    "persona_error.dialog": [
+        "A glitch occurred while talking to {persona}.",
+        "A problem occurred while speaking with {persona}.",
+        "A technical issue arose while speaking with {persona}.",
+        "An error happened while engaging with {persona}.",
+        "An issue arose while communicating with {persona}.",
+        "Something went awry while having a chat with {persona}.",
+        "Something went wrong while interacting with {persona}.",
+        "There was a malfunction while conversing with {persona}.",
+        "There was an issue during the conversation with {persona}.",
+        "We encountered an error while chatting with {persona}."
+    ],
+    "release_persona.dialog": [
+        "{persona} deactivated",
+        "{persona} disabled",
+        "{persona} has been deactivated",
+        "{persona} has been disabled",
+        "{persona} has been disabled and is no longer functional.",
+        "{persona} has been disabled.",
+        "{persona} has been powered down.",
+        "{persona} has been shut down.",
+        "{persona} has been turned off.",
+        "{persona} is no longer active.",
+        "{persona} is no longer enabled.",
+        "{persona} is now deactivated.",
+        "{persona} is now inactive and disabled.",
+        "{persona} is now inactive."
+    ],
+    "unknown_persona.dialog": [
+        "I don't know who {persona} is",
+        "I don't know {persona}",
+        "I don’t know who {persona} is supposed to be.",
+        "I don’t recognize {persona}.",
+        "I have no idea who {persona} is.",
+        "I haven’t heard of {persona}.",
+        "I’m not acquainted with {persona}.",
+        "I’m not sure who {persona} is.",
+        "I’m unfamiliar with {persona}.",
+        "{persona} is unknown to me."
+    ]
+}
