@@ -323,6 +323,7 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         else:
             self.active_persona = persona
             LOG.info(f"Summoned Persona: {self.active_persona}")
+            self.speak_dialog("activated_persona", {"persona": persona})
 
     def handle_persona_release(self, message):
         LOG.info(f"Releasing Persona: {self.active_persona}")
