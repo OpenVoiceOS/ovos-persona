@@ -15,10 +15,26 @@
         "{persona} is now ready to go.",
         "{persona} is now up and running."
     ],
+    "active_persona.dialog": [
+        "Currently, the active persona is {persona}",
+        "I am using {persona} right now to interact with you",
+        "Right now, the active persona is {persona}",
+        "The active persona is {persona}",
+        "The persona in use at the moment is {persona}",
+        "You’re currently speaking to {persona}"
+    ],
     "list_personas.dialog": [
         "Here are the available personas",
         "I have the following personas",
         "The available personas are"
+    ],
+    "no_active_persona.dialog": [
+        "Currently, there are no personas activated, so you’ll be talking to me as the base personality",
+        "I couldn’t find any active personas, so I’ll be interacting with you as my default self",
+        "It looks like there are no active personas at the moment, so I’ll be responding as myself",
+        "No personas active, I am using my base personality",
+        "No personas are active right now. I’m using my base personality to interact with you",
+        "Since no personas are active, I’ll continue using my default personality for now"
     ],
     "no_personas.dialog": [
         "I couldn’t find any personas at the moment. Please check again later",
