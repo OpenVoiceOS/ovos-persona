@@ -1,0 +1,92 @@
+{
+  "activated_persona.dialog": [
+    "{persona} ativado",
+    "{persona} habilitado",
+    "{persona} foi ativado.",
+    "{persona} foi habilitado.",
+    "{persona} foi inicializado.",
+    "{persona} foi ativado.",
+    "{persona} agora está ativado.",
+    "{persona} agora está ativo",
+    "{persona} agora está habilitado",
+    "{persona} agora está totalmente habilitado.",
+    "{persona} já está no ar.",
+    "{persona} agora está online.",
+    "{persona} agora está pronto para ser usado.",
+    "{persona} já está instalado e funcionando."
+  ],
+  "active_persona.dialog": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "list_personas.dialog": [
+    null,
+    null,
+    null
+  ],
+  "no_active_persona.dialog": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "no_personas.dialog": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "persona_error.dialog": [
+    "Ocorreu uma falha ao falar com {persona}.",
+    "Ocorreu um problema ao falar com {persona}.",
+    "Ocorreu um problema técnico ao falar com {persona}.",
+    "Ocorreu um erro ao interagir com {persona}.",
+    "Ocorreu um problema durante a comunicação com {persona}.",
+    null,
+    "Algo deu errado ao interagir com {persona}.",
+    "Ocorreu um problema durante a conversa com {persona}.",
+    "Houve um problema durante a conversa com {persona}.",
+    null
+  ],
+  "persona_select.dialog": [
+    null,
+    null,
+    null
+  ],
+  "release_persona.dialog": [
+    "{persona} desativado",
+    "{persona} desabilitado",
+    "{persona} foi desativado",
+    "{persona} foi desabilitado",
+    "{persona} foi desabilitado e não está mais funcional.",
+    "{persona} foi desabilitado.",
+    "{persona} foi desligado.",
+    "{persona} foi encerrado.",
+    "{persona} foi desativado.",
+    "{persona} não está mais ativo.",
+    "{persona} não está mais habilitado.",
+    "{persona} agora está desativado.",
+    "{persona} agora está inativo e desabilitado.",
+    "{persona} agora está inativo."
+  ],
+  "unknown_persona.dialog": [
+    "Eu não sei quem é {persona}",
+    "Eu não sei {persona}",
+    "Não sei quem {persona} é suposto ser.",
+    "Não reconheço {persona}.",
+    "Não tenho ideia de quem é {persona}.",
+    null,
+    "Não estou familiarizado com {persona}.",
+    "Não tenho certeza de quem é {persona}.",
+    "Não estou familiarizado com {persona}.",
+    "{persona} é desconhecido para mim."
+  ]
+}
