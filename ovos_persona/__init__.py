@@ -380,13 +380,13 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         utt = message.data["utterance"]
         lang = message.data.get("lang") or sess.lang
         persona = message.data.get("persona", self.active_persona or self.default_persona)
-        persona = self.get_persona(persona)
-        LOG.debug(f"Persona query ({lang}): {persona} - \"{utt}\"")
+        persona = self.get_persona(persona) or persona
         if persona not in self.personas:
             self.speak_dialog("unknown_persona", {"persona": persona})
             self.handle_persona_list()
             return
 
+        LOG.debug(f"Persona query ({lang}): {persona} - \"{utt}\"")
         handled = False
 
         self._active_sessions[sess.session_id] = True
@@ -408,13 +408,12 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
             return
 
         persona = message.data["persona"]
-        persona=self.get_persona(persona)
-        LOG.info(f"Persona enabled: {persona}")
+        persona = self.get_persona(persona) or persona
         if persona not in self.personas:
             self.speak_dialog("unknown_persona", {"persona": persona})
         else:
+            LOG.info(f"Persona enabled: {persona}")
             self.active_persona = persona
-            LOG.info(f"Summoned Persona: {self.active_persona}")
             self.speak_dialog("activated_persona", {"persona": persona})
 
     def handle_persona_release(self, message):
