@@ -1,28 +1,12 @@
 # Changelog
 
-## [0.6.1a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.1a1) (2025-01-31)
+## [0.6.2a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.2a1) (2025-01-31)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.0a2...0.6.1a1)
-
-**Merged pull requests:**
-
-- fix: multi solver personas [\#36](https://github.com/OpenVoiceOS/ovos-persona/pull/36) ([JarbasAl](https://github.com/JarbasAl))
-
-## [0.6.0a2](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.0a2) (2025-01-31)
-
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.0a1...0.6.0a2)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.1...0.6.2a1)
 
 **Merged pull requests:**
 
-- pt-pt/translate [\#35](https://github.com/OpenVoiceOS/ovos-persona/pull/35) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
-
-## [0.6.0a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.0a1) (2025-01-31)
-
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.5.0...0.6.0a1)
-
-**Merged pull requests:**
-
-- feat: active persona [\#34](https://github.com/OpenVoiceOS/ovos-persona/pull/34) ([JarbasAl](https://github.com/JarbasAl))
+- fix:persona name [\#38](https://github.com/OpenVoiceOS/ovos-persona/pull/38) ([JarbasAl](https://github.com/JarbasAl))
 
 
 
