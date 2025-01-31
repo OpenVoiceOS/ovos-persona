@@ -312,12 +312,13 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
             IntentMatch if handled otherwise None.
         """
         # always matches! use as last resort in pipeline
-        return IntentHandlerMatch(match_type='persona:query',
-                                  match_data={"utterance": utterances[0],
-                                              "lang": lang,
-                                              "persona": self.active_persona or self.default_persona},
-                                  skill_id="persona.openvoiceos",
-                                  utterance=utterances[0])
+        if self.active_persona or self.config.get("handle_fallback"):
+            return IntentHandlerMatch(match_type='persona:query',
+                                      match_data={"utterance": utterances[0],
+                                                  "lang": lang,
+                                                  "persona": self.active_persona or self.default_persona},
+                                      skill_id="persona.openvoiceos",
+                                      utterance=utterances[0])
 
     # bus events
     def handle_utterance(self, message):
