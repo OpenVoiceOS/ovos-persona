@@ -16,33 +16,33 @@
     "{persona} já está instalado e funcionando."
   ],
   "active_persona.dialog": [
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
+    "Atualmente, a (personalidade|persona)  ativa é {persona}",
+    "Estou a usar {persona} agora para interagir contigo",
+    "No momento, a (personalidade|persona)  ativa é {persona}",
+    "A (personalidade|persona) ativa é {persona}",
+    "A (personalidade|persona) em uso no momento é {persona}",
+    "Estás a falar com {persona}"
   ],
   "list_personas.dialog": [
-    null,
-    null,
-    null
+    "Aqui estão as (personalidades|personas) disponíveis",
+    "Eu tenho as seguintes (personalidades|personas)",
+    "As (personalidades|personas) disponíveis são"
   ],
   "no_active_persona.dialog": [
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
+    "Atualmente, não há personas ativas, então você falará comigo como a personalidade base",
+    "Não consegui encontrar nenhuma persona ativa, então vou interagir como o meu eu padrão",
+    "Parece que não há nenhuma persona ativa no momento, então vou responder como eu mesmo",
+    "Nenhuma persona ativa, estou a usar a minha personalidade base",
+    "Nenhuma persona está ativa agora. Estou a usar a minha personalidade base para te responder",
+    "Como nenhuma persona está ativa, continuo a usar a minha personalidade padrão por enquanto"
   ],
   "no_personas.dialog": [
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
+    "Não consegui encontrar nenhuma (personalidade|persona) no momento. Por favor, verifique novamente mais tarde",
+    "Parece que não há (personalidades|personas) disponíveis no momento",
+    "Parece que não há (personalidades|personas)  disponíveis para interagir agora",
+    "Desculpe, não consegui encontrar nenhuma (personalidade|persona) agora",
+    "Não há (personalidades|personas) disponíveis para interagir no momento",
+    "Infelizmente, não há (personalidades|personas) no momento"
   ],
   "persona_error.dialog": [
     "Ocorreu uma falha ao falar com {persona}.",
@@ -50,16 +50,16 @@
     "Ocorreu um problema técnico ao falar com {persona}.",
     "Ocorreu um erro ao interagir com {persona}.",
     "Ocorreu um problema durante a comunicação com {persona}.",
-    null,
+    "Algo deu errado durante a conversa com {persona}.",
     "Algo deu errado ao interagir com {persona}.",
     "Ocorreu um problema durante a conversa com {persona}.",
     "Houve um problema durante a conversa com {persona}.",
-    null
+    "Encontrei um erro ao conversar com {persona}."
   ],
   "persona_select.dialog": [
-    null,
-    null,
-    null
+    "Qual queres ativar",
+    "Qual queres escolher",
+    "Com qual gostarias de interagir"
   ],
   "release_persona.dialog": [
     "{persona} desativado",
@@ -83,7 +83,7 @@
     "Não sei quem {persona} é suposto ser.",
     "Não reconheço {persona}.",
     "Não tenho ideia de quem é {persona}.",
-    null,
+    "Eu nunca ouvi falar de {persona}.",
     "Não estou familiarizado com {persona}.",
     "Não tenho certeza de quem é {persona}.",
     "Não estou familiarizado com {persona}.",
