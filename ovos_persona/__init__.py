@@ -1,12 +1,14 @@
 import json
 import os
-from os.path import join, dirname
+from os.path import join, dirname, expanduser
 from typing import Optional, Dict, List, Union, Iterable
 
 from ovos_config.config import Configuration
 from ovos_config.locations import get_xdg_config_save_path
 from ovos_persona.solvers import QuestionSolversService
 
+from ovos_utils.xdg_utils import xdg_data_home
+from ovos_config.meta import get_xdg_base
 from ovos_bus_client.client import MessageBusClient
 from ovos_bus_client.message import Message, dig_for_message
 from ovos_bus_client.session import SessionManager
@@ -16,6 +18,7 @@ from ovos_plugin_manager.templates.pipeline import PipelineStageConfidenceMatche
 from ovos_utils.fakebus import FakeBus
 from ovos_utils.lang import standardize_lang_tag, get_language_dir
 from ovos_utils.log import LOG
+from ovos_utils.parse import match_one
 from ovos_workshop.app import OVOSAbstractApplication
 
 try:
@@ -25,8 +28,10 @@ except ImportError:
         return {}
 try:
     from ovos_padatious import IntentContainer
+    IS_PADATIOUS = True
 except ImportError:
     from padacioso import IntentContainer
+    IS_PADATIOUS = False
 
     LOG.warning("'padatious' not installed, using 'padacioso' for Persona intents")
 
@@ -105,17 +110,26 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         return intents
 
     def load_intent_files(self):
+        intent_cache = expanduser(self.config.get('intent_cache') or
+                                  f"{xdg_data_home()}/{get_xdg_base()}/intent_cache")
         intent_files = self.load_resource_files()
         for lang, intent_data in intent_files.items():
             lang = standardize_lang_tag(lang)
-            self.intent_matchers[lang] = IntentContainer()
+            self.intent_matchers[lang] = IntentContainer(cache_dir=f"{intent_cache}/{lang}") \
+                if IS_PADATIOUS else IntentContainer()
             for intent_name in ["ask.intent", "summon.intent"]:
                 samples = intent_data.get(intent_name)
                 samples = flatten_list([expand_template(s) for s in samples])
                 if samples:
                     LOG.debug(f"registering Persona intent: {intent_name}")
-                    self.intent_matchers[lang].add_intent(
-                        intent_name.replace(".intent", ""), samples)
+                    try:
+                        self.intent_matchers[lang].add_intent(intent_name, samples)
+                    except:
+                        LOG.error(f"Failed to train persona intent ({lang}): {intent_name}")
+
+            if IS_PADATIOUS:
+                self.intent_matchers[lang].instantiate_from_disk()
+                self.intent_matchers[lang].train()
 
     @property
     def default_persona(self) -> Optional[str]:
@@ -123,6 +137,12 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         if not persona and self.personas:
             persona = list(self.personas.keys())[0]
         return persona
+
+    def get_persona(self, persona: str):
+        if not persona:
+            return self.active_persona or self.default_persona
+        match, score = match_one(persona.lower(), list(self.personas))
+        return match if score >= 0.75 else None
 
     def load_personas(self, personas_path: Optional[str] = None):
         personas_path = personas_path or get_xdg_config_save_path("ovos_persona")
@@ -155,6 +175,7 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         self.personas[name] = Persona(name, persona)
 
     def deregister_persona(self, name):
+        name = self.get_persona(name) or ""
         if name in self.personas:
             self.personas.pop(name)
 
@@ -164,7 +185,7 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
                     lang: Optional[str] = None,
                     message: Message = None,
                     stream: bool = True) -> Iterable[str]:
-        persona = persona or self.active_persona or self.default_persona
+        persona = self.get_persona(persona) or self.active_persona or self.default_persona
         if persona not in self.personas:
             LOG.error(f"unknown persona, choose one of {self.personas.keys()}")
             return None
@@ -237,17 +258,21 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         else:
             match = self.intent_matchers[lang].calc_intent(utterances[0].lower())
 
-        name = match.name if hasattr(match, "name") else match.get("name")
+        name = match.name if IS_PADATIOUS else match.get("name")
+        conf = match.conf if IS_PADATIOUS else match.get("conf", 0)
+        if conf < 0.7:
+            LOG.debug(f"Ignoring low confidence persona intent: {match}")
+            name = None
         if name:
             LOG.info(f"Persona intent exact match: {match}")
-            entities = match.matches if hasattr(match, "matches") else match.get("entities")
+            entities = match.matches if IS_PADATIOUS else match.get("entities")
             persona = entities.get("persona")
-            if name == "summon":
+            if name == "summon.intent":
                 return IntentHandlerMatch(match_type='persona:summon',
                                           match_data={"persona": persona},
                                           skill_id="persona.openvoiceos",
                                           utterance=utterances[0])
-            elif name == "ask":
+            elif name == "ask.intent":
                 utterance = match["entities"].pop("query")
                 return IntentHandlerMatch(match_type='persona:query',
                                           match_data={"utterance": utterance,
@@ -303,7 +328,8 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         utt = message.data["utterance"]
         lang = message.data["lang"]
         persona = message.data["persona"]
-        LOG.debug(f"Persona query ({lang}): {persona} -\"{utt}\"")
+        persona=self.get_persona(persona)
+        LOG.debug(f"Persona query ({lang}): {persona} - \"{utt}\"")
         if persona not in self.personas:
             self.speak_dialog("unknown_persona", {"persona": persona})
             return
@@ -317,6 +343,7 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
 
     def handle_persona_summon(self, message):
         persona = message.data["persona"]
+        persona=self.get_persona(persona)
         LOG.info(f"Persona enabled: {persona}")
         if persona not in self.personas:
             self.speak_dialog("unknown_persona", {"persona": persona})
@@ -339,7 +366,7 @@ if __name__ == "__main__":
     print(b.match_high(["enable remote llama"]))
 
     print(b.match_low(["what is the speed of light"]))
-    for ans in b.chatbox_ask("what is the speed of light"):
+    for ans in b.chatbox_ask("what the fuck are you"):
         print(ans)
     # The speed of light has a value of about 300 million meters per second
     # The telephone was invented by Alexander Graham Bell
