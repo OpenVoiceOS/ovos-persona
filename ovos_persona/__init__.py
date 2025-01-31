@@ -74,6 +74,7 @@ class Persona:
 
 
 class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
+    INTENTS = ["ask.intent", "summon.intent", "list_personas.intent"]
 
     def __init__(self, bus: Optional[Union[MessageBusClient, FakeBus]] = None,
                  config: Optional[Dict] = None):
@@ -109,7 +110,7 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
             if locale_folder is not None:
                 for f in os.listdir(locale_folder):
                     path = join(locale_folder, f)
-                    if f in ["ask.intent", "summon.intent"]:
+                    if f in cls.INTENTS:
                         with open(path) as intent:
                             samples = intent.read().split("\n")
                             for idx, s in enumerate(samples):
@@ -125,8 +126,8 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
             lang = standardize_lang_tag(lang)
             self.intent_matchers[lang] = IntentContainer(cache_dir=f"{intent_cache}/{lang}") \
                 if IS_PADATIOUS else IntentContainer()
-            for intent_name in ["ask.intent", "summon.intent", "list_personas.intent"]:
-                samples = intent_data.get(intent_name)
+            for intent_name in self.INTENTS:
+                samples = intent_data.get(intent_name) or []
                 samples = flatten_list([expand_template(s) for s in samples])
                 if samples:
                     LOG.debug(f"registering Persona intent: {intent_name}")
