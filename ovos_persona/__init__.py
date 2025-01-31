@@ -45,19 +45,19 @@ class Persona:
         blacklist = blacklist or []
         self.name = name
         self.config = config
-        persona = config.get("solvers") or ["ovos-solver-failure-plugin"]
-        plugs = {}
+        solver_order = config.get("solvers") or ["ovos-solver-failure-plugin"]
+        plugs = {p: {"enabled": True} for p in solver_order}
         for plug_name, plug in find_question_solver_plugins().items():
-            if plug_name not in persona or plug_name in blacklist:
+            if plug_name not in solver_order or plug_name in blacklist:
                 plugs[plug_name] = {"enabled": False}
             else:
                 plugs[plug_name] = config.get(plug_name) or {"enabled": True}
         for plug_name, plug in find_chat_solver_plugins().items():
-            if plug_name not in persona or plug_name in blacklist:
+            if plug_name not in solver_order or plug_name in blacklist:
                 plugs[plug_name] = {"enabled": False}
             else:
                 plugs[plug_name] = config.get(plug_name) or {"enabled": True}
-        self.solvers = QuestionSolversService(config=plugs)
+        self.solvers = QuestionSolversService(config=plugs, sort_order=solver_order)
 
     def __repr__(self):
         return f"Persona({self.name}:{list(self.solvers.loaded_modules.keys())})"
@@ -169,7 +169,10 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
             with open(f"{personas_path}/{p}") as f:
                 persona = json.load(f)
             LOG.info(f"Found persona (user defined): {name}")
-            self.personas[name] = Persona(name, persona)
+            try:
+                self.personas[name] = Persona(name, persona)
+            except Exception as e:
+                LOG.error(f"Failed to load '{name}': {e}")
 
         # load personas provided by packages
         for name, persona in find_persona_plugins().items():
@@ -179,7 +182,10 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
                 LOG.info(f"Ignoring persona (provided via plugin): {name}")
                 continue
             LOG.info(f"Found persona (provided via plugin): {name}")
-            self.personas[name] = Persona(name, persona)
+            try:
+                self.personas[name] = Persona(name, persona)
+            except Exception as e:
+                LOG.error(f"Failed to load '{name}': {e}")
 
     def register_persona(self, name, persona):
         self.personas[name] = Persona(name, persona)
@@ -428,15 +434,13 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
 
 if __name__ == "__main__":
     LOG.set_level("DEBUG")
-    b = PersonaService(FakeBus())
+    b = PersonaService(FakeBus(), config={"personas_path": "/home/miro/PycharmProjects/HiveMind-rpi-hub/overlays/home/ovos/.config/ovos_persona"})
     print("Personas:", b.personas)
 
     print(b.match_high(["enable remote llama"]))
 
-    print(b.match_low(["what is the speed of light"]))
-
-    b.handle_persona_query(Message("", {"utterance": "tell me about yourself"}))
-    for ans in b.chatbox_ask("what the fuck are you"):
+#    b.handle_persona_query(Message("", {"utterance": "tell me about yourself"}))
+    for ans in b.chatbox_ask("what are you"):
         print(ans)
     # The speed of light has a value of about 300 million meters per second
     # The telephone was invented by Alexander Graham Bell
