@@ -40,6 +40,10 @@ def get_version():
         version += f"a{alpha}"
     return version
 
+with open(os.path.join(BASEDIR, "README.md"), "r") as f:
+    long_description = f.read()
+
+
 
 PLUGIN_ENTRY_POINT = 'ovos-persona-pipeline-plugin=ovos_persona:PersonaService'
 HM_PLUGIN_ENTRY_POINT = 'hivemind-persona-agent-plugin=ovos_persona.hpm:PersonaProtocol'
@@ -47,15 +51,16 @@ HM_PLUGIN_ENTRY_POINT = 'hivemind-persona-agent-plugin=ovos_persona.hpm:PersonaP
 setup(
     name='ovos-persona',
     version=get_version(),
-    description='persona ovos',
+    description='persona pipeline for ovos',
     url='https://github.com/OpenVoiceOS/ovos-persona',
     author='jarbasai',
     author_email='jarbasai@mailfence.com',
-    license='MIT',
+    license="Apache License 2.0",
     packages=['ovos_persona'],
+    include_package_data=True,
     zip_safe=True,
     install_requires=required("requirements.txt"),
-    long_description="ovos persona",
+    long_description=long_description,
     long_description_content_type='text/markdown',
     entry_points={'opm.pipeline': PLUGIN_ENTRY_POINT,
                   'hivemind.agent.protocol': HM_PLUGIN_ENTRY_POINT},
