@@ -15,6 +15,19 @@
         "{persona} is now ready to go.",
         "{persona} is now up and running."
     ],
+    "list_personas.dialog": [
+        "Here are the available personas",
+        "I have the following personas",
+        "The available personas are"
+    ],
+    "no_personas.dialog": [
+        "I couldn’t find any personas at the moment. Please check again later",
+        "It looks like there are no personas currently available",
+        "It seems there are no personas available to interact with right now",
+        "Sorry, I couldn't find any personas right now",
+        "There are no personas available to interact with right now",
+        "Unfortunately, there are no personas at the moment"
+    ],
     "persona_error.dialog": [
         "A glitch occurred while talking to {persona}.",
         "A problem occurred while speaking with {persona}.",
@@ -26,6 +39,11 @@
         "There was a malfunction while conversing with {persona}.",
         "There was an issue during the conversation with {persona}.",
         "We encountered an error while chatting with {persona}."
+    ],
+    "persona_select.dialog": [
+        "Let me know which one you want to activate",
+        "Which one would you like to choose",
+        "Which one would you like to interact with"
     ],
     "release_persona.dialog": [
         "{persona} deactivated",
