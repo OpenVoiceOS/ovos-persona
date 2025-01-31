@@ -1,6 +1,6 @@
-The active persona is {persona}
-You’re currently speaking to {persona}
-Right now, the active persona is {persona}
-The persona in use at the moment is {persona}
 Currently, the active persona is {persona}
 I am using {persona} right now to interact with you
+Right now, the active persona is {persona}
+The active persona is {persona}
+The persona in use at the moment is {persona}
+You’re currently speaking to {persona}
