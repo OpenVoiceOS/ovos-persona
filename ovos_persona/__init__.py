@@ -45,19 +45,19 @@ class Persona:
         blacklist = blacklist or []
         self.name = name
         self.config = config
-        persona = config.get("solvers") or ["ovos-solver-failure-plugin"]
-        plugs = {}
+        solver_order = config.get("solvers") or ["ovos-solver-failure-plugin"]
+        plugs = {p: {"enabled": True} for p in solver_order}
         for plug_name, plug in find_question_solver_plugins().items():
-            if plug_name not in persona or plug_name in blacklist:
+            if plug_name not in solver_order or plug_name in blacklist:
                 plugs[plug_name] = {"enabled": False}
             else:
                 plugs[plug_name] = config.get(plug_name) or {"enabled": True}
         for plug_name, plug in find_chat_solver_plugins().items():
-            if plug_name not in persona or plug_name in blacklist:
+            if plug_name not in solver_order or plug_name in blacklist:
                 plugs[plug_name] = {"enabled": False}
             else:
                 plugs[plug_name] = config.get(plug_name) or {"enabled": True}
-        self.solvers = QuestionSolversService(config=plugs)
+        self.solvers = QuestionSolversService(config=plugs, sort_order=solver_order)
 
     def __repr__(self):
         return f"Persona({self.name}:{list(self.solvers.loaded_modules.keys())})"
@@ -74,7 +74,7 @@ class Persona:
 
 
 class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
-    INTENTS = ["ask.intent", "summon.intent", "list_personas.intent"]
+    INTENTS = ["ask.intent", "summon.intent", "list_personas.intent", "active_persona.intent"]
 
     def __init__(self, bus: Optional[Union[MessageBusClient, FakeBus]] = None,
                  config: Optional[Dict] = None):
@@ -93,6 +93,7 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         self.add_event('persona:query', self.handle_persona_query)
         self.add_event('persona:summon', self.handle_persona_summon)
         self.add_event('persona:list', self.handle_persona_list)
+        self.add_event('persona:check', self.handle_persona_check)
         self.add_event('persona:release', self.handle_persona_release)
         self.add_event("speak", self.handle_speak)
         self.add_event("recognizer_loop:utterance", self.handle_utterance)
@@ -168,7 +169,10 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
             with open(f"{personas_path}/{p}") as f:
                 persona = json.load(f)
             LOG.info(f"Found persona (user defined): {name}")
-            self.personas[name] = Persona(name, persona)
+            try:
+                self.personas[name] = Persona(name, persona)
+            except Exception as e:
+                LOG.error(f"Failed to load '{name}': {e}")
 
         # load personas provided by packages
         for name, persona in find_persona_plugins().items():
@@ -178,7 +182,10 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
                 LOG.info(f"Ignoring persona (provided via plugin): {name}")
                 continue
             LOG.info(f"Found persona (provided via plugin): {name}")
-            self.personas[name] = Persona(name, persona)
+            try:
+                self.personas[name] = Persona(name, persona)
+            except Exception as e:
+                LOG.error(f"Failed to load '{name}': {e}")
 
     def register_persona(self, name, persona):
         self.personas[name] = Persona(name, persona)
@@ -288,6 +295,11 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
                                           match_data={"lang": lang},
                                           skill_id="persona.openvoiceos",
                                           utterance=utterances[0])
+            elif name == "active_persona.intent":
+                return IntentHandlerMatch(match_type='persona:check',
+                                          match_data={"lang": lang},
+                                          skill_id="persona.openvoiceos",
+                                          utterance=utterances[0])
             elif name == "ask.intent":
                 utterance = match["entities"].pop("query")
                 return IntentHandlerMatch(match_type='persona:query',
@@ -341,6 +353,12 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         if sess.session_id in self.sessions:
             self.sessions[sess.session_id].append(("ai", utt))
 
+    def handle_persona_check(self, message: Optional[Message] = None):
+        if self.active_persona:
+            self.speak_dialog("active_persona", {"persona": self.active_persona})
+        else:
+            self.speak_dialog("no_active_persona")
+
     def handle_persona_list(self, message: Optional[Message] = None):
         if not self.personas:
             self.speak_dialog("no_personas")
@@ -351,6 +369,10 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
             self.speak(persona)
 
     def handle_persona_query(self, message):
+        if not self.personas:
+            self.speak_dialog("no_personas")
+            return
+
         sess = SessionManager.get(message)
         utt = message.data["utterance"]
         lang = message.data.get("lang") or sess.lang
@@ -378,6 +400,10 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         self._active_sessions[sess.session_id] = False
 
     def handle_persona_summon(self, message):
+        if not self.personas:
+            self.speak_dialog("no_personas")
+            return
+
         persona = message.data["persona"]
         persona=self.get_persona(persona)
         LOG.info(f"Persona enabled: {persona}")
@@ -389,6 +415,12 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
             self.speak_dialog("activated_persona", {"persona": persona})
 
     def handle_persona_release(self, message):
+        # NOTE: below never happens, this intent only matches if self.active_persona
+        # if for some miracle this handle is called speak dedicated dialog
+        if not self.active_persona:
+            self.speak_dialog("no_active_persona")
+            return
+
         LOG.info(f"Releasing Persona: {self.active_persona}")
         self.speak_dialog("release_persona", {"persona": self.active_persona})
         self.active_persona = None
@@ -402,15 +434,13 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
 
 if __name__ == "__main__":
     LOG.set_level("DEBUG")
-    b = PersonaService(FakeBus())
+    b = PersonaService(FakeBus(), config={"personas_path": "/home/miro/PycharmProjects/HiveMind-rpi-hub/overlays/home/ovos/.config/ovos_persona"})
     print("Personas:", b.personas)
 
     print(b.match_high(["enable remote llama"]))
 
-    print(b.match_low(["what is the speed of light"]))
-
-    b.handle_persona_query(Message("", {"utterance": "tell me about yourself"}))
-    for ans in b.chatbox_ask("what the fuck are you"):
+#    b.handle_persona_query(Message("", {"utterance": "tell me about yourself"}))
+    for ans in b.chatbox_ask("what are you"):
         print(ans)
     # The speed of light has a value of about 300 million meters per second
     # The telephone was invented by Alexander Graham Bell

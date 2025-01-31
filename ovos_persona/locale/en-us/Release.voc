@@ -1,14 +1,10 @@
-(cease|finish|exit|close|end|quit|abort|terminate|discontinue|disengage|disable|deactivate) (the|) (interaction|conversation|discussion)
-(finish|close|cease|exit|end|quit|abort|terminate|discontinue|disengage|disable|deactivate) (chatbot|persona|AI|LLM) activity
-(release|remove|halt) (chatbot|persona|AI|LLM)
-(turn|switch) off (chatbot|persona|AI|LLM)
+(finish|close|cease|exit|end|quit|abort|terminate|discontinue|disengage|disable|deactivate) [the] (chatbot|persona|AI|LLM|Large Language Model|interaction|conversation|discussion)
+(release|remove|halt|stop|terminate) (chatbot|persona|AI|LLM|Large Language Model|)
+(turn|switch) off (chatbot|persona|AI|LLM|Large Language Model|)
 enough talking
 go (away|back to your grave|dormant|into hibernation)
 halt (the|) (interaction|conversation|discussion)
 leave me alone
 put (chatbot|persona|AI|LLM) to sleep
-retreat
-return to the abyss
 shut (up|your mouth)
 stop (chatting|communicating|responding|talking)
-terminate

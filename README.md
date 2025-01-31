@@ -28,15 +28,21 @@ The Persona Service supports a set of core voice intents to manage persona inter
 These intents provide **out-of-the-box functionality** for controlling the Persona Service, ensuring smooth integration with the conversational pipeline and enhancing user experience.
 
 ### **List Personas**
-Allows users to query available personas
 
 **Example Utterances**:
 - "What personas are available?"
 - "Can you list the personas?"
 - "What personas can I use?"
 
+### **Check Active Persona**
+
+**Example Utterances**:
+
+- "Who am I talking to right now?"
+- "Is there an active persona?"
+- "Which persona is in use?"
+
 ### **Activate a Persona**
-Allows users to summon a persona for interactive conversation.  
 
 **Example Utterances**:
 - "Connect me to {persona}"  
@@ -47,6 +53,7 @@ Allows users to summon a persona for interactive conversation.
 
 
 ### **Single-Shot Persona Questions**
+
 Enables users to query a persona directly without entering an interactive session.  
 
 **Example Utterances**:
@@ -57,11 +64,10 @@ Enables users to query a persona directly without entering an interactive sessio
 
 
 ### **Stop Conversation**
-Allows users to terminate the current conversation with a persona.  
 
 **Example Utterances**:
 - "Stop the interaction"  
-- "Terminate the persona activity"  
+- "Terminate persona"  
 - "Deactivate the chatbot"  
 - "Go dormant"  
 - "Enough talking"  
@@ -90,33 +96,80 @@ This project includes a native [hivemind-plugin-manager](https://github.com/Jarb
 
 ## 🛠️ Pipeline Usage
 
-To integrate the Persona Pipeline, include the plugins in your `mycroft.conf` configuration:  
+When a persona is active you have 2 options:
+- send all utterances to the persona and ignore all skills
+- let high confidence skills match before using persona
 
-- `"ovos-persona-pipeline-plugin-high"` → just before `"fallback_high"`.  
-- `"ovos-persona-pipeline-plugin-low"` → just before `"fallback_low"`.  
+Where to place `"ovos-persona-pipeline-plugin-high"` in your pipeline depends on the desired outcome
+
+Additionally, you have `"ovos-persona-pipeline-plugin-low"` to handle utterances even when a persona isnt explicitly active
+
+##### Option 1: send all utterances to active persona
+
+In this scenario the persona will most likely fail to perform actions like playing music, telling the time and setting alarms. 
+
+You will need to explicitly deactivate a persona to use that functionality, the persona has **full control** over the user utterances
+
+Add the persona pipeline to your mycroft.conf **before** the `_high` pipeline matchers
 
 ```json
 {
   "intents": {
-    "pipeline": [
-      "...",
-      "adapt_high",
-      "...",
-      "ovos-persona-pipeline-plugin-high",
-      "...",
-      "padatious_medium",
-      "...",
-      "ovos-persona-pipeline-plugin-low",
-      "fallback_low"
-    ],
-    "ovos-persona-pipeline-plugin": {
-      "personas_path": "/path/to/personas",
-      "persona_blacklist": ["persona_to_exclude"],
-      "default_persona": "default_persona"
-    }
+      "persona": {"handle_fallback":  true},
+      "pipeline": [
+          "ovos-persona-pipeline-plugin-high",
+          "stop_high",
+          "converse",
+          "ocp_high",
+          "padatious_high",
+          "adapt_high",
+          "ocp_medium",
+          "fallback_high",
+          "stop_medium",
+          "adapt_medium",
+          "padatious_medium",
+          "adapt_low",
+          "common_qa",
+          "fallback_medium",
+          "ovos-persona-pipeline-plugin-low",
+          "fallback_low"
+    ]
   }
 }
 ```
+
+##### Option 2: let high confidence skills match before using persona
+
+With this option you still allow skills to trigger even when a persona is active, not all answers are handled by the persona in this case
+
+Add the persona pipeline to your mycroft.conf **after** the `_high` pipeline matchers
+
+```json
+{
+  "intents": {
+      "persona": {"handle_fallback":  true},
+      "pipeline": [
+          "stop_high",
+          "converse",
+          "ocp_high",
+          "padatious_high",
+          "adapt_high",
+          "ovos-persona-pipeline-plugin-high",
+          "ocp_medium",
+          "fallback_high",
+          "stop_medium",
+          "adapt_medium",
+          "padatious_medium",
+          "adapt_low",
+          "common_qa",
+          "fallback_medium",
+          "ovos-persona-pipeline-plugin-low",
+          "fallback_low"
+    ]
+  }
+}
+```
+
 
 > **ℹ️ Note**: No "medium" plugin exists for this pipeline.  
 

@@ -19,9 +19,10 @@ except ImportError:
 
 
 class QuestionSolversService:
-    def __init__(self, bus=None, config=None):
+    def __init__(self, bus=None, config=None, sort_order=None):
         self.config_core = Configuration()
         self.loaded_modules = {}
+        self.sort_order = sort_order or []
         self.bus = bus or FakeBus()
         self.config = config or {}
         self.load_plugins()
@@ -31,26 +32,27 @@ class QuestionSolversService:
             config = self.config.get(plug_name) or {}
             if not config.get("enabled", True):
                 continue
-            try:
-                LOG.debug(f"loading plugin with cfg: {config}")
-                self.loaded_modules[plug_name] = plug(config=config)
-                LOG.info(f"loaded question solver plugin: {plug_name}")
-            except Exception as e:
-                LOG.exception(f"Failed to load question solver plugin: {plug_name}")
+            LOG.debug(f"loading plugin with cfg: {config}")
+            self.loaded_modules[plug_name] = plug(config=config)
+            LOG.info(f"loaded question solver plugin: {plug_name}")
 
         for plug_name, plug in find_chat_solver_plugins().items():
             config = self.config.get(plug_name) or {}
             if not config.get("enabled", True):
                 continue
-            try:
-                LOG.debug(f"loading chat plugin with cfg: {config}")
-                self.loaded_modules[plug_name] = plug(config=config)
-                LOG.info(f"loaded chat solver plugin: {plug_name}")
-            except Exception as e:
-                LOG.exception(f"Failed to load chat solver plugin: {plug_name}")
+            LOG.debug(f"loading chat plugin with cfg: {config}")
+            self.loaded_modules[plug_name] = plug(config=config)
+            LOG.info(f"loaded chat solver plugin: {plug_name}")
+
+        plugs = [p for p, c in self.config.items() if c.get("enabled", True)]
+        for p in plugs:
+            if p not in self.loaded_modules:
+                raise ImportError(f"'{p}' not installed")
 
     @property
     def modules(self):
+        if self.sort_order:
+            return [self.loaded_modules[m] for m in self.sort_order]
         return sorted(self.loaded_modules.values(),
                       key=lambda k: k.priority)
 
@@ -80,13 +82,20 @@ class QuestionSolversService:
     def stream_completion(self, messages: List[Dict[str, str]],
                           lang: Optional[str] = None,
                           units: Optional[str] = None) -> Iterable[str]:
+        answered = False
         for module in self.modules:
             try:
                 if isinstance(module, ChatMessageSolver):
-                    yield from module.stream_chat_utterances(messages=messages, lang=lang, units=units)
+                    for ans in module.stream_chat_utterances(messages=messages, lang=lang, units=units):
+                        answered = True
+                        yield ans
                 else:
                     LOG.debug(f"{module} does not supported chat history!")
                     query = messages[-1]["content"]
-                    yield from module.stream_utterances(query, lang=lang, units=units)
+                    for ans in module.stream_utterances(query, lang=lang, units=units):
+                        answered = True
+                        yield ans
             except Exception as e:
                 LOG.error(e)
+            if answered:
+                break
