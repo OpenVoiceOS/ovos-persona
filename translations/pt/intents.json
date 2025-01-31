@@ -4,7 +4,7 @@
     "(iniciar|iniciar|começar|entrar|estabelecer) (a|) (bate-papo|discussão|conversa|diálogo) com (o|a|) {persona}",
     "(deixa-me|deixe-me) (conversar|interagir) com (o|a|) {persona}",
     "(conecta-me|quero falar) com (o|a|) {persona}",
-    "(iniciar|começar (bate-papo|conversa|interação|comunicação|diálogo) com (o|a|) {persona}"
+    "(iniciar|começar) (bate-papo|conversa|interação|comunicação|diálogo) com (o|a|) {persona}"
   ],
   "ask.intent": [
     "pergunte a {persona} sobre {utterance}",
@@ -13,7 +13,7 @@
     "pergunte a {persona} o que (tem a dizer|pensa) sobre {utterance}",
     "o que {persona} (pensa|diz) sobre {utterance}",
     "(consulta|sonda|solicita|busca|questiona|pergunta|interroga) {persona} qual a opinião (sobre|quanto a|a respeito de) {utterance}",
-    "(consulta|sonda|solicita|busca|questiona|pergunta|interroga) {persona} {persona} (a respeito de|sobre) {utterance}",
+    "(consulta|sonda|solicita|busca|questiona|pergunta|interroga) {persona} (a respeito de|sobre) {utterance}",
     "(consulta|sonda|solicita|busca|questiona|pergunta|interroga) {persona} (a perspectiva|a opinião|os pensamentos|o ponto de vista|feedback|posição|visão) (de|sobre) {utterance}"
   ]
 }

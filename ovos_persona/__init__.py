@@ -1,29 +1,43 @@
 import json
 import os
-from os.path import join, dirname
+from os.path import join, dirname, expanduser
 from typing import Optional, Dict, List, Union, Iterable
 
+from ovos_config.config import Configuration
+from ovos_config.locations import get_xdg_config_save_path
+from ovos_persona.solvers import QuestionSolversService
+
+from ovos_bus_client import Session
+from ovos_utils.xdg_utils import xdg_data_home
+from ovos_config.meta import get_xdg_base
 from ovos_bus_client.client import MessageBusClient
 from ovos_bus_client.message import Message, dig_for_message
 from ovos_bus_client.session import SessionManager
-from ovos_config.config import Configuration
-from ovos_config.locations import get_xdg_config_save_path
 from ovos_plugin_manager.persona import find_persona_plugins
 from ovos_plugin_manager.solvers import find_question_solver_plugins
 from ovos_plugin_manager.templates.pipeline import PipelineStageConfidenceMatcher, IntentHandlerMatch
 from ovos_utils.fakebus import FakeBus
 from ovos_utils.lang import standardize_lang_tag, get_language_dir
 from ovos_utils.log import LOG
+from ovos_utils.parse import match_one
 from ovos_workshop.app import OVOSAbstractApplication
-from padacioso import IntentContainer
-
-from ovos_persona.solvers import QuestionSolversService
 
 try:
     from ovos_plugin_manager.solvers import find_chat_solver_plugins
 except ImportError:
     def find_chat_solver_plugins():
         return {}
+try:
+    from ovos_padatious import IntentContainer
+    IS_PADATIOUS = True
+except ImportError:
+    from padacioso import IntentContainer
+    IS_PADATIOUS = False
+
+    LOG.warning("'padatious' not installed, using 'padacioso' for Persona intents")
+
+from ovos_utils import flatten_list
+from ovos_utils.bracket_expansion import expand_template
 
 
 class Persona:
@@ -48,22 +62,27 @@ class Persona:
     def __repr__(self):
         return f"Persona({self.name}:{list(self.solvers.loaded_modules.keys())})"
 
-    def chat(self, messages: list = None, lang: str = None) -> str:
-        return self.solvers.chat_completion(messages, lang)
+    def chat(self, messages: List[Dict[str, str]],
+                          lang: Optional[str] = None,
+                          units: Optional[str] = None) -> str:
+        return self.solvers.chat_completion(messages, lang, units)
 
-    def stream(self, messages: list = None, lang: str = None) -> Iterable[str]:
-        return self.solvers.stream_completion(messages, lang)
+    def stream(self, messages: List[Dict[str, str]],
+                          lang: Optional[str] = None,
+                          units: Optional[str] = None) -> Iterable[str]:
+        return self.solvers.stream_completion(messages, lang, units)
 
 
 class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
 
     def __init__(self, bus: Optional[Union[MessageBusClient, FakeBus]] = None,
                  config: Optional[Dict] = None):
-        config = config or Configuration().get("persona", {})
+        bus = bus or FakeBus()
+        config = config or Configuration().get("intents", {}).get("persona", {})
         OVOSAbstractApplication.__init__(
-            self, bus=bus or FakeBus(), skill_id="persona.openvoiceos",
+            self, bus=bus, skill_id="persona.openvoiceos",
             resources_dir=f"{dirname(__file__)}")
-        PipelineStageConfidenceMatcher.__init__(self, bus, config)
+        PipelineStageConfidenceMatcher.__init__(self, bus=bus, config=config)
         self.sessions = {}
         self.personas = {}
         self.intent_matchers = {}
@@ -75,6 +94,8 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         self.add_event('persona:release', self.handle_persona_release)
         self.add_event("speak", self.handle_speak)
         self.add_event("recognizer_loop:utterance", self.handle_utterance)
+        self.load_intent_files()
+        self._active_sessions = {}
 
     @classmethod
     def load_resource_files(cls):
@@ -96,16 +117,26 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         return intents
 
     def load_intent_files(self):
+        intent_cache = expanduser(self.config.get('intent_cache') or
+                                  f"{xdg_data_home()}/{get_xdg_base()}/intent_cache")
         intent_files = self.load_resource_files()
         for lang, intent_data in intent_files.items():
             lang = standardize_lang_tag(lang)
-            self.intent_matchers[lang] = IntentContainer()
+            self.intent_matchers[lang] = IntentContainer(cache_dir=f"{intent_cache}/{lang}") \
+                if IS_PADATIOUS else IntentContainer()
             for intent_name in ["ask.intent", "summon.intent"]:
                 samples = intent_data.get(intent_name)
+                samples = flatten_list([expand_template(s) for s in samples])
                 if samples:
-                    LOG.debug(f"registering OCP intent: {intent_name}")
-                    self.intent_matchers[lang].add_intent(
-                        intent_name.replace(".intent", ""), samples)
+                    LOG.debug(f"registering Persona intent: {intent_name}")
+                    try:
+                        self.intent_matchers[lang].add_intent(intent_name, samples)
+                    except:
+                        LOG.error(f"Failed to train persona intent ({lang}): {intent_name}")
+
+            if IS_PADATIOUS:
+                self.intent_matchers[lang].instantiate_from_disk()
+                self.intent_matchers[lang].train()
 
     @property
     def default_persona(self) -> Optional[str]:
@@ -113,6 +144,12 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         if not persona and self.personas:
             persona = list(self.personas.keys())[0]
         return persona
+
+    def get_persona(self, persona: str):
+        if not persona:
+            return self.active_persona or self.default_persona
+        match, score = match_one(persona.title(), list(self.personas))
+        return match if score >= 0.75 else None
 
     def load_personas(self, personas_path: Optional[str] = None):
         personas_path = personas_path or get_xdg_config_save_path("ovos_persona")
@@ -145,6 +182,7 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         self.personas[name] = Persona(name, persona)
 
     def deregister_persona(self, name):
+        name = self.get_persona(name) or ""
         if name in self.personas:
             self.personas.pop(name)
 
@@ -154,7 +192,7 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
                     lang: Optional[str] = None,
                     message: Message = None,
                     stream: bool = True) -> Iterable[str]:
-        persona = persona or self.active_persona or self.default_persona
+        persona = self.get_persona(persona) or self.active_persona or self.default_persona
         if persona not in self.personas:
             LOG.error(f"unknown persona, choose one of {self.personas.keys()}")
             return None
@@ -165,10 +203,12 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
                 messages.append({"role": "user", "content": q})
                 messages.append({"role": "assistant", "content": a})
         messages.append({"role": "user", "content": prompt})
+        sess = SessionManager.get(message)
+        lang = lang or sess.lang
         if stream:
-            yield from self.personas[persona].stream(messages, lang)
+            yield from self.personas[persona].stream(messages, lang, sess.system_unit)
         else:
-            ans = self.personas[persona].chat(messages, lang)
+            ans = self.personas[persona].chat(messages, lang, sess.system_unit)
             if ans:
                 yield ans
 
@@ -213,23 +253,35 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         Returns:
             IntentMatch if handled otherwise None.
         """
+        lang = lang or self.lang
+        lang = standardize_lang_tag(lang)
+
         if self.active_persona and self.voc_match(utterances[0], "Release", lang):
             return IntentHandlerMatch(match_type='persona:release',
                                       match_data={"persona": self.active_persona},
                                       skill_id="persona.openvoiceos",
                                       utterance=utterances[0])
 
-        match = self.intent_matchers[lang].calc_intent(utterances[0].lower())
+        if lang not in self.intent_matchers:
+            match = {}
+        else:
+            match = self.intent_matchers[lang].calc_intent(utterances[0].lower())
 
-        if match["name"]:
+        name = match.name if IS_PADATIOUS else match.get("name")
+        conf = match.conf if IS_PADATIOUS else match.get("conf", 0)
+        if conf < 0.7:
+            LOG.debug(f"Ignoring low confidence persona intent: {match}")
+            name = None
+        if name:
             LOG.info(f"Persona intent exact match: {match}")
-            persona = match["entities"].pop("persona")
-            if match["name"] == "summon":
+            entities = match.matches if IS_PADATIOUS else match.get("entities")
+            persona = entities.get("persona")
+            if name == "summon.intent":
                 return IntentHandlerMatch(match_type='persona:summon',
                                           match_data={"persona": persona},
                                           skill_id="persona.openvoiceos",
                                           utterance=utterances[0])
-            elif match["name"] == "ask":
+            elif name == "ask.intent":
                 utterance = match["entities"].pop("query")
                 return IntentHandlerMatch(match_type='persona:query',
                                           match_data={"utterance": utterance,
@@ -282,41 +334,65 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
             self.sessions[sess.session_id].append(("ai", utt))
 
     def handle_persona_query(self, message):
+        sess = SessionManager.get(message)
         utt = message.data["utterance"]
-        lang = message.data["lang"]
-        persona = message.data["persona"]
-
+        lang = message.data.get("lang") or sess.lang
+        persona = message.data.get("persona", self.active_persona or self.default_persona)
+        persona = self.get_persona(persona)
+        LOG.debug(f"Persona query ({lang}): {persona} - \"{utt}\"")
         if persona not in self.personas:
             self.speak_dialog("unknown_persona", {"persona": persona})
             return
 
         handled = False
-        for ans in self.chatbox_ask(utt, lang=lang, persona=persona):
+
+        self._active_sessions[sess.session_id] = True
+        for ans in self.chatbox_ask(utt, lang=lang,
+                                    persona=persona,
+                                    message=message):
+            if not self._active_sessions[sess.session_id]: # stopped
+                LOG.debug(f"Persona stopped: {persona}")
+                return
             self.speak(ans)
             handled = True
         if not handled:
-            self.speak_dialog("persona_error")
+            self.speak_dialog("persona_error", {"persona": persona})
+        self._active_sessions[sess.session_id] = False
 
     def handle_persona_summon(self, message):
         persona = message.data["persona"]
+        persona=self.get_persona(persona)
+        LOG.info(f"Persona enabled: {persona}")
         if persona not in self.personas:
             self.speak_dialog("unknown_persona", {"persona": persona})
         else:
             self.active_persona = persona
             LOG.info(f"Summoned Persona: {self.active_persona}")
+            self.speak_dialog("activated_persona", {"persona": persona})
 
     def handle_persona_release(self, message):
         LOG.info(f"Releasing Persona: {self.active_persona}")
         self.speak_dialog("release_persona", {"persona": self.active_persona})
         self.active_persona = None
 
+    def stop_session(self, session: Session):
+        if self._active_sessions.get(session.session_id):
+            self._active_sessions[session.session_id] = False
+            return True
+        return False
+
 
 if __name__ == "__main__":
+    LOG.set_level("DEBUG")
     b = PersonaService(FakeBus())
-    print(b.personas)
+    print("Personas:", b.personas)
+
+    print(b.match_high(["enable remote llama"]))
 
     print(b.match_low(["what is the speed of light"]))
-    for ans in b.chatbox_ask("what is the speed of light"):
+
+    b.handle_persona_query(Message("", {"utterance": "tell me about yourself"}))
+    for ans in b.chatbox_ask("what the fuck are you"):
         print(ans)
     # The speed of light has a value of about 300 million meters per second
     # The telephone was invented by Alexander Graham Bell
