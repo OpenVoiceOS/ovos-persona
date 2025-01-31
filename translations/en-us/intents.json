@@ -15,5 +15,12 @@
         "(query|probe|request|seek|question|ask|inquire|interrogate) {persona} for their views on {utterance}",
         "(query|probe|request|seek|question|ask|inquire|interrogate|pose a question to) {persona} (regarding|about) {utterance}",
         "(query|probe|request|seek|question|ask|inquire|get) {persona} (perspective|opinion|thoughts|viewpoint|interpretation|feedback|stance|view) (of|on) {utterance}"
+    ],
+    "list_personas.intent": [
+        "Give me a list of [available] (personas|personalities|LLM|LLMs|Large Language Models)",
+        "Tell me [about] the available (personas|personalities|LLM|LLMs|Large Language Models)",
+        "What (personas|personalities|LLM|LLMs|Large Language Models) (can I use|are available)",
+        "Who are the [available] (personas|personalities|LLM|LLMs|Large Language Models)",
+        "[Can you] List [available] (personas|personalities|LLM|LLMs|Large Language Models)"
     ]
 }
