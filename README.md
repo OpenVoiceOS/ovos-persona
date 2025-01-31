@@ -27,7 +27,15 @@ The Persona Service supports a set of core voice intents to manage persona inter
 
 These intents provide **out-of-the-box functionality** for controlling the Persona Service, ensuring smooth integration with the conversational pipeline and enhancing user experience.
 
-### **1. Activate a Persona**
+### **List Personas**
+Allows users to query available personas
+
+**Example Utterances**:
+- "What personas are available?"
+- "Can you list the personas?"
+- "What personas can I use?"
+
+### **Activate a Persona**
 Allows users to summon a persona for interactive conversation.  
 
 **Example Utterances**:
@@ -38,7 +46,7 @@ Allows users to summon a persona for interactive conversation.
 - "Let me chat with {persona}"  
 
 
-### **2. Single-Shot Persona Questions**
+### **Single-Shot Persona Questions**
 Enables users to query a persona directly without entering an interactive session.  
 
 **Example Utterances**:
@@ -48,7 +56,7 @@ Enables users to query a persona directly without entering an interactive sessio
 - "Ask {persona} for their perspective on {utterance}"  
 
 
-### **3. Stop Conversation**
+### **Stop Conversation**
 Allows users to terminate the current conversation with a persona.  
 
 **Example Utterances**:

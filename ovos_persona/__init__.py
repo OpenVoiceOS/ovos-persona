@@ -341,6 +341,10 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
             self.sessions[sess.session_id].append(("ai", utt))
 
     def handle_persona_list(self, message: Optional[Message] = None):
+        if not self.personas:
+            self.speak_dialog("no_personas")
+            return
+
         self.speak_dialog("list_personas")
         for persona in self.personas:
             self.speak(persona)
