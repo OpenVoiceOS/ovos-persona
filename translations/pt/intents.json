@@ -8,7 +8,7 @@
     "Qual (persona|personalidade) está em uso",
     "Qual (persona|personalidade) está a falar",
     "Com quem estou a falar?",
-    null,
+    "Quem está atualmente ativado",
     "Quem é a (persona|personalidade) ativa"
   ],
   "summon.intent": [
