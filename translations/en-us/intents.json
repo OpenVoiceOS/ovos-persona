@@ -1,32 +1,25 @@
 {
     "active_persona.intent": [
-        "Am I speaking to a persona",
-        "Is there an active persona",
-        "Tell me about the active persona",
-        "What persona is active",
-        "Which persona is active right now",
-        "Which persona is in use",
-        "Which persona is talking",
-        "Who am I talking to right now",
-        "Who is currently activated",
-        "Who is the active persona"
-    ],
-    "summon.intent": [
-        "(enable|access|activate|awake|awaken|bring forth|call upon|conjure|summon|invoke|engage) (the|) {persona} (virtual|) (AI|bot|persona|agent|assistant|chatbot|)",
-        "(start|initiate|begin|enter|establish) (a|) (chat|discussion|conversation|dialogue) with {persona}",
-        "let me (chat|talk|interact) (to|with) {persona}",
-        "(connect me|i want to talk) (to|with) {persona}",
-        "(initiate|start|begin|enter|open) (chat|talk|interaction|communication|conversation|dialogue) (to|with) {persona}"
+        "(What|Which) (persona|personality) is (in use|talking|active) (now|right now|)",
+        "(What|Which) (persona|personality) is currently (active|activated)",
+        "(who|What persona) am I talking to (now|right now|currently|)",
+        "(who|What persona) is active",
+        "(who|what|which) is [the] active (persona|personality)",
+        "Am I speaking to a (persona|personality)",
+        "Is there an active (persona|personality)",
+        "Tell me about [the] active (persona|personality)",
+        "Who is currently (active|activated)",
+        "active (persona|personality)"
     ],
     "ask.intent": [
-        "ask {persona} about {utterance}",
-        "ask {persona} for (their|) (insights|analysis|comment|impression|interpretation|perception|reaction|standpoint|take|thoughts|understanding|viewpoint) (on|of) {utterance}",
-        "ask {persona} (about|to share|) their (perspective|opinion) (about|of|on) {utterance}",
-        "ask {persona} what they (have to say|think) about {utterance}",
-        "what does {persona} (think|say) about {utterance}",
+        "(query|probe|request|seek|question|ask|inquire|get) {persona} (perspective|opinion|thoughts|viewpoint|interpretation|feedback|stance|view) (of|on) {utterance}",
         "(query|probe|request|seek|question|ask|inquire|interrogate) {persona} for their views on {utterance}",
         "(query|probe|request|seek|question|ask|inquire|interrogate|pose a question to) {persona} (regarding|about) {utterance}",
-        "(query|probe|request|seek|question|ask|inquire|get) {persona} (perspective|opinion|thoughts|viewpoint|interpretation|feedback|stance|view) (of|on) {utterance}"
+        "ask {persona} (about|to share|) their (perspective|opinion) (about|of|on) {utterance}",
+        "ask {persona} about {utterance}",
+        "ask {persona} for (their|) (insights|analysis|comment|impression|interpretation|perception|reaction|standpoint|take|thoughts|understanding|viewpoint) (on|of) {utterance}",
+        "ask {persona} what they (have to say|think) about {utterance}",
+        "what does {persona} (think|say) about {utterance}"
     ],
     "list_personas.intent": [
         "Give me a list of [available] (personas|personalities|LLM|LLMs|Large Language Models)",
@@ -34,5 +27,12 @@
         "What (personas|personalities|LLM|LLMs|Large Language Models) (can I use|are available)",
         "Who are the [available] (personas|personalities|LLM|LLMs|Large Language Models)",
         "[Can you] List [available] (personas|personalities|LLM|LLMs|Large Language Models)"
+    ],
+    "summon.intent": [
+        "(connect me|i want to talk) (to|with) {persona}",
+        "(enable|access|activate|awake|awaken|bring forth|call upon|conjure|summon|invoke|engage) (the|) {persona} (virtual|) (AI|bot|persona|agent|assistant|chatbot|)",
+        "(initiate|start|begin|enter|open) (chat|talk|interaction|communication|conversation|dialogue) (to|with) {persona}",
+        "(start|initiate|begin|enter|establish) (a|) (chat|discussion|conversation|dialogue) with {persona}",
+        "[let me] (chat|talk|interact) (to|with) {persona}"
     ]
 }
