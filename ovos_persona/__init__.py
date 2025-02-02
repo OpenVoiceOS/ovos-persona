@@ -5,21 +5,23 @@ from typing import Optional, Dict, List, Union, Iterable
 
 from ovos_config.config import Configuration
 from ovos_config.locations import get_xdg_config_save_path
+from ovos_config.meta import get_xdg_base
 from ovos_persona.solvers import QuestionSolversService
 
 from ovos_bus_client import Session
-from ovos_utils.xdg_utils import xdg_data_home
-from ovos_config.meta import get_xdg_base
 from ovos_bus_client.client import MessageBusClient
 from ovos_bus_client.message import Message, dig_for_message
 from ovos_bus_client.session import SessionManager
 from ovos_plugin_manager.persona import find_persona_plugins
 from ovos_plugin_manager.solvers import find_question_solver_plugins
 from ovos_plugin_manager.templates.pipeline import PipelineStageConfidenceMatcher, IntentHandlerMatch
+from ovos_utils.bracket_expansion import expand_template
 from ovos_utils.fakebus import FakeBus
 from ovos_utils.lang import standardize_lang_tag, get_language_dir
+from ovos_utils.list_utils import flatten_list
 from ovos_utils.log import LOG
 from ovos_utils.parse import match_one, MatchStrategy
+from ovos_utils.xdg_utils import xdg_data_home
 from ovos_workshop.app import OVOSAbstractApplication
 
 try:
@@ -33,11 +35,8 @@ try:
 except ImportError:
     from padacioso import IntentContainer
     IS_PADATIOUS = False
-
     LOG.warning("'padatious' not installed, using 'padacioso' for Persona intents")
 
-from ovos_utils import flatten_list
-from ovos_utils.bracket_expansion import expand_template
 
 
 class Persona:
@@ -80,9 +79,8 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
                  config: Optional[Dict] = None):
         bus = bus or FakeBus()
         config = config or Configuration().get("intents", {}).get("persona", {})
-        OVOSAbstractApplication.__init__(
-            self, bus=bus, skill_id="persona.openvoiceos",
-            resources_dir=f"{dirname(__file__)}")
+        OVOSAbstractApplication.__init__(self, bus=bus, skill_id="persona.openvoiceos",
+                                         resources_dir=f"{dirname(__file__)}")
         PipelineStageConfidenceMatcher.__init__(self, bus=bus, config=config)
         self.sessions = {}
         self.personas = {}
@@ -210,6 +208,8 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
             LOG.error(f"unknown persona, choose one of {self.personas.keys()}")
             return None
         messages = []
+        # TODO - history per persona , not only per session
+        # dont let context leak between personas
         message = message or dig_for_message()
         if message:
             for q, a in self._build_msg_history(message):
@@ -399,8 +399,9 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
             if not self._active_sessions[sess.session_id]: # stopped
                 LOG.debug(f"Persona stopped: {persona}")
                 return
-            self.speak(ans)
-            handled = True
+            if ans:  # might be None
+                self.speak(ans)
+                handled = True
         if not handled:
             self.speak_dialog("persona_error", {"persona": persona})
         self._active_sessions[sess.session_id] = False

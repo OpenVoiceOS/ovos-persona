@@ -1,10 +1,10 @@
-Am I speaking to a persona
-Is there an active persona
-Tell me about the active persona
-What persona is active
-Which persona is active right now
-Which persona is in use
-Which persona is talking
-Who am I talking to right now
-Who is currently activated
-Who is the active persona
+Am I speaking to a (persona|personality)
+Is there an active (persona|personality)
+Tell me about [the] active (persona|personality)
+(who|What persona) is active
+(What|Which) (persona|personality) is (in use|talking|active) (now|right now|)
+(who|What persona) am I talking to (now|right now|currently|)
+(What|Which) (persona|personality) is currently (active|activated)
+Who is currently (active|activated)
+(who|what|which) is [the] active (persona|personality)
+active (persona|personality)
