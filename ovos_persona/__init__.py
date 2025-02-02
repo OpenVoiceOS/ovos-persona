@@ -282,7 +282,7 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
 
         name = match.name if IS_PADATIOUS else match.get("name")
         conf = match.conf if IS_PADATIOUS else match.get("conf", 0)
-        if conf < 0.7:
+        if conf < self.config.get("min_intent_confidence", 0.6):
             LOG.debug(f"Ignoring low confidence persona intent: {match}")
             name = None
         if name:
