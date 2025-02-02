@@ -1,32 +1,25 @@
 {
   "active_persona.intent": [
-    "Estou falando com uma (persona|personalidade)",
-    "Existe uma (persona|personalidade) ativa",
-    "Qual é a (persona|personalidade) ativa",
-    "Que (persona|personalidade) está ativa",
-    "Que (persona|personalidade) (está a ser usada|estás a usar)",
-    "Qual (persona|personalidade) está em uso",
-    "Qual (persona|personalidade) está a falar",
-    "Com quem estou a falar?",
-    "Quem está atualmente ativado",
-    "Quem é a (persona|personalidade) ativa"
-  ],
-  "summon.intent": [
-    "(habilitar|acessar|ativar|acordar|despertar|trazer à tona|chamar|conjurar|convocar|invocar|engajar) (o|a|) {persona} (IA|bot|persona|agente|assistente|chatbot|) (virtual|) ",
-    "(iniciar|iniciar|começar|entrar|estabelecer) (a|) (bate-papo|discussão|conversa|diálogo) com (o|a|) {persona}",
-    "(deixa-me|deixe-me) (conversar|interagir) com (o|a|) {persona}",
-    "(conecta-me|quero falar) com (o|a|) {persona}",
-    "(iniciar|começar) (bate-papo|conversa|interação|comunicação|diálogo) com (o|a|) {persona}"
+    "(Que|Qual) (persona|personalidade) está (em uso|falando|ativa) (agora|agora mesmo|)",
+    "(Que|Qual) (persona|personalidade) está atualmente (ativa|ativada)",
+    "(com quem|com qual personalidade) estou a falar (agora|agora mesmo|atualmente|)",
+    "(quem|Qual personalidade) está ativa",
+    "(quem|qual) é a (persona|personalidade) ativa",
+    "Estou a falar com uma (persona|personalidade)?",
+    null,
+    "Fale-me sobre a personalidade ativa",
+    null,
+    "(persona|personalidade) ativa"
   ],
   "ask.intent": [
-    "pergunte a {persona} sobre {utterance}",
-    "(pergunta|perguntar|pergunte) (a|ao) {persona} (o|por) (sua|seu|) (análise|comentário|impressão|interpretação|percepção|reação|ponto de vista) (sobre|de) {utterance}",
-    "pergunte a {persona} (sobre|para compartilhar|) sua (perspectiva|opinião) (sobre|de|a cerca de) {utterance}",
-    "pergunte a {persona} o que (tem a dizer|pensa) sobre {utterance}",
-    "o que {persona} (pensa|diz) sobre {utterance}",
+    "(consulta|sonda|solicita|busca|questiona|pergunta|interroga) {persona} (a perspectiva|a opinião|os pensamentos|o ponto de vista|feedback|posição|visão) (de|sobre) {utterance}",
     "(consulta|sonda|solicita|busca|questiona|pergunta|interroga) {persona} qual a opinião (sobre|quanto a|a respeito de) {utterance}",
     "(consulta|sonda|solicita|busca|questiona|pergunta|interroga) {persona} (a respeito de|sobre) {utterance}",
-    "(consulta|sonda|solicita|busca|questiona|pergunta|interroga) {persona} (a perspectiva|a opinião|os pensamentos|o ponto de vista|feedback|posição|visão) (de|sobre) {utterance}"
+    "pergunte a {persona} (sobre|para compartilhar|) sua (perspectiva|opinião) (sobre|de|a cerca de) {utterance}",
+    "pergunte a {persona} sobre {utterance}",
+    "(pergunta|perguntar|pergunte) (a|ao) {persona} (o|por) (sua|seu|) (análise|comentário|impressão|interpretação|percepção|reação|ponto de vista) (sobre|de) {utterance}",
+    "pergunte a {persona} o que (tem a dizer|pensa) sobre {utterance}",
+    "o que {persona} (pensa|diz) sobre {utterance}"
   ],
   "list_personas.intent": [
     "Dê-me uma lista de (personas|personalidades|LLM|LLMs|Modelos de Grande Linguagem)  [disponíveis] ",
@@ -34,5 +27,12 @@
     "(quais|que) (personas|personalidades|LLM|LLMs|Modelos de Grande Linguagem) (posso usar|estão disponíveis)",
     "(Quais|Quem) são (as|os) (personas|personalidades|LLM|LLMs|Modelos de Grande Linguagem)  [disponíveis] ",
     "Listar (personas|personalidades|LLM|LLMs|Modelos de Linguagem)  [disponíveis]"
+  ],
+  "summon.intent": [
+    "(conecta-me|quero falar) com (o|a|) {persona}",
+    "(habilitar|acessar|ativar|acordar|despertar|trazer à tona|chamar|conjurar|convocar|invocar|engajar) (o|a|) {persona} (IA|bot|persona|agente|assistente|chatbot|) (virtual|) ",
+    "(iniciar|começar) (bate-papo|conversa|interação|comunicação|diálogo) com (o|a|) {persona}",
+    "(iniciar|iniciar|começar|entrar|estabelecer) (a|) (bate-papo|discussão|conversa|diálogo) com (o|a|) {persona}",
+    "(deixe|deixa)[-me] (conversar|interagir) com {persona}"
   ]
 }
