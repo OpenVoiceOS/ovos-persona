@@ -1,20 +1,12 @@
 # Changelog
 
-## [0.6.5a2](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.5a2) (2025-02-02)
+## [0.6.6a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.6a1) (2025-02-02)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.5a1...0.6.5a2)
-
-**Merged pull requests:**
-
-- more sentence variations [\#45](https://github.com/OpenVoiceOS/ovos-persona/pull/45) ([JarbasAl](https://github.com/JarbasAl))
-
-## [0.6.5a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.5a1) (2025-02-02)
-
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.4...0.6.5a1)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.5...0.6.6a1)
 
 **Merged pull requests:**
 
-- Fix/none answer [\#44](https://github.com/OpenVoiceOS/ovos-persona/pull/44) ([JarbasAl](https://github.com/JarbasAl))
+- pt-pt/translate [\#48](https://github.com/OpenVoiceOS/ovos-persona/pull/48) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
 
 
 
