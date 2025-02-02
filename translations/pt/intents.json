@@ -6,9 +6,9 @@
     "(quem|Qual personalidade) está ativa",
     "(quem|qual) é a (persona|personalidade) ativa",
     "Estou a falar com uma (persona|personalidade)?",
-    null,
+    "Existe uma (persona|personalidade) ativa",
     "Fale-me sobre a personalidade ativa",
-    null,
+    "Quem está atualmente (ativo|ativado)",
     "(persona|personalidade) ativa"
   ],
   "ask.intent": [
