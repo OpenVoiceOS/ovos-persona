@@ -1,0 +1,16 @@
+{
+  "Release.voc": [
+    "(beende|schließe|höre auf mit|breche ab|deaktiviere) (den|des|der|die|das|) (Chatbot|Persona|KI|LLM|Large Language Model|Interaktion|Gespräch|Diskussion)",
+    "(aufhören mit|halte an|stoppe|beende) (Chatbot|Persona|KI|LLM|Großes Sprachmodell|Large Language Model|)",
+    " (Chatbot|Persona|KI|LLM|Large Language Model|) (ausschalten|beenden)",
+    "(Wiedersehen | auf wiedersehen | tschüss | tschö)",
+    null,
+    "(geh|gehe) (weg|zurück in dein Grab|schlafen|in den Ruhezustand)",
+    null,
+    "(stoppe|anhalte)(die|) (Interaktion|das Gespräch|die Diskussion) (an|)",
+    null,
+    null,
+    "(halt|halte) (deinen Mund | dein Maul| die Klappe)",
+    "höre auf (zu chatten | zu kommunizieren | zu antworten | zu reden | zu labern)"
+  ]
+}
