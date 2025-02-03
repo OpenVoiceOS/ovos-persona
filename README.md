@@ -19,6 +19,7 @@ The **`PersonaPipeline`** brings multi-persona management to OpenVoiceOS (OVOS),
     pip uninstall skill-ovos-fallback-chatgpt
     ```
 - edit mycroft.conf
+    > ⚠️ don't just copy paste, the `"..."` is a placeholder and invalid. adjust to your existing pipeline config
     ```json
     {
       "intents": {
@@ -144,6 +145,7 @@ You will need to explicitly deactivate a persona to use that functionality, the 
 
 Add the persona pipeline to your mycroft.conf **before** the `_high` pipeline matchers
 
+> ⚠️ don't just copy paste, the `"..."` is a placeholder and invalid. adjust to your existing pipeline config
 ```json
 {
   "intents": {
@@ -167,6 +169,7 @@ With this option you still allow skills to trigger even when a persona is active
 
 Add the persona pipeline to your mycroft.conf **after** the `_high` pipeline matchers
 
+> ⚠️ don't just copy paste, the `"..."` is a placeholder and invalid. adjust to your existing pipeline config
 ```json
 {
   "intents": {
@@ -188,6 +191,8 @@ Add the persona pipeline to your mycroft.conf **after** the `_high` pipeline mat
 ##### Extra Option: as fallback skill
 
 You can configure ovos-persona to handle utterances when all skills fail even if a persona is not active, this is handled via `"ovos-persona-pipeline-plugin-low"`
+
+> ⚠️ don't just copy paste, the `"..."` is a placeholder and invalid. adjust to your existing pipeline config
 
 ```json
 {
