@@ -1,0 +1,92 @@
+{
+  "activated_persona.dialog": [
+    "{persona} aktiviert",
+    "{persona} benutzt\n{persona} in Anwendung",
+    "{persona} wurde aktiviert.",
+    "{persona} wurde eingeschaltet.",
+    "{persona} wurde initialisiert.",
+    "{persona} wurde eingeschaltet.",
+    "{persona} ist nun aktiviert.",
+    "{persona} ist nun aktiv",
+    "{persona} wird nun angewendet\n{persona} wird nun verwendet",
+    "{persona} ist nun vollständig aktiviert.",
+    "{persona} wird angewendet.",
+    "{persona} ist nun online.",
+    "{persona} ist startklar.",
+    "{persona} ist eingerichtet und in Funktion."
+  ],
+  "active_persona.dialog": [
+    "Im Augenblick ist die aktive Persona {persona}",
+    "Ich verwende gerade {persona}, um mit Ihnen zu interagieren",
+    "Im Moment ist die aktive Persona {persona}",
+    "Die aktive Persona ist {persona}",
+    "Die momentan verwendete Persona ist {persona}",
+    "Sie sprechen derzeit mit {persona}"
+  ],
+  "list_personas.dialog": [
+    "Hier sind die verfügbaren Personas",
+    "Ich habe die folgenden Personas",
+    "Die verfügbaren Personas sind"
+  ],
+  "no_active_persona.dialog": [
+    "Derzeit sind keine Personas aktiviert, daher sprechen sie mit mir als Basispersönlichkeit.",
+    "Ich konnte keine aktive Persona finden, daher werde ich mit Ihnen als meine Standard-Persona sprechen.",
+    "Es sieht so aus, als ob es im Moment keine aktiven Personas gibt, also werde ich als ich antworten.",
+    "Keine Personas aktiv, ich verwende die Basispersönlichkeit",
+    "Momentan sind keine Personas aktiv. Ich nutze meine Standard-Persona, um mit Ihnen zu interagieren.",
+    "Da keine Personas aktiv sind, werde ich vorerst weiterhin meine Standardpersönlichkeit verwenden"
+  ],
+  "no_personas.dialog": [
+    "Ich konnte im Moment keine Personas finden. Bitte schauen sie später noch einmal vorbei.",
+    "Es sieht so aus, als ob derzeit keine Personas verfügbar sind",
+    "Es scheint, dass momentan keine Personas zur Interaktion verfügbar sind",
+    "Tut mir leid, ich konnte momentan keine Personas finden",
+    "Momentan sind keine Personas verfügbar, mit denen interagiert werden kann",
+    "Leider sind im Moment keine Personas vorhanden"
+  ],
+  "persona_error.dialog": [
+    "Beim Gespräch mit {persona} ist ein Fehler aufgetreten.",
+    "Beim Gespräch mit {persona} ist ein Problem aufgetreten.",
+    "Während des Gesprächs mit {persona} ist ein technisches Problem aufgetreten.",
+    "Beim Gespräch mit {persona} ist ein Fehler aufgetreten.",
+    "Bei der Kommunikation mit {persona} ist ein Problem aufgetreten.",
+    "Beim Chatten mit {persona} ist etwas schiefgelaufen.",
+    "Bei der Interaktion mit {persona} ist ein Fehler aufgetreten.",
+    "Während der Unterhaltung mit {persona} ist eine Störung aufgetreten.",
+    "Während des Gesprächs mit {persona} ist ein Problem aufgetreten.",
+    "Beim Chatten mit {persona} ist ein Fehler aufgetreten."
+  ],
+  "persona_select.dialog": [
+    "Sagen Sie mir, welche Persona sie aktivieren möchten",
+    "Welche möchten Sie wählen",
+    "Mit welcher Persona möchten Sie interagieren?"
+  ],
+  "release_persona.dialog": [
+    "{persona} deaktiviert",
+    "{persona} ausgeschaltet",
+    "{persona} wurde deaktiviert",
+    "{persona} wurde abgeschaltet",
+    "{persona} wurde deaktiviert und ist nicht mehr einsetzbar.",
+    "{persona} wurde deaktiviert.",
+    "{persona} wurde heruntergefahren.",
+    "{persona} wurde heruntergefahren.",
+    "{persona} wurde ausgeschaltet.",
+    "{persona} ist nicht mehr aktiv.",
+    "{persona} ist nicht mehr aktiviert.",
+    "{persona} ist jetzt deaktiviert.",
+    "{persona} ist jetzt inaktiv und deaktiviert.",
+    "{persona} ist jetzt inaktiv."
+  ],
+  "unknown_persona.dialog": [
+    "Ich weiß nicht, wer oder was {persona} ist",
+    "Ich kenne kein {persona}",
+    "Ich weiß nicht, wer oder was {persona} sein soll.",
+    "Ich finde {persona} nicht.",
+    "Ich habe keine Ahnung, wer oder was {persona} ist.",
+    "Ich habe noch nie von {persona} gehört.",
+    "Ich kenne {persona} nicht.",
+    "Ich bin nicht sicher, wer oder was  {persona} ist.",
+    "Ich kenne {persona} nicht.",
+    "{persona} ist mir unbekannt."
+  ]
+}
