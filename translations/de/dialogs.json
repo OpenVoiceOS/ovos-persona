@@ -3,8 +3,8 @@
     "{persona} aktiviert",
     "{persona} benutzt\n{persona} in Anwendung",
     "{persona} wurde aktiviert.",
-    null,
-    null,
+    "{persona} wurde eingeschaltet.",
+    "{persona} wurde initialisiert.",
     "{persona} wurde eingeschaltet.",
     "{persona} ist nun aktiviert.",
     "{persona} ist nun aktiv",
@@ -30,7 +30,7 @@
   ],
   "no_active_persona.dialog": [
     "Derzeit sind keine Personas aktiviert, daher sprechen sie mit mir als Basispersönlichkeit.",
-    null,
+    "Ich konnte keine aktive Persona finden, daher werde ich mit Ihnen als meine Standard-Persona sprechen.",
     "Es sieht so aus, als ob es im Moment keine aktiven Personas gibt, also werde ich als ich antworten.",
     "Keine Personas aktiv, ich verwende die Basispersönlichkeit",
     "Momentan sind keine Personas aktiv. Ich nutze meine Standard-Persona, um mit Ihnen zu interagieren.",
@@ -63,7 +63,7 @@
   ],
   "release_persona.dialog": [
     "{persona} deaktiviert",
-    null,
+    "{persona} ausgeschaltet",
     "{persona} wurde deaktiviert",
     "{persona} wurde abgeschaltet",
     "{persona} wurde deaktiviert und ist nicht mehr einsetzbar.",
@@ -78,14 +78,14 @@
     "{persona} ist jetzt inaktiv."
   ],
   "unknown_persona.dialog": [
-    null,
-    null,
-    null,
+    "Ich weiß nicht, wer oder was {persona} ist",
+    "Ich kenne kein {persona}",
+    "Ich weiß nicht, wer oder was {persona} sein soll.",
     "Ich finde {persona} nicht.",
-    null,
+    "Ich habe keine Ahnung, wer oder was {persona} ist.",
     "Ich habe noch nie von {persona} gehört.",
     "Ich kenne {persona} nicht.",
-    null,
+    "Ich bin nicht sicher, wer oder was  {persona} ist.",
     "Ich kenne {persona} nicht.",
     "{persona} ist mir unbekannt."
   ]
