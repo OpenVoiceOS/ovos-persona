@@ -1,0 +1,38 @@
+{
+  "active_persona.intent": [
+    "(Was|Welche) (Persona|Persönlichkeit) ist (jetzt|gerade jetzt) (im Einsatz|im Gespräch|aktiv)",
+    "(Was|Welche) (Persona|Persönlichkeit) ist derzeit (aktiv|aktiviert)",
+    "(mit wem|Mit welcher Person) spreche ich (jetzt|im Augenblick|zurzeit|)",
+    "(wer|Welche Persona) ist aktiv",
+    "(wer | was | welches) ist [die] aktive (Person | Persönlichkeit)",
+    "Spreche ich mit einer (Persona|Persönlichkeit)",
+    "Gibt es eine aktive (Persona | Persönlichkeit)",
+    "Erzähle mir von [der] aktiven (Persona|Persönlichkeit)",
+    "Wer ist derzeit (aktiv|aktiviert)",
+    "aktive (Persona|Persönlichkeit)"
+  ],
+  "ask.intent": [
+    "(frage | suche in)  {persona} über (seine|ihre) (Perspektive | Meinung | Gedanken | Interpretation | Haltung | Ansicht) (von|über|zu) {utterance}\nWelche (Meinung| Ansicht |Haltung) hat {persona} (zu | von | über) {utterance}",
+    "(frage | befrage) {persona} nach ihrer Ansicht (zu | über) {utterance}",
+    "(stelle eine Frage an | befrage) {persona} (in Bezug auf | über | zu) {utterance}",
+    "frage {persona}  (über| zu) (ihre|seine|ihrer|seiner) (Perspektive|Meinung) {utterance}",
+    "frage {persona} (nach | über | zu) {utterance}",
+    "(fragen Sie) frage) {persona} nach (ihren|ihrer|seiner|seine|seinen) (Erkenntnissen|Analyse|Kommentar|Eindruck|Interpretation|Wahrnehmung|Reaktion|Standpunkt|Einstellung|Gedanken|Verständnis|Ansicht) (zu|von| über) {utterance}",
+    "(frage|fragen Sie) {persona}, was (sie|er|es) zu {utterance} (zu sagen hat| denkt | meint)",
+    "was (denkt | sagt) {persona} über {utterance}"
+  ],
+  "list_personas.intent": [
+    "Geben Sie mir eine Liste der [verfügbaren] (Personas|Persönlichkeiten|LLM|LLMs|Großen Sprachmodelle|Large Language Models)",
+    "(nenne|sage|zeige) mir die verfügbaren (Personas|Persönlichkeiten|LLM|LLMs|Großen Sprachmodellen|Large Language Models)",
+    "Welche (Personas|Persönlichkeiten|LLM|LLMs|Large Language Models) (kann ich verwenden|sind verfügbar)",
+    "(Wer|welches) sind die [verfügbaren] (Personas|Persönlichkeiten|LLM|LLMs|Großen Sprachmodelle)",
+    "(Können Sie|Kannst Du) (die verfügbaren| die) (Personas|Persönlichkeiten|LLM|LLMs|Große Sprachmodelle) auflisten"
+  ],
+  "summon.intent": [
+    "(verbinde mich|ich möchte) (mit|mit) {persona} (reden|)",
+    "(rufe | binde| starte) (die|den|) (virtuelle |) {persona} (KI|Bot|Persona|Agent|Assistent|Chatbot|) (auf|ein)",
+    "(initiier | starte | beginne | eröffne) (ein | eine | einen)  (Gespräch | Dialog | Konversation | Chat) mit {persona}",
+    "(starte|initiiere|beginne|baue) (ein|einen | eine) (Chat|Diskussion|Gespräch|Dialog) mit {persona}",
+    "(lass mich|) mit {persona} (chatten | reden | sprechen | plaudern | quasseln | quatschen)"
+  ]
+}
