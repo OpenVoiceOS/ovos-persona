@@ -4,12 +4,12 @@
     "(aufhören mit|halte an|stoppe|beende) (Chatbot|Persona|KI|LLM|Großes Sprachmodell|Large Language Model|)",
     " (Chatbot|Persona|KI|LLM|Large Language Model|) (ausschalten|beenden)",
     "(Wiedersehen | auf wiedersehen | tschüss | tschö)",
-    null,
+    "genug geredet",
     "(geh|gehe) (weg|zurück in dein Grab|schlafen|in den Ruhezustand)",
-    null,
+    "Auf wiedersehen",
     "(stoppe|anhalte)(die|) (Interaktion|das Gespräch|die Diskussion) (an|)",
-    null,
-    null,
+    "lass mich in Ruhe",
+    "Lege (den|die|das) (Chatbot|Persona|KI|LLM)",
     "(halt|halte) (deinen Mund | dein Maul| die Klappe)",
     "höre auf (zu chatten | zu kommunizieren | zu antworten | zu reden | zu labern)"
   ]
