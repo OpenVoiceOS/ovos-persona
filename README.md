@@ -4,6 +4,50 @@ The **`PersonaPipeline`** brings multi-persona management to OpenVoiceOS (OVOS),
 
 ---
 
+## 🚀 TLDR - Quick Start
+
+- update core and install persona
+    ```bash
+    pip install -U ovos-core>=0.5.1 ovos-persona
+    ```
+- install/update plugins and skills
+    ```bash
+    pip install -U skill-wolfie ovos-skill-wikipedia ovos-skill-wikihow skill-wordnet ovos-solver-openai-persona-plugin
+    ```
+- uninstall chatgpt skill
+    ```bash
+    pip uninstall skill-ovos-fallback-chatgpt
+    ```
+- edit mycroft.conf
+    ```json
+    {
+      "intents": {
+          "persona": {
+            "handle_fallback":  true,
+            "default_persona": "Remote Llama"
+          },
+          "pipeline": [
+              "stop_high",
+              "converse",
+              "ocp_high",
+              "padatious_high",
+              "adapt_high",
+              "ovos-persona-pipeline-plugin-high",
+              "ocp_medium",
+              "...",
+              "fallback_medium",
+              "ovos-persona-pipeline-plugin-low",
+              "fallback_low"
+        ]
+      }
+    }
+    ```
+- restart ovos
+- read the intents section below
+- 🎉
+  
+---
+
 ## ✨ Features
 
 - **🧑‍💻 Multiple Personas**: Manage a list of personas, each with its unique solvers.  
@@ -13,7 +57,7 @@ The **`PersonaPipeline`** brings multi-persona management to OpenVoiceOS (OVOS),
 
 ---
 
-## 🚀 Installation
+## 🛠️ Installation
 
 ```bash
 pip install ovos-persona
@@ -76,7 +120,7 @@ Enables users to query a persona directly without entering an interactive sessio
 ---
 
 
-## 🛠️ Pipeline Configuration
+## 📖  Pipeline Configuration
 
 When a persona is active you have 2 options:
 - send all utterances to the persona and ignore all skills
@@ -159,39 +203,6 @@ You can configure ovos-persona to handle utterances when all skills fail even if
 ```
 
 > ⚠️ `"ovos-persona-pipeline-plugin-low"` is meant to replace [ovos-skill-fallback-chatgpt](https://github.com/OpenVoiceOS/ovos-skill-fallback-chatgpt)
-
-
----
-
-## 🐍 Python Usage
-
-
-```python
-from ovos_persona import PersonaService
-
-# Initialize the PersonaService
-persona_service = PersonaService(config={"personas_path": "/path/to/personas"})
-
-# List all loaded personas
-print(persona_service.personas)
-
-# Ask a persona a question
-response = persona_service.chatbox_ask("What is the speed of light?", persona="my_persona")
-print(response)
-```
-
-Each `Persona` has a name and configuration, and it uses a set of solvers to handle questions. You can interact with a persona by sending a list of messages to the `chat()` method.
-
-```python
-from ovos_persona import Persona
-
-# Create a persona instance
-persona = Persona(name="my_persona", config={"solvers": ["my_solver_plugin"]})
-
-# Ask the persona a question
-response = persona.chat(messages=[{"role": "user", "content": "What is the capital of France?"}])
-print(response)
-```
 
 ---
 
