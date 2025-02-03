@@ -1,0 +1,38 @@
+{
+  "active_persona.intent": [
+    null,
+    "(Was|Welche) (Persona|Persönlichkeit) ist derzeit (aktiv|aktiviert)",
+    "(mit wem|Mit welcher Person) spreche ich (jetzt|im Augenblick|zurzeit|)",
+    "(wer|Welche Persona) ist aktiv",
+    "(wer | was | welches) ist [die] aktive (Person | Persönlichkeit)",
+    "Spreche ich mit einer (Persona|Persönlichkeit)",
+    "Gibt es eine aktive (Persona | Persönlichkeit)",
+    null,
+    "Wer ist derzeit (aktiv|aktiviert)",
+    null
+  ],
+  "ask.intent": [
+    null,
+    null,
+    "(stelle eine Frage an | befrage) {persona} (in Bezug auf | über | zu) {utterance}",
+    null,
+    "frage {persona} (nach | über | zu) {utterance}",
+    null,
+    null,
+    "was (denkt | sagt) {persona} über {utterance}"
+  ],
+  "list_personas.intent": [
+    null,
+    null,
+    "Welche (Personas|Persönlichkeiten|LLM|LLMs|Large Language Models) (kann ich verwenden|sind verfügbar)",
+    null,
+    null
+  ],
+  "summon.intent": [
+    "(verbinde mich|ich möchte) (mit|mit) {persona} (reden|)",
+    null,
+    "(initiier | starte | beginne | eröffne) (ein | eine | einen)  (Gespräch | Dialog | Konversation | Chat) mit {persona}",
+    "(starte|initiiere|beginne|baue) (ein|einen | eine) (Chat|Diskussion|Gespräch|Dialog) mit {persona}",
+    "(lass mich|) mit {persona} (chatten | reden | sprechen | plaudern | quasseln | quatschen)"
+  ]
+}
