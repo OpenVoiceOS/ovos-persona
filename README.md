@@ -75,26 +75,8 @@ Enables users to query a persona directly without entering an interactive sessio
 
 ---
 
-## 📨 Messagebus Events
 
-You can control the persona service via bus messages
-
-- **`persona:query`**: Submit a query to a persona.  
-- **`persona:summon`**: Summon a persona.  
-- **`persona:release`**: Release a persona.  
-
----
-
-## 📡 HiveMind Integration
-
-This project includes a native [hivemind-plugin-manager](https://github.com/JarbasHiveMind/hivemind-plugin-manager) integration, providing seamless interoperability with the HiveMind ecosystem.
-
-- **Agent Protocol**: Provides `hivemind-persona-agent-plugin` allowing to connect satellites directly to a persona
-  
-
----
-
-## 🛠️ Pipeline Usage
+## 🛠️ Pipeline Configuration
 
 When a persona is active you have 2 options:
 - send all utterances to the persona and ignore all skills
@@ -103,6 +85,8 @@ When a persona is active you have 2 options:
 Where to place `"ovos-persona-pipeline-plugin-high"` in your pipeline depends on the desired outcome
 
 Additionally, you have `"ovos-persona-pipeline-plugin-low"` to handle utterances even when a persona isnt explicitly active
+
+> **ℹ️ Note**: No "medium" plugin exists for this pipeline.  
 
 ##### Option 1: send all utterances to active persona
 
@@ -115,7 +99,6 @@ Add the persona pipeline to your mycroft.conf **before** the `_high` pipeline ma
 ```json
 {
   "intents": {
-      "persona": {"handle_fallback":  true},
       "pipeline": [
           "ovos-persona-pipeline-plugin-high",
           "stop_high",
@@ -123,15 +106,7 @@ Add the persona pipeline to your mycroft.conf **before** the `_high` pipeline ma
           "ocp_high",
           "padatious_high",
           "adapt_high",
-          "ocp_medium",
-          "fallback_high",
-          "stop_medium",
-          "adapt_medium",
-          "padatious_medium",
-          "adapt_low",
-          "common_qa",
-          "fallback_medium",
-          "ovos-persona-pipeline-plugin-low",
+          "...",
           "fallback_low"
     ]
   }
@@ -147,7 +122,6 @@ Add the persona pipeline to your mycroft.conf **after** the `_high` pipeline mat
 ```json
 {
   "intents": {
-      "persona": {"handle_fallback":  true},
       "pipeline": [
           "stop_high",
           "converse",
@@ -156,12 +130,26 @@ Add the persona pipeline to your mycroft.conf **after** the `_high` pipeline mat
           "adapt_high",
           "ovos-persona-pipeline-plugin-high",
           "ocp_medium",
-          "fallback_high",
-          "stop_medium",
-          "adapt_medium",
-          "padatious_medium",
-          "adapt_low",
-          "common_qa",
+          "...",
+          "fallback_low"
+    ]
+  }
+}
+```
+
+##### Extra Option: as fallback skill
+
+You can configure ovos-persona to handle utterances when all skills fail even if a persona is not active, this is handled via `"ovos-persona-pipeline-plugin-low"`
+
+```json
+{
+  "intents": {
+      "persona": {
+        "handle_fallback":  true,
+        "default_persona": "Remote Llama"
+      },
+      "pipeline": [
+          "...",
           "fallback_medium",
           "ovos-persona-pipeline-plugin-low",
           "fallback_low"
@@ -170,8 +158,8 @@ Add the persona pipeline to your mycroft.conf **after** the `_high` pipeline mat
 }
 ```
 
+> ⚠️ `"ovos-persona-pipeline-plugin-low"` is meant to replace [ovos-skill-fallback-chatgpt](https://github.com/OpenVoiceOS/ovos-skill-fallback-chatgpt)
 
-> **ℹ️ Note**: No "medium" plugin exists for this pipeline.  
 
 ---
 
@@ -256,6 +244,14 @@ Save this in `~/.config/ovos_persona/llm.json`:
 
 ---
 
+## 📡 HiveMind Integration
+
+This project includes a native [hivemind-plugin-manager](https://github.com/JarbasHiveMind/hivemind-plugin-manager) integration, providing seamless interoperability with the HiveMind ecosystem.
+
+- **Agent Protocol**: Provides `hivemind-persona-agent-plugin` allowing to connect satellites directly to a persona
+  
+
+---
 
 
 ## 🤝 Contributing
