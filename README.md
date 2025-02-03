@@ -195,7 +195,7 @@ print(response)
 
 ---
 
-## 🔧 Configuring Personas
+## 🔧 Creating a Persona
 
 Personas are configured using JSON files. These can be:  
 1️⃣ Provided by **plugins** (e.g., [OpenAI plugin](https://github.com/OpenVoiceOS/ovos-solver-openai-persona-plugin/pull/12)).  
