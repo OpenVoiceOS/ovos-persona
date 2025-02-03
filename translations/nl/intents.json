@@ -1,0 +1,38 @@
+{
+  "active_persona.intent": [
+    "(Welke) (persona|persoonlijkheid) is (nu|op dit moment|) (in gebruik|actief)",
+    "(Welke) (persona|persoonlijkheid) is momenteel (actief|geactiveerd)",
+    "(met wie|welke persona) spreek ik (nu|op dit moment|momenteel|)",
+    "(wie|welke persona) is actief",
+    "(wie|wat) is [de] actieve (persona|persoonlijkheid)",
+    "Spreek ik met een (persona|persoonlijkheid)",
+    "Is er een actieve (persona|persoonlijkheid)",
+    "Vertel me wie de actieve (persona|persoonlijkheid) is",
+    "Wie is momenteel (actief|geactiveerd)",
+    "actieve (persona|persoonlijkheid)"
+  ],
+  "ask.intent": [
+    "Vraag {persona} naar (het perspectief|de mening|de gedachten|het standpunt|de interpretatie|de feedback|de houding|de visie) over {utterance}.",
+    "Verzoek {persona} om (een perspectief|een mening|gedachten|een standpunt|een interpretatie|feedback|een houding|een visie) over {utterance}.",
+    "Onderzoek {persona}'s (perspectief|mening|gedachten|standpunt|interpretatie|feedback|houding|visie) over {utterance}.",
+    "Raadpleeg {persona} over (het perspectief|de mening|de gedachten|het standpunt|de interpretatie|de feedback|de houding|de visie) met betrekking tot {utterance}.",
+    "vraag {persona} over {utterance}",
+    "vraag {persona} om (hun|) (inzichten|analyse|commentaar|indruk|interpretatie|waarneming|reactie|standpunt|gedachten|begrip|standpunt) (over|van) {uiting}",
+    "vraag {persona} wat ze (te zeggen hebben |denken) over {uiting}",
+    "wat denkt {persona} over {uiting}"
+  ],
+  "list_personas.intent": [
+    "Geef mij een lijst met [available] (persona's|persoonlijkheden|LLM|LLM's|Grote taalmodellen|Large Language Models)",
+    "Vertel me [about] de beschikbare (persona's|persoonlijkheden|LLM|LLM's|grote taalmodellen|Large language modellen)",
+    "Welke (persona's|persoonlijkheden|LLM|LLM's|Grote Taalmodellen|Large language modellen) (kan ik gebruiken|zijn beschikbaar)",
+    "(Wie|wat) zijn de (beschikbare) (persona's|persoonlijkheden|LLM|LLM's|Grote taalmodellen|Large language modellen)",
+    "(Kan| Kun je) (beschikbare} (persona's|persoonlijkheden|LLM|LLM's|Grote taalmodellen) opnoemen?"
+  ],
+  "summon.intent": [
+    "(ik wil praten) (met) {persona}",
+    "(activeer|vraag) (de|) {persona} (virtuele|) (AI|bot|persona|agent|assistent|chatbot|)",
+    "(knoop een| begin) (chat|gesprek|gesprek aan) met {persona}",
+    "(start|begin) (een|) (chat|gesprek|dialoog) met {persona}",
+    "(laat me) (chatten) (met) {persona}"
+  ]
+}
