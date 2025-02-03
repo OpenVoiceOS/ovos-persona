@@ -1,0 +1,16 @@
+{
+  "Release.voc": [
+    "(sluit|stop|beëindig) (de|het)(chatbot|bot|persona|AI|LLM|interactie|gesprek|discussie)",
+    "(laat)(chatbot|persona|AI|LLM|Groot Taalmodel|) stoppen",
+    "(schakel|zet) (chatbot|persona|AI|LLM|Groot taalmodel|) uit",
+    "(doei| doeg)",
+    "genoeg gepraat",
+    "ga (weg|terug naar je graf|slapen|in winterslaap)",
+    "tot ziens",
+    "stop (de|het) (interactie|gesprek|discussie)",
+    "Laat me met rust",
+    "laat (chatbot|persona|AI|LLM) in slaap vallen",
+    "hou je mond",
+    "stop (met)(chatten|communiceren|reageren|praten)"
+  ]
+}
