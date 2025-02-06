@@ -288,7 +288,8 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
                 LOG.info(f"Persona intent exact match: {match}")
                 entities = match.matches if hasattr(match, "matches") else match.get("entities", {})
                 persona = entities.get("persona")
-                if name == "summon.intent":
+                query = entities.get("query")
+                if name == "summon.intent" and persona: # if persona name not in match, its a misclassification
                     return IntentHandlerMatch(match_type='persona:summon',
                                               match_data={"persona": persona},
                                               skill_id="persona.openvoiceos",
@@ -303,9 +304,9 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
                                               match_data={"lang": lang},
                                               skill_id="persona.openvoiceos",
                                               utterance=utterances[0])
-                elif name == "ask.intent" and "entities" in match: # if "entities" not in match, its a misclassification
+                elif name == "ask.intent" and persona: # if persona name not in match, its a misclassification
                     persona = self.get_persona(persona)
-                    if persona and "query" in match["entities"]:  # else the name isnt a valid persona, or its a misclassification
+                    if persona and query:  # else its a misclassification
                         utterance = match["entities"].pop("query")
                         return IntentHandlerMatch(match_type='persona:query',
                                                   match_data={"utterance": utterance,
@@ -314,10 +315,10 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
                                                   skill_id="persona.openvoiceos",
                                                   utterance=utterances[0])
 
-        # override regular intent parsing, handle utterance until persona is released
-        if self.active_persona:
-            LOG.debug(f"Persona is active: {self.active_persona}")
-            return self.match_low(utterances, lang, message)
+            # override regular intent parsing, handle utterance until persona is released
+            if self.active_persona:
+                LOG.debug(f"Persona is active: {self.active_persona}")
+                return self.match_low(utterances, lang, message)
 
     def match_medium(self, utterances: List[str], lang: str, message: Message) -> None:
         return self.match_high(utterances, lang, message)
