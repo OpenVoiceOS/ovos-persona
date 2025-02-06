@@ -2,3 +2,4 @@ ovos-plugin-manager>=0.8.3,<1.0.0
 ovos-solver-openai-persona-plugin>=1.1.1,<2.0.0
 ovos-solver-failure-plugin
 ovos-utils>=0.7.0,<1.0.0
+langcodes
