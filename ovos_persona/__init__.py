@@ -303,9 +303,9 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
                                               match_data={"lang": lang},
                                               skill_id="persona.openvoiceos",
                                               utterance=utterances[0])
-                elif name == "ask.intent":
+                elif name == "ask.intent" and "entities" not in match: # if "entities" not in match, its a misclassification
                     persona = self.get_persona(persona)
-                    if persona:  # else the name isnt a persona, so dont match
+                    if persona and "query" in match["entities"]:  # else the name isnt a valid persona, or its a misclassification
                         utterance = match["entities"].pop("query")
                         return IntentHandlerMatch(match_type='persona:query',
                                                   match_data={"utterance": utterance,
