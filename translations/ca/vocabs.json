@@ -4,13 +4,13 @@
     "(acaba|tanca|cessa|surt|ix|avorta|finalitza|interromp|desactiva|para|treu|fes callar|stop|para) (xatbot|persona|AI|LLM|Large Language Model|model de llenguatge|conversa|discussió|xerrera|IA|AI)",
     "(desactivar|desactiva) (el xatbot|la persona|la AI|la IA|l'LLM|el Large Language Model|el model de llenguatge|)",
     "(siau|adéu|adéu-siau|deu)",
-    null,
-    null,
+    "prou( de parlar| de xarrera| de xarrar| de xerrera| de xerrar)",
+    "(ves|vés|torna) (lluny|a pastar (|fang)|a fer nonon|al teu cau|a dormir|a hivernar)",
     "(adéu|adéu-siau|siau)",
-    null,
-    null,
-    null,
-    null,
-    null
+    "(atura|para) (el |la |es |sa |l'|s'|) (interacció|conversa|debat|diàleg)",
+    "(deixa'm|dixa'm) (sol|sola|en pau|tranquil|tranquil·la)",
+    "posa (el |la |es |sa |l'|s')(xatbot|persona|AI|IA|LLM) a dormir",
+    "calla(|'t| la boca|'t la boca)",
+    "(deixa|prou) (de |)(xatejar|xatar|comunicar|comunicació|respondre|parlar|xarrar|errar|garlar|xerrameca|xarremeca)"
   ]
 }
