@@ -1,15 +1,15 @@
 {
   "active_persona.intent": [
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
+    "(Quina) (persona|personality) està (funcionant|parlant|activa) (ara mateix|ara|en aquest moment|en aquests moments|)",
+    "(Quina) (persona|personality) està actualment (activa|activada)",
+    "(A qui|Amb quina persona|Amb quina personalitat) estic parlant (ara|ara mateix|actualment|en aquests moments|)",
+    "(Qui|Quina persona|Quina personalitat) està activa",
+    "(qui|què|quina) és la (persona|personalitat) activa",
+    "Estic parlant amb una (persona|personalitat)",
+    "Hi ha (alguna|qualque) (persona|personalitat) activa",
+    "Parla'm de la (persona|personalitat) que està activa",
+    "(Qui|Quina persona) està actualment (actiu|activa|activat|activada)",
+    "activa (persona|personalitat)"
   ],
   "ask.intent": [
     "(consulta|sondeja|sol·licita|busca|cerca|pregunta|demana|obté|obtén) (el |la |es |sa |els |les |ses |l'|s')(perspectiva|opinió|pensaments|punt de vista|interpretació|feedback|postura|vista) (|de |d') {persona} (referent|referent a|sobre|de) {utterance}",
@@ -22,17 +22,17 @@
     "què (pensa|diu) (|el |la |es |sa |l'|s'){persona} sobre {utterance}"
   ],
   "list_personas.intent": [
-    null,
-    null,
-    null,
-    null,
-    null
+    "Dona'm la llista (dels|de les) (persones|personalitats|LLM|LLMs|models de llenguatge) disponibles",
+    "Explica'm (quins|quines) són (els|les) (persones|personalitats|LLM|LLMs|models de llenguatge) disponibles?",
+    "Quines (persones|personalitats|LLM|LLMs|models de llenguatge) (puc utilitzar|puc usar|puc fer servir|estan disponibles)",
+    "(Quins|Quines) són (els|les) (persones|personalitats|LLM|LLMs|models de llenguatge) disponibles?",
+    "Pots dir-me la llista (dels|de les) (persones|personalitats|LLM|LLMs|models de llenguatge) disponibles?"
   ],
   "summon.intent": [
     "(connecta'm|vull parlar) (a|amb) (el |la |es |sa |l'|s'|){persona}",
     "(habilita|accedeix|accedix|activa|desperta|obre|executa|inicia|convoca|invoca) (|el |es |l'|la |sa |s')(IA|I A|AI|bot|agent persona|agent|assistent|assistenta|secretari|secretària|xatbot|chatbot|) (virtual|) (|de|del|de la|des) {persona}",
     "(inicia|comença|entra|obre) (xerrada|parla|interacció|comunicació|conversa|diàleg) (a|amb) (|el |la |es |sa |l'|s'){persona}",
     "(inicia|comença|entra|estableix|establix) (un|una|) (xat|discussió|conversa|conversació|diàleg|debat) amb (|el|la|es|sa) {persona}",
-    null
+    "[deixa'm] (xerrar|parlar|interaccionar|garlar|conversar|interaccionar) (a|amb) (el|la|) {persona}"
   ]
 }
