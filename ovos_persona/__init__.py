@@ -278,15 +278,15 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         supported_langs = list(self.intent_matchers.keys())
         closest_lang, distance = closest_match(lang, supported_langs, max_distance=10)
         if closest_lang != "und":
-            match = self.intent_matchers[closest_lang].calc_intent(utterances[0].lower())
-            name = match.name if IS_PADATIOUS else match.get("name")
-            conf = match.conf if IS_PADATIOUS else match.get("conf", 0)
+            match = self.intent_matchers[closest_lang].calc_intent(utterances[0].lower()) or {}
+            name = match.name if hasattr(match, "name") else match.get("name")
+            conf = match.conf if hasattr(match, "conf") else match.get("conf", 0)
             if conf < self.config.get("min_intent_confidence", 0.6):
                 LOG.debug(f"Ignoring low confidence persona intent: {match}")
                 name = None
             if name:
                 LOG.info(f"Persona intent exact match: {match}")
-                entities = match.matches if IS_PADATIOUS else match.get("entities")
+                entities = match.matches if hasattr(match, "matches") else match.get("entities", {})
                 persona = entities.get("persona")
                 if name == "summon.intent":
                     return IntentHandlerMatch(match_type='persona:summon',
