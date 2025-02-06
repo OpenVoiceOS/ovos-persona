@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.9a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.9a1) (2025-02-06)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.8a1...0.6.9a1)
+
+**Merged pull requests:**
+
+- fix: improve misclassifciations [\#62](https://github.com/OpenVoiceOS/ovos-persona/pull/62) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.6.8a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.8a1) (2025-02-06)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.7...0.6.8a1)
