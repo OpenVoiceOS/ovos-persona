@@ -1,0 +1,92 @@
+{
+  "activated_persona.dialog": [
+    "S'ha activat {persona}",
+    "S'ha habilitat {persona}",
+    "{persona} ha estat activada",
+    "{persona} ha estat habilitada",
+    "{persona} ha estat inicialitzada",
+    "S'ha engegat {persona}",
+    "{persona} ara s'ha activat.",
+    "{persona} ara és activa",
+    "{persona} ara està habilidada.",
+    "{persona} ara està completament habilidada.",
+    "{persona} ja està disponible.",
+    "{persona} ara és en línia.",
+    "{persona} està a punt per funcionar.",
+    "{persona} ara està preparada i funcionant."
+  ],
+  "active_persona.dialog": [
+    "Ara mateix, la persona activa és {persona}",
+    "Ara mateix, estic usant {persona} per a les interaccions",
+    "Ara, la persona activa és {persona}",
+    "La persona activa és {persona}",
+    "La persona en ús en aquest moment és {persona}",
+    "Ara mateix, esteu parlant a {persona}"
+  ],
+  "list_personas.dialog": [
+    "Aquí teniu les persones disponibles",
+    "Tinc les persones següents",
+    "Les persones disponibles són"
+  ],
+  "no_active_persona.dialog": [
+    "Actualment, no hi ha cap persona activada, així que parlaràs amb mi com a personalitat base",
+    "No he pogut trobar cap persona activa, així que interactuaré amb tu amb el meu jo predeterminat",
+    "Sembla que no hi ha persones actives en aquest moment, així que respondré com a jo mateix",
+    "No hi ha cap persona activa, estic fent servir la meva personalitat de base",
+    "No hi ha cap persona activa en aquest moment. Estic utilitzant la meva personalitat de base per interactuar amb tu",
+    "Com que no hi ha cap persona activa, de moment continuaré utilitzant la meva personalitat predeterminada"
+  ],
+  "no_personas.dialog": [
+    "No he trobat cap persona de moment. Si us plau, torneu a comprovar-ho més tard",
+    "Sembla que no hi ha persones disponibles actualment",
+    "Sembla que no hi ha persones disponibles amb qui interactuar ara mateix",
+    "Ho sento, no he pogut trobar cap persona ara mateix ",
+    "No hi ha persones disponibles amb qui interactuar ara mateix",
+    "Malauradament, no hi ha persones en aquest moment"
+  ],
+  "persona_error.dialog": [
+    "S'ha produït un error mentre parlàveu amb {persona}.",
+    "S'ha produït un problema en parlar amb {persona}.",
+    "Hi ha hagut un problema tècnic mentre parlàveu amb {persona}.",
+    "S'ha produït un error en interactuar amb {persona}.",
+    "Hi ha hagut un problema durant la comunicació amb {persona}.",
+    "Alguna cosa ha anat malament mentre conversàveu amb {persona}.",
+    "S'ha produït un error mentre s'interactuava amb {persona}.",
+    "S'ha produït un mal funcionament mentre es conversava amb {persona}.",
+    "Hi ha hagut un problema durant la conversa amb {persona}.",
+    "Hem trobat un error en xatejar amb {persona}."
+  ],
+  "persona_select.dialog": [
+    "Feu-me saber quina voleu activar",
+    "Quina us agradaria triar",
+    "Amb quina us agradaria interactuar"
+  ],
+  "release_persona.dialog": [
+    "{persona} desactivat",
+    "{persona} desactivat",
+    "{persona} s'ha desactivat",
+    "{persona} s'ha desactivat",
+    "{persona} s'ha desactivat i ja no és operatiu.",
+    "{persona} ha estat desactivat.",
+    "{persona} s'ha apagat.",
+    "{persona} s'ha tancat.",
+    "{persona} s'ha desactivat.",
+    "{persona} ja no està actiu.",
+    "{persona} ja no està activat.",
+    "{persona} ara està desactivat.",
+    "{persona} ara està inactiu i desactivat.",
+    "{persona} ara està inactiu."
+  ],
+  "unknown_persona.dialog": [
+    "No sé qui és {persona}",
+    "No conec {persona}",
+    "No sé qui se suposa que és {persona}.",
+    "No reconec {persona}.",
+    "No tinc ni idea de qui és {persona}.",
+    "No he sentit a parlar de {persona}.",
+    "No conec {persona}.",
+    "No estic segur de qui és {persona}.",
+    "No estic familiaritzat amb {persona}.",
+    "{persona} m'és desconegut."
+  ]
+}
