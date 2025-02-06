@@ -3,6 +3,7 @@ import os
 from os.path import join, dirname, expanduser
 from typing import Optional, Dict, List, Union, Iterable
 
+from langcodes import closest_match
 from ovos_config.config import Configuration
 from ovos_config.locations import get_xdg_config_save_path
 from ovos_config.meta import get_xdg_base
@@ -38,7 +39,6 @@ except ImportError:
     LOG.warning("'padatious' not installed, using 'padacioso' for Persona intents")
 
 
-
 class Persona:
     def __init__(self, name, config, blacklist=None):
         blacklist = blacklist or []
@@ -62,13 +62,13 @@ class Persona:
         return f"Persona({self.name}:{list(self.solvers.loaded_modules.keys())})"
 
     def chat(self, messages: List[Dict[str, str]],
-                          lang: Optional[str] = None,
-                          units: Optional[str] = None) -> str:
+             lang: Optional[str] = None,
+             units: Optional[str] = None) -> str:
         return self.solvers.chat_completion(messages, lang, units)
 
     def stream(self, messages: List[Dict[str, str]],
-                          lang: Optional[str] = None,
-                          units: Optional[str] = None) -> Iterable[str]:
+               lang: Optional[str] = None,
+               units: Optional[str] = None) -> Iterable[str]:
         return self.solvers.stream_completion(messages, lang, units)
 
 
@@ -275,45 +275,44 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
                                       skill_id="persona.openvoiceos",
                                       utterance=utterances[0])
 
-        if lang not in self.intent_matchers:
-            match = {}
-        else:
-            match = self.intent_matchers[lang].calc_intent(utterances[0].lower())
-
-        name = match.name if IS_PADATIOUS else match.get("name")
-        conf = match.conf if IS_PADATIOUS else match.get("conf", 0)
-        if conf < self.config.get("min_intent_confidence", 0.6):
-            LOG.debug(f"Ignoring low confidence persona intent: {match}")
-            name = None
-        if name:
-            LOG.info(f"Persona intent exact match: {match}")
-            entities = match.matches if IS_PADATIOUS else match.get("entities")
-            persona = entities.get("persona")
-            if name == "summon.intent":
-                return IntentHandlerMatch(match_type='persona:summon',
-                                          match_data={"persona": persona},
-                                          skill_id="persona.openvoiceos",
-                                          utterance=utterances[0])
-            elif name == "list_personas.intent":
-                return IntentHandlerMatch(match_type='persona:list',
-                                          match_data={"lang": lang},
-                                          skill_id="persona.openvoiceos",
-                                          utterance=utterances[0])
-            elif name == "active_persona.intent":
-                return IntentHandlerMatch(match_type='persona:check',
-                                          match_data={"lang": lang},
-                                          skill_id="persona.openvoiceos",
-                                          utterance=utterances[0])
-            elif name == "ask.intent":
-                persona = self.get_persona(persona)
-                if persona: # else the name isnt a persona, so dont match
-                    utterance = match["entities"].pop("query")
-                    return IntentHandlerMatch(match_type='persona:query',
-                                              match_data={"utterance": utterance,
-                                                          "lang": lang,
-                                                          "persona": persona},
+        supported_langs = list(self.intent_matchers.keys())
+        closest_lang, distance = closest_match(lang, supported_langs, max_distance=10)
+        if closest_lang != "und":
+            match = self.intent_matchers[closest_lang].calc_intent(utterances[0].lower()) or {}
+            name = match.name if hasattr(match, "name") else match.get("name")
+            conf = match.conf if hasattr(match, "conf") else match.get("conf", 0)
+            if conf < self.config.get("min_intent_confidence", 0.6):
+                LOG.debug(f"Ignoring low confidence persona intent: {match}")
+                name = None
+            if name:
+                LOG.info(f"Persona intent exact match: {match}")
+                entities = match.matches if hasattr(match, "matches") else match.get("entities", {})
+                persona = entities.get("persona")
+                if name == "summon.intent":
+                    return IntentHandlerMatch(match_type='persona:summon',
+                                              match_data={"persona": persona},
                                               skill_id="persona.openvoiceos",
                                               utterance=utterances[0])
+                elif name == "list_personas.intent":
+                    return IntentHandlerMatch(match_type='persona:list',
+                                              match_data={"lang": lang},
+                                              skill_id="persona.openvoiceos",
+                                              utterance=utterances[0])
+                elif name == "active_persona.intent":
+                    return IntentHandlerMatch(match_type='persona:check',
+                                              match_data={"lang": lang},
+                                              skill_id="persona.openvoiceos",
+                                              utterance=utterances[0])
+                elif name == "ask.intent" and "entities" in match: # if "entities" not in match, its a misclassification
+                    persona = self.get_persona(persona)
+                    if persona and "query" in match["entities"]:  # else the name isnt a valid persona, or its a misclassification
+                        utterance = match["entities"].pop("query")
+                        return IntentHandlerMatch(match_type='persona:query',
+                                                  match_data={"utterance": utterance,
+                                                              "lang": lang,
+                                                              "persona": persona},
+                                                  skill_id="persona.openvoiceos",
+                                                  utterance=utterances[0])
 
         # override regular intent parsing, handle utterance until persona is released
         if self.active_persona:
