@@ -1,26 +1,20 @@
 # Changelog
 
-## [0.6.7a2](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.7a2) (2025-02-06)
+## [0.6.9a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.9a1) (2025-02-06)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.7a1...0.6.7a2)
-
-**Merged pull requests:**
-
-- Add Catalan translation [\#57](https://github.com/OpenVoiceOS/ovos-persona/pull/57) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
-- Add Catalan translation [\#56](https://github.com/OpenVoiceOS/ovos-persona/pull/56) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
-- Add Catalan translation [\#55](https://github.com/OpenVoiceOS/ovos-persona/pull/55) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
-- German translation [\#54](https://github.com/OpenVoiceOS/ovos-persona/pull/54) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
-- German translation [\#53](https://github.com/OpenVoiceOS/ovos-persona/pull/53) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
-- German translation [\#52](https://github.com/OpenVoiceOS/ovos-persona/pull/52) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
-- fr/fr missing translation [\#51](https://github.com/OpenVoiceOS/ovos-persona/pull/51) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
-
-## [0.6.7a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.7a1) (2025-02-03)
-
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.6...0.6.7a1)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.8a1...0.6.9a1)
 
 **Merged pull requests:**
 
-- Nl-nl translation [\#50](https://github.com/OpenVoiceOS/ovos-persona/pull/50) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
+- fix: improve misclassifciations [\#62](https://github.com/OpenVoiceOS/ovos-persona/pull/62) ([JarbasAl](https://github.com/JarbasAl))
+
+## [0.6.8a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.8a1) (2025-02-06)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.7...0.6.8a1)
+
+**Merged pull requests:**
+
+- fix: language support [\#58](https://github.com/OpenVoiceOS/ovos-persona/pull/58) ([JarbasAl](https://github.com/JarbasAl))
 
 
 
