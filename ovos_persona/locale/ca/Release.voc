@@ -1,14 +1,12 @@
-(allibera|elimina|atura|para) (|el |la |es |sa |l'|s')(xatbot|chatbot|persona|AI|IA|I A|LLM)
-(atura|acaba|surt|ix|tanca|avorta|interromp|desactiva) (el| la |es |sa |l'|s'|) (interacció|conversa|diàleg|debat)
-(atura|acaba|tanca|cessa|surt|ix|avorta|termina|interromp|desactiva|apaga) (l'|s'|)activitat (del|des|) (xatbot|chatbot|persona|AI|IA|I A|LLM)
-(atura|para de|prou de) (xerrar|comunicar|respondre|parlar)
+(acaba|tanca|cessa|surt|ix|avorta|finalitza|interromp|desactiva|para|treu|fes callar|para) (el|la) (xatbot|persona|AI|LLM|Large Language Model|model de llenguatge|conversa|discussió|xerrera|IA|AI)
+(acaba|tanca|cessa|surt|ix|avorta|finalitza|interromp|desactiva|para|treu|fes callar|stop|para) (xatbot|persona|AI|LLM|Large Language Model|model de llenguatge|conversa|discussió|xerrera|IA|AI)
+(adéu|adéu-siau|siau)
 (atura|para) (el |la |es |sa |l'|s'|) (interacció|conversa|debat|diàleg)
-(calla|calla (la|sa) boca|tanca (la|sa) boca)
-(desactiva|apaga) (|el |la |es |sa |l'|s')(xatbot|chatbot|persona|AI|IA|I A|LLM)
-(termina|finalitza)
+(deixa'm|dixa'm) (sol|sola|en pau|tranquil|tranquil·la)
+(deixa|prou) (de |)(xatejar|xatar|comunicar|comunicació|respondre|parlar|xarrar|errar|garlar|xerrameca|xarremeca)
+(desactivar|desactiva) (el xatbot|la persona|la AI|la IA|l'LLM|el Large Language Model|el model de llenguatge|)
+(siau|adéu|adéu-siau|deu)
 (ves|vés|torna) (lluny|a pastar (|fang)|a fer nonon|al teu cau|a dormir|a hivernar)
-deixa'm (tot|) (sol|sola)
-posa (el |la |es |sa |l'|s')(xatbot|chatbot|persona|AI|IA|I A|LLM) a dormir
-prou de (parlar|xarrera)
-retira't
-torna a (l'|s')abisme
+calla(|'t| la boca|'t la boca)
+posa (el |la |es |sa |l'|s')(xatbot|persona|AI|IA|LLM) a dormir
+prou( de parlar| de xarrera| de xarrar| de xerrera| de xerrar)
