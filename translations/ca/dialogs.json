@@ -1,0 +1,92 @@
+{
+  "activated_persona.dialog": [
+    "S'ha activat {persona}",
+    "S'ha habilitat {persona}",
+    "{persona} ha estat activada",
+    "{persona} ha estat habilitada",
+    "{persona} ha estat inicialitzada",
+    null,
+    null,
+    "{persona} ara és activa",
+    null,
+    null,
+    null,
+    "{persona} ara és en línia.",
+    null,
+    "{persona} ara està preparada i funcionant."
+  ],
+  "active_persona.dialog": [
+    "Ara mateix, la persona activa és {persona}",
+    "Ara mateix, estic usant {persona} per a les interaccions",
+    null,
+    "La persona activa és {persona}",
+    "La persona en ús en aquest moment és {persona}",
+    "Ara mateix, esteu parlant a {persona}"
+  ],
+  "list_personas.dialog": [
+    "Aquí teniu les persones disponibles",
+    "Tinc les persones següents",
+    "Les persones disponibles són"
+  ],
+  "no_active_persona.dialog": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "no_personas.dialog": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "persona_error.dialog": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "persona_select.dialog": [
+    null,
+    null,
+    null
+  ],
+  "release_persona.dialog": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "unknown_persona.dialog": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ]
+}
