@@ -46,7 +46,7 @@ The **`PersonaPipeline`** brings multi-persona management to OpenVoiceOS (OVOS),
 - restart ovos
 - check logs to see persona loading, ensure there are no errors
     ```bash
-    cat ~/.local/state/mycroft.skills.log | grep persona
+    cat ~/.local/state/mycroft/skills.log | grep persona
     ```
 - read the intents section below
 - 🎉
