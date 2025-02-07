@@ -3,7 +3,7 @@ from typing import Optional, List, Dict, Iterable
 from ovos_config import Configuration
 from ovos_plugin_manager.solvers import find_question_solver_plugins
 from ovos_utils.log import LOG
-from ovos_utils.messagebus import FakeBus
+from ovos_utils.fakebus import FakeBus
 
 try:
     from ovos_plugin_manager.solvers import find_chat_solver_plugins
