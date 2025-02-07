@@ -142,13 +142,15 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
     @property
     def default_persona(self) -> Optional[str]:
         persona = self.config.get("default_persona")
-        if not persona and self.personas:
+        if persona: # match config against loaded personas
+            persona = self.get_persona(persona)
+        elif self.personas:
             persona = list(self.personas.keys())[0]
         return persona
 
     def get_persona(self, persona: str):
         if not persona:
-            return self.active_persona or self.get_persona(self.default_persona)
+            return self.active_persona or self.default_persona
         # TODO - add ignorecase flag to match_one in ovos_utils
         # TODO - make MatchStrategy configurable
         match, score = match_one(persona, list(self.personas),
