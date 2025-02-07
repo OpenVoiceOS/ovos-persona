@@ -148,8 +148,9 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
 
     def get_persona(self, persona: str):
         if not persona:
-            return self.active_persona or self.default_persona
+            return self.active_persona or self.get_persona(self.default_persona)
         # TODO - add ignorecase flag to match_one in ovos_utils
+        # TODO - make MatchStrategy configurable
         match, score = match_one(persona, list(self.personas),
                                  strategy=MatchStrategy.PARTIAL_TOKEN_SET_RATIO)
         LOG.debug(f"Closest persona: {match} - {score}")
@@ -336,8 +337,14 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         Returns:
             IntentMatch if handled otherwise None.
         """
+        persona = self.active_persona
+        if self.config.get("handle_fallback"):
+            # read default persona from config
+            persona = persona or self.get_persona(self.default_persona)
+            if not persona:
+                LOG.error("configured default persona is invalid, can't handle utterance")
         # always matches! use as last resort in pipeline
-        if self.active_persona or self.config.get("handle_fallback"):
+        if persona:
             return IntentHandlerMatch(match_type='persona:query',
                                       match_data={"utterance": utterances[0],
                                                   "lang": lang,
