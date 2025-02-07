@@ -342,7 +342,7 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         persona = self.active_persona
         if self.config.get("handle_fallback"):
             # read default persona from config
-            persona = persona or self.get_persona(self.default_persona)
+            persona = persona or self.default_persona
             if not persona:
                 LOG.error("configured default persona is invalid, can't handle utterance")
         # always matches! use as last resort in pipeline
