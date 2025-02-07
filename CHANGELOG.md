@@ -1,20 +1,12 @@
 # Changelog
 
-## [0.6.9a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.9a1) (2025-02-06)
+## [0.6.10a2](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.10a2) (2025-02-07)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.8a1...0.6.9a1)
-
-**Merged pull requests:**
-
-- fix: improve misclassifciations [\#62](https://github.com/OpenVoiceOS/ovos-persona/pull/62) ([JarbasAl](https://github.com/JarbasAl))
-
-## [0.6.8a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.8a1) (2025-02-06)
-
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.7...0.6.8a1)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.10...0.6.10a2)
 
 **Merged pull requests:**
 
-- fix: language support [\#58](https://github.com/OpenVoiceOS/ovos-persona/pull/58) ([JarbasAl](https://github.com/JarbasAl))
+- avoid deprecation warning [\#66](https://github.com/OpenVoiceOS/ovos-persona/pull/66) ([JarbasAl](https://github.com/JarbasAl))
 
 
 
