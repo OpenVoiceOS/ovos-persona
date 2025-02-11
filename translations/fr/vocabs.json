@@ -4,13 +4,13 @@
     "(retirer|retire|supprimer|supprimer|arrêter|arrête|terminer|termine) (chat|chatbot|persona|IA|LLM|Large Language Model|)",
     "(désactiver|désactive|éteindre|éteins) (chat|chatbot|persona|IA|LLM|Large Language Model|)",
     "au revoir",
-    null,
-    null,
+    "assez (parlé|discuté)",
+    "(pars|va) (en hibernation|dormir|dans la tombe)",
     "au revoir",
-    null,
-    null,
-    null,
-    null,
-    null
+    "(arrêter|arrête) (la|le) (chat|interaction|conversation|discussion|dialogue)",
+    "laisse-moi tranquille",
+    "mettre (chatbot|persona|IA|LLM) en sommeil",
+    "(ferme ta bouche|ferme-la)",
+    "(arrêter|arrête) (de discuter|de communiquer|de répondre|de parler)"
   ]
 }
