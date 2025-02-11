@@ -1,0 +1,92 @@
+{
+  "activated_persona.dialog": [
+    "{persona} aktiveret",
+    "{persona} aktiveret",
+    "{persona} er blevet aktiveret.",
+    "{persona} er blevet aktiveret.",
+    "{persona} er blevet initialiseret.",
+    "{persona} er blevet slået til.",
+    "{persona} er nu aktiveret.",
+    "{persona} er nu aktiv",
+    "{persona} er nu aktiveret",
+    "{persona} er nu fuldt aktiveret.",
+    null,
+    "{persona} er nu online.",
+    null,
+    "{persona} er nu oppe at køre."
+  ],
+  "active_persona.dialog": [
+    "I øjeblikket er den aktive persona {persona}",
+    "Jeg bruger {persona} lige nu til at interagere med dig",
+    "Lige nu er den aktive persona {persona}",
+    "Den aktive persona er {persona}",
+    null,
+    "Du taler i øjeblikket med {persona}"
+  ],
+  "list_personas.dialog": [
+    "Her er de tilgængelige personas",
+    "Jeg har følgende personas",
+    "De tilgængelige personas er"
+  ],
+  "no_active_persona.dialog": [
+    "I øjeblikket er der ingen personas aktiveret, så du vil tale til mig som basispersonligheden",
+    "Jeg kunne ikke finde nogen aktive personas, så jeg vil interagere med dig som mit standard-selv",
+    "Det ser ud til, at der ikke er nogen aktive personas i øjeblikket, så jeg vil svare som mig selv",
+    "Ingen personas aktiv, jeg bruger min grundlæggende personlighed",
+    "Ingen personas er aktive lige nu. Jeg bruger min grundlæggende personlighed til at interagere med dig",
+    "Da ingen personas er aktive, fortsætter jeg med at bruge min standardpersonlighed indtil videre"
+  ],
+  "no_personas.dialog": [
+    "Jeg kunne ikke finde nogen personas i øjeblikket. Tjek venligst igen senere",
+    "Det ser ud til, at der ikke er nogen tilgængelige personas i øjeblikket",
+    "Det ser ud til, at der ikke er nogen tilgængelige personer at interagere med lige nu",
+    "Beklager, jeg kunne ikke finde nogen personas lige nu",
+    "Der er ingen tilgængelige personas at interagere med lige nu",
+    "Desværre er der ingen personas i øjeblikket"
+  ],
+  "persona_error.dialog": [
+    "Der opstod en fejl, mens du talte med {persona}.",
+    "Der opstod et problem, mens du talte med {persona}.",
+    "Der opstod et teknisk problem, mens du talte med {persona}.",
+    "Der opstod en fejl under interaktion med {persona}.",
+    "Der opstod et problem under kommunikationen med {persona}.",
+    "Noget gik galt, mens du havde en chat med {persona}.",
+    "Noget gik galt under interaktion med {persona}.",
+    "Der opstod en fejl under samtale med {persona}.",
+    "Der var et problem under samtalen med {persona}.",
+    "Vi stødte på en fejl under chatten med {persona}."
+  ],
+  "persona_select.dialog": [
+    "Fortæl mig, hvilken du vil aktivere",
+    "Hvilken en vil du gerne vælge",
+    "Hvilken en vil du gerne interagere med"
+  ],
+  "release_persona.dialog": [
+    "{persona} deaktiveret",
+    "{persona} deaktiveret",
+    "{persona} er blevet deaktiveret",
+    "{persona} er blevet deaktiveret",
+    "{persona} er blevet deaktiveret og fungerer ikke længere.",
+    "{persona} er blevet deaktiveret.",
+    "{persona} er blevet slukket.",
+    "{persona} er blevet lukket.",
+    "{persona} er blevet slået fra.",
+    "{persona} er ikke længere aktiv.",
+    "{persona} er ikke længere aktiveret.",
+    "{persona} er nu deaktiveret.",
+    "{persona} er nu inaktiv og deaktiveret.",
+    "{persona} er nu inaktiv."
+  ],
+  "unknown_persona.dialog": [
+    "Jeg ved ikke, hvem {persona} er",
+    "Jeg ved det ikke {persona}",
+    "Jeg ved ikke, hvem {persona} skal være.",
+    "Jeg genkender ikke {persona}.",
+    "Jeg aner ikke, hvem {persona} er.",
+    "Jeg har ikke hørt om {persona}.",
+    "Jeg kender ikke {persona}.",
+    "Jeg er ikke sikker på, hvem {persona} er.",
+    "Jeg er ikke bekendt med {persona}.",
+    "{persona} er ukendt for mig."
+  ]
+}
