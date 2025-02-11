@@ -1,0 +1,16 @@
+{
+  "Release.voc": [
+    "(finir|finis|fermer|ferme|stop|arrêter|arrête|sortir de|sors de|quitter|quitte|abandonner|abandonne|terminer|termine|interrompre|interromps|désactiver|désactive) [le|la] (chat|chatbot|persona|IA|LLM|Large Language Model|interaction|conversation|discussion|dialogue)",
+    "(retirer|retire|supprimer|supprimer|arrêter|arrête|terminer|termine) (chat|chatbot|persona|IA|LLM|Large Language Model|)",
+    "(désactiver|désactive|éteindre|éteins) (chat|chatbot|persona|IA|LLM|Large Language Model|)",
+    "au revoir",
+    null,
+    null,
+    "au revoir",
+    null,
+    null,
+    null,
+    null,
+    null
+  ]
+}
