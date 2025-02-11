@@ -1,0 +1,38 @@
+{
+  "active_persona.intent": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "ask.intent": [
+    "(sonde|demande|interroge|pose la question à) {personne} (son|sa|ses) (opinion|pensées|point de vue|interprétation|position|vue) (de|sur|à propos de) {utterance}",
+    "(sonde|demande|interroge|pose la question à) {persona} pour connaître son point de vue sur {utterance}",
+    "(sonde|demande|interroge|pose la question à) {persona} (sur|de|à propos de) {utterance}",
+    "(demander|demande) à {persona} (de partager|) son (point de vue|opinion) (à propos de|sur) {utterance}",
+    "(demander|demande) à {persona} {utterance}",
+    "(demander|demande) à {persona} (son|sa|ses|) (analyse|commentaire|impression|interprétation|perception|réaction|point de vue|pensées|compréhension) (sur|de|à propos de) {utterance}",
+    "(demander|demande) à {persona} ce qu'(il|elle) (a à dire|pense) (sur|de|à propos de) {utterance}",
+    "que (pense|dit) {persona} (sur|de|à propos de) {utterance}"
+  ],
+  "list_personas.intent": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "summon.intent": [
+    "(connecte-moi|je veux parler) (à|avec) {persona}",
+    "(activer|active|accéder à|accède à|réveiller|réveille) (le|la) {persona} (virtuel|virtuelle) (IA|bot|persona|personnalité|agent|assistant|assistante|chatbot|)",
+    "(initier|initie|commencer|commence|ouvrir|ouvre) (un|une|) (chat|interaction|communication|conversation|discussion|dialogue) avec {persona}",
+    "(démarrer|démarre|initier|initie|commencer|commence|entrer|entre|établir|établis) (un|une) (discussion|conversation|dialogue) avec {persona}",
+    null
+  ]
+}
