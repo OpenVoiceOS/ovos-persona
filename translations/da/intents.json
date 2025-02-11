@@ -1,15 +1,15 @@
 {
   "active_persona.intent": [
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
+    "(Hvad|Hvilken) (persona|personlighed) er (i brug|taler|aktiv) (nu|lige nu|)",
+    "(Hvad|Hvilken) (persona|personlighed) er i øjeblikket (aktiv|aktiveret)",
+    "(hvem|Hvilken persona) taler jeg med (nu|lige nu|aktuelt|)",
+    "(hvem|Hvilken persona) er aktiv",
+    "(hvem|hvad|hvilket) er [den] aktive (persona|personlighed)",
+    "Taler jeg til en (persona|personlighed)",
+    "Er der en aktiv (persona|personlighed)",
+    "Fortæl mig om [den] aktive (persona|personlighed)",
+    "Hvem er i øjeblikket (aktiv|aktiveret)",
+    "aktiv (persona|personlighed)"
   ],
   "ask.intent": [
     "(forespørgsel|undersøgelse|anmodning|søg|spørgsmål|spørg|spørg|få) {persona} (perspektiv|mening|tanker|synspunkt|fortolkning|feedback|standpunkt|syn) (af|på) {utterance}",
@@ -22,17 +22,17 @@
     "hvad siger {persona} (tænk|siger) om {utterance}"
   ],
   "list_personas.intent": [
-    null,
-    null,
-    null,
-    null,
-    null
+    "Giv mig en liste over [tilgængelige] (personas|personligheder|LLM|LLMs|store sprogmodeller)",
+    "Fortæl mig [om] de tilgængelige (personas|personligheder|LLM|LLMs|store sprogmodeller)",
+    "Hvad (personas|personligheder|LLM|LLMs|Store sprogmodeller) (kan jeg bruge|er tilgængelige)",
+    "Hvem er de [tilgængelige] (personas|personligheder|LLM|LLMs|store sprogmodeller)",
+    "[Kan du] liste [tilgængelig] (personas|personligheder|LLM|LLMs|store sprogmodeller)"
   ],
   "summon.intent": [
     "(tilslut mig|tilslut|jeg vil tale|tal) (til|med) {persona}",
     "(aktiver|adgang|aktiver|vågen|vågen|bring frem|kald|fremkald|kald|påkald|engager) (den|) {persona} (virtuel|) (AI|bot|persona|agent|assistent|chatbot|)",
     "(start|start|begynd|enter|åben) (chat|snak|interaktion|kommunikation|samtale|dialog) (til|med) {persona}",
     "(start|start|begynd|enter|etabler) (en|) (chat|diskussion|samtale|dialog) med {persona}",
-    null
+    "[lad mig] (chat|talk|interagere) (til|med) {persona}"
   ]
 }
