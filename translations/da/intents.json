@@ -1,19 +1,38 @@
 {
-  "summon.intent": [
-    "(aktiver|adgang|aktiver|vågen|vågen|bring frem|kald|fremkald|kald|påkald|engager) (den|) {persona} (virtuel|) (AI|bot|persona|agent|assistent|chatbot|)",
-    "(start|start|begynd|enter|etabler) (en|) (chat|diskussion|samtale|dialog) med {persona}",
-    "lad mig (chatte|tale|interagere) (til|med) {persona}",
-    "(tilslut mig|tilslut|jeg vil tale|tal) (til|med) {persona}",
-    "(start|start|begynd|enter|åben) (chat|snak|interaktion|kommunikation|samtale|dialog) (til|med) {persona}"
+  "active_persona.intent": [
+    "(Hvad|Hvilken) (persona|personlighed) er (i brug|taler|aktiv) (nu|lige nu|)",
+    "(Hvad|Hvilken) (persona|personlighed) er i øjeblikket (aktiv|aktiveret)",
+    "(hvem|Hvilken persona) taler jeg med (nu|lige nu|aktuelt|)",
+    "(hvem|Hvilken persona) er aktiv",
+    "(hvem|hvad|hvilket) er [den] aktive (persona|personlighed)",
+    "Taler jeg til en (persona|personlighed)",
+    "Er der en aktiv (persona|personlighed)",
+    "Fortæl mig om [den] aktive (persona|personlighed)",
+    "Hvem er i øjeblikket (aktiv|aktiveret)",
+    "aktiv (persona|personlighed)"
   ],
   "ask.intent": [
-    "spørg {persona} om {utterance}",
-    "bede {persona} om (deres|) (indsigt|analyse|kommentar|indtryk|fortolkning|opfattelse|reaktion|standpunkt|tag|tanker|forståelse|synspunkt) (på|af) {utterance}",
-    "spørg {persona} (om|at dele|) deres (perspektiv|opinion) (om|af|på) {utterance}",
-    "spørg {persona}, hvad de (har at sige|mener) om {utterance}",
-    "hvad siger {persona} (tænk|siger) om {utterance}",
+    "(forespørgsel|undersøgelse|anmodning|søg|spørgsmål|spørg|spørg|få) {persona} (perspektiv|mening|tanker|synspunkt|fortolkning|feedback|standpunkt|syn) (af|på) {utterance}",
     "(forespørg|sonder|anmod|søg|spørgsmål|spørg|forespørg|forhør) {persona} for deres syn på {utterance}",
     "(forespørgsel|undersøgelse|anmodning|søg|spørgsmål|spørg|forespørg|forhør|stil et spørgsmål til) {persona} (vedrørende|om) {utterance}",
-    "(forespørgsel|undersøgelse|anmodning|søg|spørgsmål|spørg|spørg|få) {persona} (perspektiv|mening|tanker|synspunkt|fortolkning|feedback|standpunkt|syn) (af|på) {utterance}"
+    "spørg {persona} (om|at dele|) deres (perspektiv|opinion) (om|af|på) {utterance}",
+    "spørg {persona} om {utterance}",
+    "bede {persona} om (deres|) (indsigt|analyse|kommentar|indtryk|fortolkning|opfattelse|reaktion|standpunkt|tag|tanker|forståelse|synspunkt) (på|af) {utterance}",
+    "spørg {persona}, hvad de (har at sige|mener) om {utterance}",
+    "hvad siger {persona} (tænk|siger) om {utterance}"
+  ],
+  "list_personas.intent": [
+    "Giv mig en liste over [tilgængelige] (personas|personligheder|LLM|LLMs|store sprogmodeller)",
+    "Fortæl mig [om] de tilgængelige (personas|personligheder|LLM|LLMs|store sprogmodeller)",
+    "Hvad (personas|personligheder|LLM|LLMs|Store sprogmodeller) (kan jeg bruge|er tilgængelige)",
+    "Hvem er de [tilgængelige] (personas|personligheder|LLM|LLMs|store sprogmodeller)",
+    "[Kan du] liste [tilgængelig] (personas|personligheder|LLM|LLMs|store sprogmodeller)"
+  ],
+  "summon.intent": [
+    "(tilslut mig|tilslut|jeg vil tale|tal) (til|med) {persona}",
+    "(aktiver|adgang|aktiver|vågen|vågen|bring frem|kald|fremkald|kald|påkald|engager) (den|) {persona} (virtuel|) (AI|bot|persona|agent|assistent|chatbot|)",
+    "(start|start|begynd|enter|åben) (chat|snak|interaktion|kommunikation|samtale|dialog) (til|med) {persona}",
+    "(start|start|begynd|enter|etabler) (en|) (chat|diskussion|samtale|dialog) med {persona}",
+    "[lad mig] (chat|talk|interagere) (til|med) {persona}"
   ]
 }
