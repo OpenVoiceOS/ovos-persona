@@ -1,0 +1,5 @@
+(activa|activar|habilita|habilitar|accede|acceder|esperta|espertar|acorda|acordar|saca|sacar|trae|traer|solicita|solicitar|chama|chamar|fai aparecer|facer aparecer|convoca|convocar|invoca|invocar|abre|abrir|executa|executar|inicia|iniciar) (o|a|ao|á) (AI|IA|bot|persona|axente|asistente|asistenta|chat|chatbot|bot de conversa|bot de charla|bot de leria) (de|do|da) {persona} (virtual|)
+(conéctame|conectar|ponme|quero falar) (a|con|ao|á|co|coa) {persona}
+(inicia|iniciar|empeza|empezar|comeza|comezar|enceta|encetar|entra|entrar|accede|acceder|métete|meterse|abre|abrir) (un|unha|nun|nunha|a un|a unha|o|a|no|na|ao|á) (chat|conversa|charla|leria|interacción|comunicación|conversación|diálogo) (con|co|coa) {persona}
+(inicia|iniciar|empeza|empezar|comeza|comezar|enceta|encetar|entra|entrar|accede|acceder|métete|meterse|establece|establecer|estabelece|estabelecer) (un|unha|nun|nunha|a un|a unha|o|a|no|na|ao|á) (chat|conversa|charla|leria|discusión|debate|conversación|diálogo) (con|co|coa) {persona}
+(permíteme|permitir|déixame|deixar|posibilítame|posibilitar|facilítame|facilitar|quero) (chatear|falar|interactuar|conversar|charlar|leriar) (con|co|coa) {persona}
