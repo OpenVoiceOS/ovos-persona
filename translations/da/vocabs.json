@@ -4,13 +4,13 @@
     "(release|remove|stop|stop|terminate) (chatbot|persona|AI|LLM|Large Language Model|)",
     "(sluk|sluk) (chatbot|persona|AI|LLM|Stor sprogmodel|)",
     "hej hej",
-    null,
-    null,
+    "nok snak",
+    "gå (bort|tilbage til din grav|sov|ind i dvale)",
     "farvel",
-    null,
-    null,
-    null,
-    null,
-    null
+    "stands (den|) (interaktion|interaktionen|samtale|samtalen|diskussion|diskutionen)",
+    "lad mig være i fred",
+    "sæt (chatbot|persona|AI|LLM) i dvale",
+    "hold (kæft|din mund)",
+    "stop (med at) (chat|chatte|kommunikerer|kommunikation|svarer|svar|tale)"
   ]
 }
