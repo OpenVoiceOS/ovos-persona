@@ -80,13 +80,13 @@
   "unknown_persona.dialog": [
     "Non sei quen é {persona}",
     "Non coñezo a {persona}",
-    null,
+    "Non sei quen se supón que é {persona}.",
     "Non recoñezo a {persona}.",
-    null,
+    "Non teño nin idea de quen é {persona}.",
     "{persona} non me soa.",
-    null,
-    null,
-    null,
+    "Non estou familiarizado con {persoa}.",
+    "Non sei moi ben quen é {persona}.",
+    "{persona} non me é familiar.",
     "{persona} non se me fai (recoñecible|recoñecíbel)."
   ]
 }
