@@ -26,7 +26,7 @@
     "Vertel me [over] de beschikbare (persona's|persoonlijkheden|LLM|LLM's|grote taalmodellen|Large language modellen)",
     "Welke (persona's|persoonlijkheden|LLM|LLM's|Grote Taalmodellen|Large language modellen) (kan ik gebruiken|zijn beschikbaar)",
     "(Wie|wat) zijn de (beschikbare) (persona's|persoonlijkheden|LLM|LLM's|Grote taalmodellen|Large language modellen)",
-    "(Kan| Kun je) [beschikbare](persona's|persoonlijkheden|LLM|LLM's|Grote taalmodellen) opnoemen?"
+    "(Kan je| Kun je) [beschikbare](persona's|persoonlijkheden|LLM|LLM's|Grote taalmodellen) opnoemen?"
   ],
   "summon.intent": [
     "(ik wil praten) (met) {persona}",
