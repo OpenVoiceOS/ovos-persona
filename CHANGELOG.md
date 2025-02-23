@@ -1,11 +1,12 @@
 # Changelog
 
-## [0.6.12a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.12a1) (2025-02-17)
+## [0.6.12a2](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.12a2) (2025-02-23)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.12a1...0.6.12a1)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.12a1...0.6.12a2)
 
 **Merged pull requests:**
 
+- Create funding-manifest-urls [\#73](https://github.com/OpenVoiceOS/ovos-persona/pull/73) ([j1nx](https://github.com/j1nx))
 - nl-nl improvements [\#72](https://github.com/OpenVoiceOS/ovos-persona/pull/72) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
 - correcting a bug in German translation [\#71](https://github.com/OpenVoiceOS/ovos-persona/pull/71) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
 - da-dk/translate [\#70](https://github.com/OpenVoiceOS/ovos-persona/pull/70) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
