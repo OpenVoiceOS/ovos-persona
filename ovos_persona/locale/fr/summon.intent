@@ -1,0 +1,5 @@
+(activer|active|accéder à|accède à|réveiller|réveille) (le|la) {persona} (virtuel|virtuelle) (IA|bot|persona|personnalité|agent|assistant|assistante|chatbot|)
+(connecte-moi|je veux parler) (à|avec) {persona}
+(démarrer|démarre|initier|initie|commencer|commence|entrer|entre|établir|établis) (un|une) (discussion|conversation|dialogue) avec {persona}
+(initier|initie|commencer|commence|ouvrir|ouvre) (un|une|) (chat|interaction|communication|conversation|discussion|dialogue) avec {persona}
+[laisse moi] (parler|chatter|interagir|discuter) (avec|à) {persona}

@@ -2,4 +2,4 @@
 (start|start|begynd|enter|etabler) (en|) (chat|diskussion|samtale|dialog) med {persona}
 (start|start|begynd|enter|åben) (chat|snak|interaktion|kommunikation|samtale|dialog) (til|med) {persona}
 (tilslut mig|tilslut|jeg vil tale|tal) (til|med) {persona}
-lad mig (chatte|tale|interagere) (til|med) {persona}
+[lad mig] (chat|talk|interagere) (til|med) {persona}

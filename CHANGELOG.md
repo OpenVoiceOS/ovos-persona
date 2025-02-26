@@ -1,12 +1,24 @@
 # Changelog
 
-## [0.6.10a2](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.10a2) (2025-02-07)
+## [0.6.12a2](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.12a2) (2025-02-23)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.10...0.6.10a2)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.12a1...0.6.12a2)
 
 **Merged pull requests:**
 
-- avoid deprecation warning [\#66](https://github.com/OpenVoiceOS/ovos-persona/pull/66) ([JarbasAl](https://github.com/JarbasAl))
+- Create funding-manifest-urls [\#73](https://github.com/OpenVoiceOS/ovos-persona/pull/73) ([j1nx](https://github.com/j1nx))
+- nl-nl improvements [\#72](https://github.com/OpenVoiceOS/ovos-persona/pull/72) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
+- correcting a bug in German translation [\#71](https://github.com/OpenVoiceOS/ovos-persona/pull/71) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
+- da-dk/translate [\#70](https://github.com/OpenVoiceOS/ovos-persona/pull/70) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
+- fr/fr missing translation [\#68](https://github.com/OpenVoiceOS/ovos-persona/pull/68) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
+
+## [0.6.12a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.12a1) (2025-02-11)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.11...0.6.12a1)
+
+**Merged pull requests:**
+
+- gl/translate [\#69](https://github.com/OpenVoiceOS/ovos-persona/pull/69) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
 
 
 
