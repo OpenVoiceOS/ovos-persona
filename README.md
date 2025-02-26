@@ -12,7 +12,7 @@ The **`PersonaPipeline`** brings multi-persona management to OpenVoiceOS (OVOS),
     ```
 - install/update plugins and skills
     ```bash
-    pip install -U skill-wolfie ovos-skill-wikipedia ovos-skill-wikihow skill-wordnet ovos-solver-openai-persona-plugin
+    pip install -U skill-wolfie ovos-skill-wikipedia ovos-skill-wikihow skill-wordnet ovos-openai-plugin
     ```
 - uninstall chatgpt skill
     ```bash
@@ -218,7 +218,7 @@ You can configure ovos-persona to handle utterances when all skills fail even if
 ## 🔧 Creating a Persona
 
 Personas are configured using JSON files. These can be:  
-1️⃣ Provided by **plugins** (e.g., [OpenAI plugin](https://github.com/OpenVoiceOS/ovos-solver-openai-persona-plugin/pull/12)).  
+1️⃣ Provided by **plugins** (e.g., [OpenAI plugin](https://github.com/OpenVoiceOS/ovos-openai-plugin/pull/12)).  
 2️⃣ Created as **user-defined JSON files** in `~/.config/ovos_persona`.  
 
 Personas rely on [solver plugins](https://openvoiceos.github.io/ovos-technical-manual/solvers/), which attempt to answer queries in sequence until a response is found.  
@@ -229,9 +229,9 @@ Save this in `~/.config/ovos_persona/llm.json`:
 {
   "name": "My Local LLM",
   "solvers": [
-    "ovos-solver-openai-persona-plugin"
+    "ovos-solver-openai-plugin"
   ],
-  "ovos-solver-openai-persona-plugin": {
+  "ovos-solver-openai-plugin": {
     "api_url": "https://llama.smartgic.io/v1",
     "key": "sk-xxxx",
     "persona": "helpful, creative, clever, and very friendly."
