@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.14a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.14a1) (2025-02-27)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.13a1...0.6.14a1)
+
+**Merged pull requests:**
+
+- feat: match\_medium - use keywords to match intents, galician and cata… [\#77](https://github.com/OpenVoiceOS/ovos-persona/pull/77) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.6.13a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.13a1) (2025-02-26)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.12...0.6.13a1)
