@@ -329,7 +329,7 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
                 LOG.debug(f"Persona is active: {self.active_persona}")
                 return self.match_low(utterances, lang, message)
 
-    def match_medium(self, utterances: List[str], lang: str, message: Message) -> None:
+    def match_medium(self, utterances: List[str], lang: str, message: Message) -> Optional[IntentHandlerMatch]:
         lang = lang or self.lang
         lang = standardize_lang_tag(lang)
 
@@ -370,7 +370,7 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
                             break
 
             name =  match.get("name")
-            conf =  match.get("conf", 0)
+
             if name:
                 LOG.info(f"Persona intent exact match: {match}")
                 entities = match.get("entities", {})
