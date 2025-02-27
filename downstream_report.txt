@@ -1,0 +1,2 @@
+ovos-persona==0.6.13a1
+└── ovos-core==0.5.3a1 [requires: ovos-persona>=0.4.4,<1.0.0]

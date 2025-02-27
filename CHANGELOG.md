@@ -1,24 +1,20 @@
 # Changelog
 
-## [0.6.12a2](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.12a2) (2025-02-23)
+## [0.6.14a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.14a1) (2025-02-27)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.12a1...0.6.12a2)
-
-**Merged pull requests:**
-
-- Create funding-manifest-urls [\#73](https://github.com/OpenVoiceOS/ovos-persona/pull/73) ([j1nx](https://github.com/j1nx))
-- nl-nl improvements [\#72](https://github.com/OpenVoiceOS/ovos-persona/pull/72) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
-- correcting a bug in German translation [\#71](https://github.com/OpenVoiceOS/ovos-persona/pull/71) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
-- da-dk/translate [\#70](https://github.com/OpenVoiceOS/ovos-persona/pull/70) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
-- fr/fr missing translation [\#68](https://github.com/OpenVoiceOS/ovos-persona/pull/68) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
-
-## [0.6.12a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.12a1) (2025-02-11)
-
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.11...0.6.12a1)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.13a1...0.6.14a1)
 
 **Merged pull requests:**
 
-- gl/translate [\#69](https://github.com/OpenVoiceOS/ovos-persona/pull/69) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
+- feat: match\_medium - use keywords to match intents, galician and cata… [\#77](https://github.com/OpenVoiceOS/ovos-persona/pull/77) ([JarbasAl](https://github.com/JarbasAl))
+
+## [0.6.13a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.13a1) (2025-02-26)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.12...0.6.13a1)
+
+**Merged pull requests:**
+
+- fix:renamed dependency package [\#75](https://github.com/OpenVoiceOS/ovos-persona/pull/75) ([JarbasAl](https://github.com/JarbasAl))
 
 
 

@@ -28,9 +28,9 @@ class PersonaProtocol(AgentProtocol):
                 persona = {
                     "name": "ChatGPT",
                     "solvers": [
-                        "ovos-solver-openai-persona-plugin"
+                        "ovos-solver-openai-plugin"
                     ],
-                    "ovos-solver-openai-persona-plugin": {
+                    "ovos-solver-openai-plugin": {
                         "api_url": "https://llama.smartgic.io/v1",
                         "key": "sk-xxxx",
                         "persona": "helpful, creative, clever, and very friendly."
