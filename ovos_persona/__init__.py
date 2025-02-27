@@ -126,6 +126,10 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
             self.intent_matchers[lang] = IntentContainer(cache_dir=f"{intent_cache}/{lang}") \
                 if IS_PADATIOUS else IntentContainer()
             for intent_name in self.INTENTS:
+                if lang in ["ca-ES", "gl-ES"] and intent_name in ["summon.intent", "ask.intent"]:
+                    # TODO - training hangs due to too many samples
+                    #  skip padatious, use keyword matching for these languages for now
+                    continue
                 samples = intent_data.get(intent_name) or []
                 samples = flatten_list([expand_template(s) for s in samples])
                 if samples:
@@ -281,7 +285,9 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         supported_langs = list(self.intent_matchers.keys())
         closest_lang, distance = closest_match(lang, supported_langs, max_distance=10)
         if closest_lang != "und":
-            match = self.intent_matchers[closest_lang].calc_intent(utterances[0].lower()) or {}
+            match = None
+            query = utterances[0].lower()
+            match = match or self.intent_matchers[closest_lang].calc_intent(utterances[0].lower()) or {}
             name = match.name if hasattr(match, "name") else match.get("name")
             conf = match.conf if hasattr(match, "conf") else match.get("conf", 0)
             if conf < self.config.get("min_intent_confidence", 0.6):
@@ -324,7 +330,67 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
                 return self.match_low(utterances, lang, message)
 
     def match_medium(self, utterances: List[str], lang: str, message: Message) -> None:
-        return self.match_high(utterances, lang, message)
+        lang = lang or self.lang
+        lang = standardize_lang_tag(lang)
+
+        if self.active_persona and self.voc_match(utterances[0], "Release", lang):
+            return IntentHandlerMatch(match_type='persona:release',
+                                      match_data={"persona": self.active_persona},
+                                      skill_id="persona.openvoiceos",
+                                      utterance=utterances[0])
+
+        supported_langs = list(self.intent_matchers.keys())
+        closest_lang, distance = closest_match(lang, supported_langs, max_distance=10)
+        if closest_lang != "und":
+            match = {}
+            query = utterances[0].lower()
+
+            # adapt-like matching for querying a persona
+            if any(name.lower() in query for name in self.personas):
+                if (self.voc_match(query, "ask", lang=closest_lang) and
+                        self.voc_match(query, "opinion", lang=closest_lang)):
+                    for name in self.personas:
+                        if name.lower() in query:
+                            query = self.remove_voc(query, "ask", lang=closest_lang)
+                            query = self.remove_voc(query, "opinion", lang=closest_lang)
+                            query = self.remove_voc(query, "persona", lang=closest_lang)
+                            match = {"name": "ask.intent",
+                                     "conf": 0.85,
+                                     "entities": {"persona": name, "query": query}}
+                            break
+
+                elif self.voc_match(query, "summon", lang=closest_lang):
+                    for name in self.personas:
+                        if name.lower() in query:
+                            query = self.remove_voc(query, "summon", lang=closest_lang)
+                            query = self.remove_voc(query, "persona", lang=closest_lang)
+                            match = {"name": "summon.intent",
+                                     "conf": 0.85,
+                                     "entities": {"persona": name, "query": query}}
+                            break
+
+            name =  match.get("name")
+            conf =  match.get("conf", 0)
+            if name:
+                LOG.info(f"Persona intent exact match: {match}")
+                entities = match.get("entities", {})
+                persona = entities.get("persona")
+                query = entities.get("query")
+                if name == "summon.intent" and persona:  # if persona name not in match, its a misclassification
+                    return IntentHandlerMatch(match_type='persona:summon',
+                                              match_data={"persona": persona},
+                                              skill_id="persona.openvoiceos",
+                                              utterance=utterances[0])
+                elif name == "ask.intent" and persona:  # if persona name not in match, its a misclassification
+                    persona = self.get_persona(persona)
+                    if persona and query:  # else its a misclassification
+                        utterance = match["entities"].pop("query")
+                        return IntentHandlerMatch(match_type='persona:query',
+                                                  match_data={"utterance": utterance,
+                                                              "lang": lang,
+                                                              "persona": persona},
+                                                  skill_id="persona.openvoiceos",
+                                                  utterance=utterances[0])
 
     def match_low(self, utterances: List[str], lang: Optional[str] = None,
                   message: Optional[Message] = None) -> Optional[IntentHandlerMatch]:
@@ -339,6 +405,10 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         Returns:
             IntentMatch if handled otherwise None.
         """
+        match = self.match_medium(utterances, lang, message)
+        if match:
+            return match
+
         persona = self.active_persona
         if self.config.get("handle_fallback"):
             # read default persona from config
