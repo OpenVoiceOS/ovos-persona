@@ -12,5 +12,57 @@
         "put (chatbot|persona|AI|LLM) to sleep",
         "shut (up|your mouth)",
         "stop (chatting|communicating|responding|talking)"
+    ],
+    "ask.voc": [
+        "ask",
+        "get",
+        "have to say",
+        "inquire",
+        "interrogate",
+        "opinion about",
+        "pose a question",
+        "probe",
+        "query",
+        "question",
+        "request",
+        "say about",
+        "seek",
+        "think about"
+    ],
+    "opinion.voc": [
+        "analysis",
+        "comment",
+        "impression",
+        "insights",
+        "interpretation",
+        "perception",
+        "reaction",
+        "standpoint",
+        "take",
+        "their views",
+        "thoughts",
+        "understanding",
+        "viewpoint"
+    ],
+    "persona.voc": [
+        "AI",
+        "LLM",
+        "LLMs",
+        "Large Language Models",
+        "agent",
+        "assistant",
+        "bot",
+        "chatbot",
+        "persona",
+        "personalities",
+        "personas",
+        "virtual assistant"
+    ],
+    "summon.voc": [
+        "(connect me|i want to talk) (to|with)",
+        "(enable|access|activate|awake|awaken|bring forth|call upon|conjure|summon|invoke|engage)",
+        "(initiate|start|begin|enter|open) (chat|talk|interaction|communication|conversation|dialogue)",
+        "(start|initiate|begin|enter|establish) (a|) (chat|discussion|conversation|dialogue)",
+        "[let me] (chat|talk|interact) (to|with)"
     ]
 }
