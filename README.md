@@ -135,7 +135,6 @@ Where to place `"ovos-persona-pipeline-plugin-high"` in your pipeline depends on
 
 Additionally, you have `"ovos-persona-pipeline-plugin-low"` to handle utterances even when a persona isnt explicitly active
 
-> **ℹ️ Note**: No "medium" plugin exists for this pipeline.  
 
 ##### Option 1: send all utterances to active persona
 
