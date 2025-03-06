@@ -12,5 +12,57 @@
     "Lege (den|die|das) (Chatbot|Persona|KI|LLM)",
     "(halt|halte) (deinen Mund | dein Maul| die Klappe)",
     "höre auf (zu chatten | zu kommunizieren | zu antworten | zu reden | zu labern)"
+  ],
+  "ask.voc": [
+    "frage",
+    "hole",
+    "muss sagen",
+    "erkundige",
+    "frage ab",
+    "Meinung über",
+    "stelle eine Frage",
+    "sondiere",
+    "frage ab",
+    "Frage",
+    "frage an",
+    "sage über",
+    "suche",
+    "denke nach über"
+  ],
+  "opinion.voc": [
+    "analysiere",
+    "kommentiere",
+    "Eindruck",
+    "Erkenntnisse",
+    "Interpretation",
+    "Wahrnehmung",
+    "Reaktion",
+    "Standpunkt",
+    "nehme",
+    "Deine Ansicht",
+    "Gedanken",
+    "Verständnis",
+    "Standpunkt"
+  ],
+  "persona.voc": [
+    "AI",
+    "LLM",
+    "LLMs",
+    "Large Language Models",
+    "Agent",
+    "Assistent",
+    "Bot",
+    "Chatbot",
+    "Persona",
+    "Persönlichkeiten",
+    "Personas",
+    "virtueller Assistent"
+  ],
+  "summon.voc": [
+    "(verbinde mich|ich möchte reden|sprechen) (mit|mit)",
+    "(aktiviere|starte|verbinde|beginne)",
+    "(initiiere|starte|beginne|eröffne) (Chat|Gespräch|Interaktion|Kommunikation|Dialog)",
+    "(starte|initiiere|beginne) (ein|einen|eine|) (Chat|Diskussion|Gespräch|Dialog)",
+    "[lass mich] (chatten | reden | sprechen) (mit | mit)"
   ]
 }
