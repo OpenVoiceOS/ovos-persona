@@ -1,0 +1,8 @@
+(consultar|indagar|solicitar|buscar|preguntar|preguntar|indagar|interrogar|hacer una pregunta a) {persona} (con respecto a|sobre) {utterance}
+(consultar|indagar|solicitar|buscar|preguntar|preguntar|preguntar|interrogar) a {persona} para conocer su opinión sobre {utterance}
+(consulta|solicitud|busque|pregunte|pregunte|indague|obtenga) {persona} (perspectiva|opinión|pensamientos|punto de vista|interpretación|retroalimentación|postura|visión) (de|sobre) {utterance}
+Pregúntale a {persona} qué (tiene que decir|piensa) sobre {utterance}
+Pregúntale a {persona} sobre {utterance}
+preguntale a {persona} (sobre|para compartir|) su (perspectiva|opinión) (sobre|de|sobre) {utterance}
+pídele a {persona} (sus|) (percepciones|análisis|comentarios|impresión|interpretación|percepción|reacción|punto de vista|toma|pensamientos|comprensión|punto de vista) (sobre|de) {utterance}
+¿Qué (piensa|dice) {persona} sobre {utterance}?

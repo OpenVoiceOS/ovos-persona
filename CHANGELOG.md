@@ -1,12 +1,12 @@
 # Changelog
 
-## [0.6.14a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.14a1) (2025-03-06)
+## [0.6.15a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.15a1) (2025-03-30)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.13...0.6.14a1)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.15...0.6.15a1)
 
 **Merged pull requests:**
 
-- adding German translations [\#79](https://github.com/OpenVoiceOS/ovos-persona/pull/79) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
+- es-es/translate [\#81](https://github.com/OpenVoiceOS/ovos-persona/pull/81) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
 
 
 
