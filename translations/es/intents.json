@@ -1,0 +1,38 @@
+{
+  "active_persona.intent": [
+    "(¿Qué|Cuál) (persona|personalidad) está (en uso|hablando|activo) (ahora|ahora mismo|)",
+    "(¿Qué?) (personaje|personalidad) está actualmente (activa|activada)",
+    "(con quién|con qué persona) estoy hablando (ahora|ahora mismo|actualmente|)",
+    "(quién|Qué persona) está activa",
+    "(quién|qué|cuál) es [la] (persona|personalidad) activa",
+    "¿Estoy hablando con una (persona|personalidad)?",
+    "¿Hay una (persona|personalidad) activa?",
+    "Cuéntame sobre la personalidad activa",
+    "¿Quién está actualmente (activo|activado)?",
+    "activa (persona|personalidad)"
+  ],
+  "ask.intent": [
+    "(consulta|solicitud|busque|pregunte|pregunte|indague|obtenga) {persona} (perspectiva|opinión|pensamientos|punto de vista|interpretación|retroalimentación|postura|visión) (de|sobre) {utterance}",
+    "(consultar|indagar|solicitar|buscar|preguntar|preguntar|preguntar|interrogar) a {persona} para conocer su opinión sobre {utterance}",
+    "(consultar|indagar|solicitar|buscar|preguntar|preguntar|indagar|interrogar|hacer una pregunta a) {persona} (con respecto a|sobre) {utterance}",
+    "preguntale a {persona} (sobre|para compartir|) su (perspectiva|opinión) (sobre|de|sobre) {utterance}",
+    "Pregúntale a {persona} sobre {utterance}",
+    "pídele a {persona} (sus|) (percepciones|análisis|comentarios|impresión|interpretación|percepción|reacción|punto de vista|toma|pensamientos|comprensión|punto de vista) (sobre|de) {utterance}",
+    "Pregúntale a {persona} qué (tiene que decir|piensa) sobre {utterance}",
+    "¿Qué (piensa|dice) {persona} sobre {utterance}?"
+  ],
+  "list_personas.intent": [
+    "Dame una lista de (personas|personalidades|LLM|LLMs|Grandes modelos de lenguaje) [disponibles]",
+    "Cuéntame [sobre] las (personajes|personalidades|LLM|LLMs|Grandes Modelos de Lenguaje) disponibles",
+    "¿Qué (personas|personalidades|LLM|LLMs|Grandes Modelos de Lenguaje) (puedo usar|están disponibles)?",
+    "¿Quiénes son las [disponibles] (personas|personalidades|LLM|LLMs|Grandes Modelos de Lenguaje)?",
+    "¿Puedes enumerar las (personas|personalidades|LLM|LLMs|Grandes modelos de lenguaje) [disponibles]"
+  ],
+  "summon.intent": [
+    "(conéctame|quiero hablar) (con|a) {persona}",
+    "(habilitar|acceder|activar|despertar|despertar|traer|invocar|conjurar|convocar|invocar) (la|) {persona} (virtual|) (IA|bot|persona|agente|asistente|chatbot|)",
+    "(iniciar|comenzar|entrar|abrir) (chatear|hablar|interacción|comunicación|conversación|diálogo) (a|con) {persona}",
+    "(iniciar|iniciar|comenzar|entrar|establecer) (un|) (chat|discusión|conversación|diálogo) con {persona}",
+    "[déjame] (charlar|hablar|interactuar) con {persona}"
+  ]
+}
