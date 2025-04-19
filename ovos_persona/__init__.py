@@ -218,7 +218,7 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         # TODO - history per persona , not only per session
         # dont let context leak between personas
         message = message or dig_for_message()
-        if message:
+        if message and self.config.get("short-term-memory", True):
             for q, a in self._build_msg_history(message):
                 messages.append({"role": "user", "content": q})
                 messages.append({"role": "assistant", "content": a})
