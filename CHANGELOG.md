@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.18a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.18a1) (2025-04-19)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.17a1...0.6.18a1)
+
+**Merged pull requests:**
+
+- fix: add memory setting config [\#85](https://github.com/OpenVoiceOS/ovos-persona/pull/85) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.6.17a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.17a1) (2025-04-12)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.16...0.6.17a1)
