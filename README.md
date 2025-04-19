@@ -25,7 +25,8 @@ The **`PersonaPipeline`** brings multi-persona management to OpenVoiceOS (OVOS),
       "intents": {
           "persona": {
             "handle_fallback":  true,
-            "default_persona": "Remote Llama"
+            "default_persona": "Remote Llama",
+            "short-term-memory": true
           },
           "pipeline": [
               "stop_high",
