@@ -21,7 +21,7 @@
     "Im Moment ist die aktive Persona {persona}",
     "Die aktive Persona ist {persona}",
     "Die momentan verwendete Persona ist {persona}",
-    "Sie sprechen derzeit mit {persona}"
+    "Du sprichst derzeit mit {persona}"
   ],
   "list_personas.dialog": [
     "Hier sind die verfügbaren Personas",
@@ -29,7 +29,7 @@
     "Die verfügbaren Personas sind"
   ],
   "no_active_persona.dialog": [
-    "Derzeit sind keine Personas aktiviert, daher sprechen sie mit mir als Basispersönlichkeit.",
+    "Derzeit sind keine Personas aktiviert, daher sprichst du mit mir als Basispersönlichkeit.",
     "Ich konnte keine aktive Persona finden, daher werde ich mit Ihnen als meine Standard-Persona sprechen.",
     "Es sieht so aus, als ob es im Moment keine aktiven Personas gibt, also werde ich als ich antworten.",
     "Keine Personas aktiv, ich verwende die Basispersönlichkeit",
@@ -37,7 +37,7 @@
     "Da keine Personas aktiv sind, werde ich vorerst weiterhin meine Standardpersönlichkeit verwenden"
   ],
   "no_personas.dialog": [
-    "Ich konnte im Moment keine Personas finden. Bitte schauen sie später noch einmal vorbei.",
+    "Ich konnte im Moment keine Personas finden. Bitte schaue später noch einmal vorbei.",
     "Es sieht so aus, als ob derzeit keine Personas verfügbar sind",
     "Es scheint, dass momentan keine Personas zur Interaktion verfügbar sind",
     "Tut mir leid, ich konnte momentan keine Personas finden",
@@ -57,9 +57,9 @@
     "Beim Chatten mit {persona} ist ein Fehler aufgetreten."
   ],
   "persona_select.dialog": [
-    "Sagen Sie mir, welche Persona sie aktivieren möchten",
-    "Welche möchten Sie wählen",
-    "Mit welcher Persona möchten Sie interagieren?"
+    "Sage mir, welche Persona du aktivieren möchtest",
+    "Welche möchtest du wählen",
+    "Mit welcher Persona möchtest du interagieren?"
   ],
   "release_persona.dialog": [
     "{persona} deaktiviert",
