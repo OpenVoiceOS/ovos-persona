@@ -316,12 +316,13 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
                 elif name == "ask.intent" and persona and query:
                     # if persona name or query not in match, its a misclassification
                     persona = self.get_persona(persona)
-                    return IntentHandlerMatch(match_type='persona:query',
-                                              match_data={"utterance": query,
-                                                          "lang": lang,
-                                                          "persona": persona},
-                                              skill_id="persona.openvoiceos",
-                                              utterance=utterances[0])
+                    if persona: # name in intent must match a registered persona
+                        return IntentHandlerMatch(match_type='persona:query',
+                                                  match_data={"utterance": query,
+                                                              "lang": lang,
+                                                              "persona": persona},
+                                                  skill_id="persona.openvoiceos",
+                                                  utterance=utterances[0])
 
             # override regular intent parsing, handle utterance until persona is released
             if self.active_persona:
