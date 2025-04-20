@@ -22,7 +22,7 @@
     "was (denkt | sagt) {persona} über {utterance}"
   ],
   "list_personas.intent": [
-    "Geben Sie mir eine Liste der [verfügbaren] (Personas|Persönlichkeiten|LLM|LLMs|Großen Sprachmodelle|Large Language Models)",
+    "Gib mir eine Liste der [verfügbaren] (Personas|Persönlichkeiten|LLM|LLMs|Großen Sprachmodelle|Large Language Models)",
     "(nenne|sage|zeige) mir die verfügbaren (Personas|Persönlichkeiten|LLM|LLMs|Großen Sprachmodellen|Large Language Models)",
     "Welche (Personas|Persönlichkeiten|LLM|LLMs|Large Language Models) (kann ich verwenden|sind verfügbar)",
     "(Wer|welches) sind die [verfügbaren] (Personas|Persönlichkeiten|LLM|LLMs|Großen Sprachmodelle)",
