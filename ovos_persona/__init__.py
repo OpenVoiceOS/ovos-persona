@@ -297,7 +297,7 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
                 LOG.info(f"Persona intent exact match: {match}")
                 entities = match.matches if hasattr(match, "matches") else match.get("entities", {})
                 persona = entities.get("persona")
-                query = entities.get("utterance)
+                query = entities.get("utterance")
                 if name == "summon.intent" and persona: # if persona name not in match, its a misclassification
                     return IntentHandlerMatch(match_type='persona:summon',
                                               match_data={"persona": persona},
