@@ -286,7 +286,6 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         closest_lang, distance = closest_match(lang, supported_langs, max_distance=10)
         if closest_lang != "und":
             match = None
-            query = utterances[0].lower()
             match = match or self.intent_matchers[closest_lang].calc_intent(utterances[0].lower()) or {}
             name = match.name if hasattr(match, "name") else match.get("name")
             conf = match.conf if hasattr(match, "conf") else match.get("conf", 0)
@@ -313,16 +312,19 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
                                               match_data={"lang": lang},
                                               skill_id="persona.openvoiceos",
                                               utterance=utterances[0])
-                elif name == "ask.intent" and persona: # if persona name not in match, its a misclassification
+                elif name == "ask.intent" and persona and query:
+                    # if persona name or query not in match, its a misclassification
                     persona = self.get_persona(persona)
-                    if persona and query:  # else its a misclassification
-                        utterance = match["entities"].pop("utterance")
+                    if persona: # name in intent must match a registered persona
                         return IntentHandlerMatch(match_type='persona:query',
-                                                  match_data={"utterance": utterance,
+                                                  match_data={"utterance": query,
                                                               "lang": lang,
                                                               "persona": persona},
                                                   skill_id="persona.openvoiceos",
                                                   utterance=utterances[0])
+                    else:
+                        LOG.debug("Discarding ask.intent, requested persona doesn't match any registered persona")
+                        # TODO - consider matching and reprompting user
 
             # override regular intent parsing, handle utterance until persona is released
             if self.active_persona:
