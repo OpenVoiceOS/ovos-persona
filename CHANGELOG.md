@@ -1,20 +1,12 @@
 # Changelog
 
-## [0.6.18a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.18a1) (2025-04-19)
+## [0.6.19a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.19a1) (2025-04-20)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.17a1...0.6.18a1)
-
-**Merged pull requests:**
-
-- fix: add memory setting config [\#85](https://github.com/OpenVoiceOS/ovos-persona/pull/85) ([JarbasAl](https://github.com/JarbasAl))
-
-## [0.6.17a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.17a1) (2025-04-12)
-
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.16...0.6.17a1)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.18...0.6.19a1)
 
 **Merged pull requests:**
 
-- optimizing German translation for better usage [\#83](https://github.com/OpenVoiceOS/ovos-persona/pull/83) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
+- optimizing German translation for better usage [\#87](https://github.com/OpenVoiceOS/ovos-persona/pull/87) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
 
 
 
