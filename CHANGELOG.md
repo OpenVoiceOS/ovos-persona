@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.20a2](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.20a2) (2025-04-20)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.20a1...0.6.20a2)
+
+**Merged pull requests:**
+
+- fix ask.intent [\#93](https://github.com/OpenVoiceOS/ovos-persona/pull/93) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.6.20a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.20a1) (2025-04-20)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.19a1...0.6.20a1)
