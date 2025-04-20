@@ -286,7 +286,6 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         closest_lang, distance = closest_match(lang, supported_langs, max_distance=10)
         if closest_lang != "und":
             match = None
-            query = utterances[0].lower()
             match = match or self.intent_matchers[closest_lang].calc_intent(utterances[0].lower()) or {}
             name = match.name if hasattr(match, "name") else match.get("name")
             conf = match.conf if hasattr(match, "conf") else match.get("conf", 0)
@@ -323,6 +322,8 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
                                                               "persona": persona},
                                                   skill_id="persona.openvoiceos",
                                                   utterance=utterances[0])
+                    else:
+                        LOG.debug("Discarding ask.intent, requested persona doesn't match any registered persona")
 
             # override regular intent parsing, handle utterance until persona is released
             if self.active_persona:
