@@ -324,6 +324,7 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
                                                   utterance=utterances[0])
                     else:
                         LOG.debug("Discarding ask.intent, requested persona doesn't match any registered persona")
+                        # TODO - consider matching and reprompting user
 
             # override regular intent parsing, handle utterance until persona is released
             if self.active_persona:
