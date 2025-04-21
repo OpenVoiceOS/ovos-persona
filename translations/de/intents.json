@@ -29,7 +29,7 @@
     "(Können Sie|Kannst Du) (die verfügbaren| die) (Personas|Persönlichkeiten|LLM|LLMs|Große Sprachmodelle) auflisten"
   ],
   "summon.intent": [
-    "(verbinde mich|ich möchte) (mit|mit) {persona} (reden|)",
+    "(verbinde mich|ich möchte) (mit|mit) {persona} (reden|sprechen|)",
     "(rufe | binde| starte) (die|den|) (virtuelle |) {persona} (KI|Bot|Persona|Agent|Assistent|Chatbot|) (auf|ein)",
     "(initiier | starte | beginne | eröffne) (ein | eine | einen)  (Gespräch | Dialog | Konversation | Chat) mit {persona}",
     "(starte|initiiere|beginne|baue) (ein|einen | eine) (Chat|Diskussion|Gespräch|Dialog) mit {persona}",
