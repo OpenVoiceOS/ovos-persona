@@ -1,7 +1,7 @@
 {
   "activated_persona.dialog": [
     "{persona} aktiviert",
-    "{persona} benutzt\n{persona} in Anwendung",
+    "{persona} wird benutzt\n{persona} in Anwendung",
     "{persona} wurde aktiviert.",
     "{persona} wurde eingeschaltet.",
     "{persona} wurde initialisiert.",
