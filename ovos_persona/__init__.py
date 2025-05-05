@@ -153,6 +153,11 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         return persona
 
     def get_persona(self, persona: str):
+        """
+        Finds the closest matching persona name to the given input using case-insensitive partial token set matching.
+        
+        If no input is provided, returns the currently active persona or the default persona. Returns the matched persona name if the similarity score is at least 0.7; otherwise, returns None.
+        """
         if not persona:
             return self.active_persona or self.default_persona
         # TODO - add ignorecase flag to match_one in ovos_utils
