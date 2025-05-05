@@ -161,7 +161,7 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         if not persona:
             return self.active_persona or self.default_persona
         # TODO - make MatchStrategy configurable
-        match, score = match_one(persona.lower(), list(self.personas),
+        match, score = match_one(persona, list(self.personas),
                                  strategy=MatchStrategy.PARTIAL_TOKEN_SET_RATIO, 
                                  ignore_case=True)
         LOG.debug(f"Closest persona: {match} - {score}")
