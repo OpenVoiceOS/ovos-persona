@@ -157,7 +157,7 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
             return self.active_persona or self.default_persona
         # TODO - add ignorecase flag to match_one in ovos_utils
         # TODO - make MatchStrategy configurable
-        match, score = match_one(persona, list(self.personas),
+        match, score = match_one(persona.lower(), [p.lower() for p in self.personas],
                                  strategy=MatchStrategy.PARTIAL_TOKEN_SET_RATIO)
         LOG.debug(f"Closest persona: {match} - {score}")
         return match if score >= 0.7 else None
