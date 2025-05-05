@@ -1,20 +1,64 @@
 # Changelog
 
-## [0.6.18a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.18a1) (2025-04-19)
+## [0.6.22a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.22a1) (2025-05-05)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.17a1...0.6.18a1)
-
-**Merged pull requests:**
-
-- fix: add memory setting config [\#85](https://github.com/OpenVoiceOS/ovos-persona/pull/85) ([JarbasAl](https://github.com/JarbasAl))
-
-## [0.6.17a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.17a1) (2025-04-12)
-
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.16...0.6.17a1)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.21a1...0.6.22a1)
 
 **Merged pull requests:**
 
-- optimizing German translation for better usage [\#83](https://github.com/OpenVoiceOS/ovos-persona/pull/83) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
+- fix: lowercase [\#105](https://github.com/OpenVoiceOS/ovos-persona/pull/105) ([JarbasAl](https://github.com/JarbasAl))
+
+## [0.6.21a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.21a1) (2025-05-05)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.20a4...0.6.21a1)
+
+**Fixed bugs:**
+
+- Make the persona name case-nonsentive [\#100](https://github.com/OpenVoiceOS/ovos-persona/issues/100)
+
+**Merged pull requests:**
+
+- fix: caseinsensitive [\#102](https://github.com/OpenVoiceOS/ovos-persona/pull/102) ([JarbasAl](https://github.com/JarbasAl))
+
+## [0.6.20a4](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.20a4) (2025-04-22)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.20a3...0.6.20a4)
+
+**Merged pull requests:**
+
+- correcting a bug in German translation [\#97](https://github.com/OpenVoiceOS/ovos-persona/pull/97) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
+
+## [0.6.20a3](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.20a3) (2025-04-21)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.20a2...0.6.20a3)
+
+**Merged pull requests:**
+
+- optimizing German translation for better usage [\#95](https://github.com/OpenVoiceOS/ovos-persona/pull/95) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
+
+## [0.6.20a2](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.20a2) (2025-04-20)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.20a1...0.6.20a2)
+
+**Merged pull requests:**
+
+- fix ask.intent [\#93](https://github.com/OpenVoiceOS/ovos-persona/pull/93) ([JarbasAl](https://github.com/JarbasAl))
+
+## [0.6.20a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.20a1) (2025-04-20)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.19a1...0.6.20a1)
+
+**Merged pull requests:**
+
+- fix: ask.intent [\#90](https://github.com/OpenVoiceOS/ovos-persona/pull/90) ([JarbasAl](https://github.com/JarbasAl))
+
+## [0.6.19a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.19a1) (2025-04-20)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.18...0.6.19a1)
+
+**Merged pull requests:**
+
+- optimizing German translation for better usage [\#87](https://github.com/OpenVoiceOS/ovos-persona/pull/87) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
 
 
 
