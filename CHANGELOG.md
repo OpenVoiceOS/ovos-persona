@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.22a2](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.22a2) (2025-05-05)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.22a1...0.6.22a2)
+
+**Merged pull requests:**
+
+- Update requirements.txt [\#107](https://github.com/OpenVoiceOS/ovos-persona/pull/107) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.6.22a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.22a1) (2025-05-05)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.21a1...0.6.22a1)
