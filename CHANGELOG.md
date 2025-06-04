@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.22a3](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.22a3) (2025-06-04)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.22a2...0.6.22a3)
+
+**Merged pull requests:**
+
+- gl/translate [\#110](https://github.com/OpenVoiceOS/ovos-persona/pull/110) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
+
 ## [0.6.22a2](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.22a2) (2025-05-05)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.22a1...0.6.22a2)
