@@ -12,5 +12,57 @@
     "(poñer|pór|pon) (o|a) (chat|chatbot|bot de leria|bot de charla|bot de conversa|personaxe|perfil|IA|intelixencia artificial|LLM|modelo de lingua|modelo de linguaxe) a durmir",
     "(cala|cala a boca)",
     "(parar|para|deixar|deixa|deter|detén|abonda|chega) (de|a) (conversar|conversación|conversa|charla|leria|comunicarte|comunicarnos|comunicación|responder|falar)"
+  ],
+  "ask.voc": [
+    "preguntar",
+    "(conseguir|obter)",
+    "ter que dicir",
+    "preguntar",
+    "inquirir",
+    "opinión sobre",
+    "formular unha pregunta",
+    "investigar",
+    "consulta",
+    "pregunta",
+    "solicitude",
+    "dicir sobre",
+    "(buscar|procurar)",
+    "pensar en"
+  ],
+  "opinion.voc": [
+    "análise",
+    "comentario",
+    "impresión",
+    "información",
+    "interpretación",
+    "percepción",
+    "reacción",
+    "punto de vista",
+    "visión",
+    "as súas opinións",
+    "pensamentos",
+    "entendemento",
+    "punto de vista"
+  ],
+  "persona.voc": [
+    "IA",
+    "LLM",
+    "LLMs",
+    "(grandes modelos de lingua|grandes modelos de linguaxe)",
+    "axente",
+    "asistente",
+    "bot",
+    "chatbot",
+    "persona",
+    "personalidades",
+    "personas",
+    "asistente virtual"
+  ],
+  "summon.voc": [
+    "(conéctame|quero falar|ponme) (con|con)",
+    "(activar|acceder|despertar|chamar|invocar|conxurar|invocar)",
+    "(iniciar|comezar|empezar|entrar|abrir) (chat|faladoiro|interacción|comunicación|conversa|diálogo)",
+    "(comezar|iniciar|empezar|entrar|establecer) (un|unha|) (chat|discusión|conversa|diálogo)",
+    "[quero] (chatear|falar|interactuar) (con|con)"
   ]
 }

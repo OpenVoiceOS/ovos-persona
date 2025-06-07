@@ -1,6 +1,4 @@
 {persona} aktiviert
-{persona} benutzt
-{persona} in Anwendung
 {persona} ist eingerichtet und in Funktion.
 {persona} ist nun aktiv
 {persona} ist nun aktiviert.
@@ -8,6 +6,8 @@
 {persona} ist nun vollständig aktiviert.
 {persona} ist startklar.
 {persona} wird angewendet.
+{persona} wird benutzt
+{persona} in Anwendung
 {persona} wird nun angewendet
 {persona} wird nun verwendet
 {persona} wurde aktiviert.

@@ -12,5 +12,57 @@
     "laat (chatbot|persona|AI|LLM) in slaap vallen",
     "hou je mond",
     "stop (met)(chatten|communiceren|reageren|praten)"
+  ],
+  "ask.voc": [
+    "vraag",
+    "vraag",
+    "moet zeggen",
+    "informeer",
+    "ondervraag",
+    "mening over",
+    "een vraag stellen",
+    "vraag door",
+    "vraag",
+    "vraag",
+    "verzoek",
+    "zeg over",
+    "zoek",
+    "denk na over"
+  ],
+  "opinion.voc": [
+    "analyse",
+    "opmerking",
+    "indruk",
+    "inzichten",
+    "interpretatie",
+    "perceptie",
+    "reactie",
+    "standpunt",
+    "mening",
+    "hun standpunten",
+    "gedachten",
+    "begrip",
+    "gezichtspunt"
+  ],
+  "persona.voc": [
+    "AI",
+    "LLM",
+    "LLMs",
+    "Large Language Models",
+    "agent",
+    "assistent",
+    "bot",
+    "chatbot",
+    "persona",
+    "personalities",
+    "personas",
+    "virtuele assistent"
+  ],
+  "summon.voc": [
+    "(verbind mij|ik wil praten) (met)",
+    "(schakel|geef toegang tot |activeer|ontwaak|praat met|roep|vraag)(in)",
+    "(start|begin||open) (chat|praat met|interacteer met|communiceer met| start een gesprek met|ga een dialoog aan met)",
+    "(start|initieer|begin|breng) (een|) (chat|discussie|gesprek|dialoog) (tot stand|op gang)",
+    "[laat me] (chatten|praten) (met)"
   ]
 }

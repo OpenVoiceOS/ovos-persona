@@ -22,14 +22,14 @@
     "was (denkt | sagt) {persona} über {utterance}"
   ],
   "list_personas.intent": [
-    "Geben Sie mir eine Liste der [verfügbaren] (Personas|Persönlichkeiten|LLM|LLMs|Großen Sprachmodelle|Large Language Models)",
+    "Gib mir eine Liste der [verfügbaren] (Personas|Persönlichkeiten|LLM|LLMs|Großen Sprachmodelle|Large Language Models)",
     "(nenne|sage|zeige) mir die verfügbaren (Personas|Persönlichkeiten|LLM|LLMs|Großen Sprachmodellen|Large Language Models)",
     "Welche (Personas|Persönlichkeiten|LLM|LLMs|Large Language Models) (kann ich verwenden|sind verfügbar)",
     "(Wer|welches) sind die [verfügbaren] (Personas|Persönlichkeiten|LLM|LLMs|Großen Sprachmodelle)",
     "(Können Sie|Kannst Du) (die verfügbaren| die) (Personas|Persönlichkeiten|LLM|LLMs|Große Sprachmodelle) auflisten"
   ],
   "summon.intent": [
-    "(verbinde mich|ich möchte) (mit|mit) {persona} (reden|)",
+    "(verbinde mich|ich möchte) (mit|mit) {persona} (reden|sprechen|)",
     "(rufe | binde| starte) (die|den|) (virtuelle |) {persona} (KI|Bot|Persona|Agent|Assistent|Chatbot|) (auf|ein)",
     "(initiier | starte | beginne | eröffne) (ein | eine | einen)  (Gespräch | Dialog | Konversation | Chat) mit {persona}",
     "(starte|initiiere|beginne|baue) (ein|einen | eine) (Chat|Diskussion|Gespräch|Dialog) mit {persona}",
