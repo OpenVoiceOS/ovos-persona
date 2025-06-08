@@ -15,7 +15,7 @@ from ovos_bus_client.message import Message, dig_for_message
 from ovos_bus_client.session import SessionManager
 from ovos_plugin_manager.persona import find_persona_plugins
 from ovos_plugin_manager.solvers import find_question_solver_plugins
-from ovos_plugin_manager.templates.pipeline import PipelineStageConfidenceMatcher, IntentHandlerMatch
+from ovos_plugin_manager.templates.pipeline import ConfidenceMatcherPipeline, IntentHandlerMatch
 from ovos_utils.bracket_expansion import expand_template
 from ovos_utils.fakebus import FakeBus
 from ovos_utils.lang import standardize_lang_tag, get_language_dir
@@ -72,7 +72,7 @@ class Persona:
         return self.solvers.stream_completion(messages, lang, units)
 
 
-class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
+class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
     INTENTS = ["ask.intent", "summon.intent", "list_personas.intent", "active_persona.intent"]
 
     def __init__(self, bus: Optional[Union[MessageBusClient, FakeBus]] = None,
@@ -81,7 +81,7 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         config = config or Configuration().get("intents", {}).get("persona", {})
         OVOSAbstractApplication.__init__(self, bus=bus, skill_id="persona.openvoiceos",
                                          resources_dir=f"{dirname(__file__)}")
-        PipelineStageConfidenceMatcher.__init__(self, bus=bus, config=config)
+        ConfidenceMatcherPipeline.__init__(self, bus=bus, config=config)
         self.sessions = {}
         self.personas = {}
         self.intent_matchers = {}
