@@ -189,6 +189,9 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
                 LOG.error(f"Failed to load '{name}': {e}")
 
         # load personas provided by packages
+        if self.config.get("ignore_plugin_personas", False):
+            return
+            
         for name, persona in find_persona_plugins().items():
             if name in self.blacklist:
                 continue
