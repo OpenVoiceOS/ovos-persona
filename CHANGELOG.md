@@ -1,12 +1,16 @@
 # Changelog
 
-## [0.6.23a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.23a1) (2025-06-08)
+## [0.6.24a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.24a1) (2025-11-05)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.22...0.6.23a1)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.23...0.6.24a1)
+
+**Closed issues:**
+
+- Make it possible to launch as a standalone. [\#59](https://github.com/OpenVoiceOS/ovos-persona/issues/59)
 
 **Merged pull requests:**
 
-- fix: compatibility with ovos-plugin-manager 1.X.X [\#114](https://github.com/OpenVoiceOS/ovos-persona/pull/114) ([JarbasAl](https://github.com/JarbasAl))
+- Update requirements.txt [\#118](https://github.com/OpenVoiceOS/ovos-persona/pull/118) ([JarbasAl](https://github.com/JarbasAl))
 
 
 
