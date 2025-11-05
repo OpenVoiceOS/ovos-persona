@@ -49,7 +49,7 @@ PLUGIN_ENTRY_POINT = 'ovos-persona-pipeline-plugin=ovos_persona:PersonaService'
 HM_PLUGIN_ENTRY_POINT = 'hivemind-persona-agent-plugin=ovos_persona.hpm:PersonaProtocol'
 
 setup(
-    name='ovos-persona',
+    name='ovos_persona',
     version=get_version(),
     description='persona pipeline for ovos',
     url='https://github.com/OpenVoiceOS/ovos-persona',
