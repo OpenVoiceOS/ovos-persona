@@ -1,16 +1,12 @@
 # Changelog
 
-## [0.6.24a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.24a1) (2025-11-05)
+## [0.6.25a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.25a1) (2025-12-18)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.23...0.6.24a1)
-
-**Closed issues:**
-
-- Make it possible to launch as a standalone. [\#59](https://github.com/OpenVoiceOS/ovos-persona/issues/59)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.24...0.6.25a1)
 
 **Merged pull requests:**
 
-- Update requirements.txt [\#118](https://github.com/OpenVoiceOS/ovos-persona/pull/118) ([JarbasAl](https://github.com/JarbasAl))
+- chore: Configure Renovate [\#120](https://github.com/OpenVoiceOS/ovos-persona/pull/120) ([renovate[bot]](https://github.com/apps/renovate))
 
 
 
