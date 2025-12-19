@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.25a3](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.25a3) (2025-12-19)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.25a2...0.6.25a3)
+
+**Merged pull requests:**
+
+- chore\(deps\): update actions/checkout action to v6 [\#125](https://github.com/OpenVoiceOS/ovos-persona/pull/125) ([renovate[bot]](https://github.com/apps/renovate))
+
 ## [0.6.25a2](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.25a2) (2025-12-19)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.25a1...0.6.25a2)
