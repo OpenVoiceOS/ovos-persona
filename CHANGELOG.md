@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.25a4](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.25a4) (2025-12-19)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.25a3...0.6.25a4)
+
+**Merged pull requests:**
+
+- chore\(deps\): update dependency python to 3.14 [\#121](https://github.com/OpenVoiceOS/ovos-persona/pull/121) ([renovate[bot]](https://github.com/apps/renovate))
+
 ## [0.6.25a3](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.25a3) (2025-12-19)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.25a2...0.6.25a3)
