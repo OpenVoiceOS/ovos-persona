@@ -12,5 +12,57 @@
     "posa (el |la |es |sa |l'|s')(xatbot|persona|AI|IA|LLM) a dormir",
     "calla(|'t| la boca|'t la boca)",
     "(deixa|prou) (de |)(xatejar|xatar|comunicar|comunicació|respondre|parlar|xarrar|errar|garlar|xerrameca|xarremeca)"
+  ],
+  "ask.voc": [
+    "(demana|pregunta)",
+    null,
+    null,
+    null,
+    "interroga",
+    "opinió sobre",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "opinion.voc": [
+    "anàlisi",
+    "comenta",
+    "impressió",
+    null,
+    "interpretació",
+    "percepció",
+    "reacció",
+    null,
+    null,
+    null,
+    "pensaments",
+    null,
+    null
+  ],
+  "persona.voc": [
+    "IA",
+    null,
+    null,
+    null,
+    "agent",
+    "assistent",
+    "bot",
+    "xatbot",
+    "persona",
+    "personalitats",
+    "persones",
+    "assistent virtual"
+  ],
+  "summon.voc": [
+    "(connecta'm|vull parlar amb) (a|amb)",
+    null,
+    null,
+    null,
+    null
   ]
 }
