@@ -1,0 +1,68 @@
+{
+  "Release.voc": [
+    "(terminar|cerrar|cesar|salir|finalizar|abandonar|terminar|interrumpir|desconectar|deshabilitar|desactivar) [el] (chatbot|persona|IA|LLM|Modelo de Lenguaje|interacción|conversación|discusión)",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "ask.voc": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "opinion.voc": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "persona.voc": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "summon.voc": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ]
+}
