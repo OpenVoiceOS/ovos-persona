@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.6.25a7](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.25a7) (2026-01-19)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.25a5...0.6.25a7)
+
+**Merged pull requests:**
+
+- ca-es/translate [\#131](https://github.com/OpenVoiceOS/ovos-persona/pull/131) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
+
+## [0.6.25a5](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.25a5) (2026-01-19)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.25a6...0.6.25a5)
+
+## [0.6.25a6](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.25a6) (2026-01-19)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.25a4...0.6.25a6)
+
+**Merged pull requests:**
+
+- pt/translate [\#134](https://github.com/OpenVoiceOS/ovos-persona/pull/134) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
+- es-es/translate [\#133](https://github.com/OpenVoiceOS/ovos-persona/pull/133) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
+- da-dk/translate [\#132](https://github.com/OpenVoiceOS/ovos-persona/pull/132) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
+
 ## [0.6.25a4](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.25a4) (2025-12-19)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.25a3...0.6.25a4)
