@@ -12,5 +12,57 @@
     "posa (el |la |es |sa |l'|s')(xatbot|persona|AI|IA|LLM) a dormir",
     "calla(|'t| la boca|'t la boca)",
     "(deixa|prou) (de |)(xatejar|xatar|comunicar|comunicació|respondre|parlar|xarrar|errar|garlar|xerrameca|xarremeca)"
+  ],
+  "ask.voc": [
+    "(demana|pregunta)",
+    "(aconsegueix|obté|agafa|atrapa|arriba|entra)",
+    "(he|haig) de (dir|comenta|explica)",
+    "(pregunta|consulta|sol·licita|investiga|indaga)",
+    "interroga",
+    "opinió sobre",
+    "(formula|presenta|planteja|proposa) una pregunta",
+    "(investiga|examina|indaga)",
+    "(consulta|demana|pregunta)",
+    "(interroga|pregunta|es qüestiona)",
+    "(petició|demana|sol·licita)",
+    "dir sobre",
+    "(cerca|busca|investiga|recerca)",
+    "pensar en"
+  ],
+  "opinion.voc": [
+    "anàlisi",
+    "comenta",
+    "impressió",
+    "idees",
+    "interpretació",
+    "percepció",
+    "reacció",
+    "(punt de vista|perspectiva)",
+    "(portar|dur|agafar|prendre)",
+    "les seves opinions",
+    "pensaments",
+    "(comprensió|acceptació|aprovació)",
+    "(punt de vista|perspectiva)"
+  ],
+  "persona.voc": [
+    "IA",
+    "MLE",
+    "MLEs",
+    "Models de llenguatge extens",
+    "agent",
+    "assistent",
+    "bot",
+    "xatbot",
+    "persona",
+    "personalitats",
+    "persones",
+    "assistent virtual"
+  ],
+  "summon.voc": [
+    "(connecta'm|vull parlar amb) (a|amb)",
+    "(habilita|accedeix|activa|desperta|fes|produeix| apareix|invoca|conjura|invoca|participa)",
+    "(inicia|comença|introdueix|obre) (xat|xerrada|interacció|comunicació|conversa|diàleg)",
+    "(inicia|comença|introdueix|estableix|obre) (un|) (xat|discussió|conversa|diàleg)",
+    "[deixa'm] (xerrar|parlar|interactuar) amb"
   ]
 }
