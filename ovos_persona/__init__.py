@@ -78,20 +78,20 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
     def __init__(self, bus: Optional[Union[MessageBusClient, FakeBus]] = None,
                  config: Optional[Dict] = None):
         """
-                 Initialize the PersonaService, load configured personas and intent matchers, and register message-bus event handlers.
-                 
-                 Parameters:
-                     bus (Optional[MessageBusClient | FakeBus]): Message bus client to use for events and IPC. If omitted, a local FakeBus is created.
-                     config (Optional[dict]): Persona-specific configuration; when omitted the service reads the "intents.persona" section from global Configuration.
-                 
-                 Side effects:
-                     - Initializes base application and confidence-matching pipeline.
-                     - Loads personas from configured paths and plugin sources.
-                     - Registers intent-related and session event handlers on the bus.
-                     - Loads per-language intent matcher files.
-                     - Initializes runtime attributes: `sessions`, `personas`, `intent_matchers`, `blacklist`, `active_persona`, and `_active_sessions`.
-                 """
-                 bus = bus or FakeBus()
+        Initialize the PersonaService, load configured personas and intent matchers, and register message-bus event handlers.
+        
+        Parameters:
+            bus (Optional[MessageBusClient | FakeBus]): Message bus client to use for events and IPC. If omitted, a local FakeBus is created.
+            config (Optional[dict]): Persona-specific configuration; when omitted the service reads the "intents.persona" section from global Configuration.
+        
+        Side effects:
+            - Initializes base application and confidence-matching pipeline.
+            - Loads personas from configured paths and plugin sources.
+            - Registers intent-related and session event handlers on the bus.
+            - Loads per-language intent matcher files.
+            - Initializes runtime attributes: `sessions`, `personas`, `intent_matchers`, `blacklist`, `active_persona`, and `_active_sessions`.
+        """
+        bus = bus or FakeBus()
         config = config or Configuration().get("intents", {}).get("persona", {})
         OVOSAbstractApplication.__init__(self, bus=bus, skill_id="persona.openvoiceos",
                                          resources_dir=f"{dirname(__file__)}")
