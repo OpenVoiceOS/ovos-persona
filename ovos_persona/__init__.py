@@ -168,6 +168,14 @@ class PersonaService(PipelineStageConfidenceMatcher, OVOSAbstractApplication):
         return match if score >= 0.7 else None
 
     def load_personas(self, personas_path: Optional[str] = None):
+        """
+        Load persona definitions from the filesystem and (unless disabled) plugin providers and register them on this service.
+        
+        Searches the given directory for JSON files and creates Persona instances for each file found, skipping any names in self.blacklist. If a JSON file provides a "name" field it is used as the persona name. Errors while loading individual persona files are logged and do not stop processing. Unless the configuration key "ignore_plugin_personas" is true, the method also queries installed persona plugins and registers those personas, skipping blacklisted names and any persona already loaded from disk.
+        
+        Parameters:
+            personas_path (Optional[str]): Directory to read user-defined persona JSON files from. If None, the XDG config path for "ovos_persona" is used.
+        """
         personas_path = personas_path or get_xdg_config_save_path("ovos_persona")
         LOG.info(f"Personas path: {personas_path}")
 
