@@ -77,6 +77,20 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
 
     def __init__(self, bus: Optional[Union[MessageBusClient, FakeBus]] = None,
                  config: Optional[Dict] = None):
+        """
+        Initialize the PersonaService, load configured personas and intent matchers, and register message-bus event handlers.
+        
+        Parameters:
+            bus (Optional[MessageBusClient | FakeBus]): Message bus client to use for events and IPC. If omitted, a local FakeBus is created.
+            config (Optional[dict]): Persona-specific configuration; when omitted the service reads the "intents.persona" section from global Configuration.
+        
+        Side effects:
+            - Initializes base application and confidence-matching pipeline.
+            - Loads personas from configured paths and plugin sources.
+            - Registers intent-related and session event handlers on the bus.
+            - Loads per-language intent matcher files.
+            - Initializes runtime attributes: `sessions`, `personas`, `intent_matchers`, `blacklist`, `active_persona`, and `_active_sessions`.
+        """
         bus = bus or FakeBus()
         config = config or Configuration().get("intents", {}).get("persona", {})
         OVOSAbstractApplication.__init__(self, bus=bus, skill_id="persona.openvoiceos",
@@ -101,6 +115,14 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
 
     @classmethod
     def load_resource_files(cls):
+        """
+        Build a mapping of language tags to intent sample lists loaded from the package locale files.
+        
+        For each configured language (secondary_langs plus the primary lang), finds the locale directory for that language and, for each file whose name matches an entry in cls.INTENTS, reads the file as newline-separated intent samples. Each sample has doubled braces `{{` / `}}` collapsed to single `{` / `}`. Languages or intent files that are not present are skipped.
+        
+        Returns:
+            dict: A mapping {language_tag: {intent_name: [sample_str, ...], ...}, ...} containing loaded intent samples per language.
+        """
         intents = {}
         langs = Configuration().get('secondary_langs', []) + [Configuration().get('lang', "en-US")]
         langs = set([standardize_lang_tag(l) for l in langs])
@@ -120,6 +142,16 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
 
     def load_intent_files(self):
         # TODO - make intent backend configurable, padatious is not a good choice...
+        """
+        Load and prepare intent matchers for each configured language and register persona intent samples.
+        
+        Builds a per-language IntentContainer (using a cache directory when applicable), registers intent samples sourced from locale/resource files, and trains or instantiates matchers when the configured backend requires it. Skips training for known problematic language/intent combinations and logs failures for individual intent registrations.
+        
+        Side effects:
+        - Populates and updates self.intent_matchers with initialized IntentContainer instances keyed by language tag.
+        - Reads intent samples via self.load_resource_files().
+        - Uses the configured intent cache directory for backends that support disk caching.
+        """
         intent_cache = expanduser(self.config.get('intent_cache') or
                                   f"{xdg_data_home()}/{get_xdg_base()}/intent_cache")
         intent_files = self.load_resource_files()
