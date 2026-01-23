@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.1a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.1a1) (2026-01-23)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.0a1...0.7.1a1)
+
+**Merged pull requests:**
+
+- fix: ensure "ovos.utterance.handled" is emitted [\#135](https://github.com/OpenVoiceOS/ovos-persona/pull/135) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.7.0a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.0a1) (2026-01-23)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.25a7...0.7.0a1)
