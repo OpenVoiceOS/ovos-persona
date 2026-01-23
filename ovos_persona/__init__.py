@@ -209,7 +209,7 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         """
         sess = SessionManager.get(message)
         # prioritize explicitly requested persona via message.data (eg, summon intent)
-        if message.data.get("persona"):
+        if message and message.data.get("persona"):
             persona = self.match_persona(message.data.get("persona"))
             if persona:
                 return persona
@@ -727,7 +727,8 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         sess = SessionManager.get(message)
         LOG.info(f"Releasing Persona: {active_persona}  for session: {sess.session_id}")
         self.speak_dialog("release_persona", {"persona": active_persona})
-        self.active_personas[sess.session_id] = None
+        if sess.session_id in self.active_personas:
+            self.active_personas.pop(sess.session_id)
 
     def stop_session(self, session: Session):
         # since responses are streaming, this will exit the loop in hanle_persona_query
