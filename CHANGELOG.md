@@ -1,16 +1,74 @@
 # Changelog
 
-## [0.6.24a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.24a1) (2025-11-05)
+## [0.7.1a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.1a1) (2026-01-23)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.23...0.6.24a1)
-
-**Closed issues:**
-
-- Make it possible to launch as a standalone. [\#59](https://github.com/OpenVoiceOS/ovos-persona/issues/59)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.0a1...0.7.1a1)
 
 **Merged pull requests:**
 
-- Update requirements.txt [\#118](https://github.com/OpenVoiceOS/ovos-persona/pull/118) ([JarbasAl](https://github.com/JarbasAl))
+- fix: ensure "ovos.utterance.handled" is emitted [\#135](https://github.com/OpenVoiceOS/ovos-persona/pull/135) ([JarbasAl](https://github.com/JarbasAl))
+
+## [0.7.0a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.0a1) (2026-01-23)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.25a7...0.7.0a1)
+
+**Merged pull requests:**
+
+- feat: ignore\_plugin\_personas [\#109](https://github.com/OpenVoiceOS/ovos-persona/pull/109) ([JarbasAl](https://github.com/JarbasAl))
+
+## [0.6.25a7](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.25a7) (2026-01-19)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.25a5...0.6.25a7)
+
+**Merged pull requests:**
+
+- ca-es/translate [\#131](https://github.com/OpenVoiceOS/ovos-persona/pull/131) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
+
+## [0.6.25a5](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.25a5) (2026-01-19)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.25a6...0.6.25a5)
+
+## [0.6.25a6](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.25a6) (2026-01-19)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.25a4...0.6.25a6)
+
+**Merged pull requests:**
+
+- pt/translate [\#134](https://github.com/OpenVoiceOS/ovos-persona/pull/134) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
+- es-es/translate [\#133](https://github.com/OpenVoiceOS/ovos-persona/pull/133) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
+- da-dk/translate [\#132](https://github.com/OpenVoiceOS/ovos-persona/pull/132) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
+
+## [0.6.25a4](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.25a4) (2025-12-19)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.25a3...0.6.25a4)
+
+**Merged pull requests:**
+
+- chore\(deps\): update dependency python to 3.14 [\#121](https://github.com/OpenVoiceOS/ovos-persona/pull/121) ([renovate[bot]](https://github.com/apps/renovate))
+
+## [0.6.25a3](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.25a3) (2025-12-19)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.25a2...0.6.25a3)
+
+**Merged pull requests:**
+
+- chore\(deps\): update actions/checkout action to v6 [\#125](https://github.com/OpenVoiceOS/ovos-persona/pull/125) ([renovate[bot]](https://github.com/apps/renovate))
+
+## [0.6.25a2](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.25a2) (2025-12-19)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.25a1...0.6.25a2)
+
+**Merged pull requests:**
+
+- chore\(deps\): update actions/setup-python action to v6 [\#126](https://github.com/OpenVoiceOS/ovos-persona/pull/126) ([renovate[bot]](https://github.com/apps/renovate))
+
+## [0.6.25a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.25a1) (2025-12-18)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.24...0.6.25a1)
+
+**Merged pull requests:**
+
+- chore: Configure Renovate [\#120](https://github.com/OpenVoiceOS/ovos-persona/pull/120) ([renovate[bot]](https://github.com/apps/renovate))
 
 
 

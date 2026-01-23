@@ -1,1 +1,1 @@
-ovos-persona==0.6.23
+ovos_persona==0.6.24
