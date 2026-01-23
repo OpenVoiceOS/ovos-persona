@@ -88,11 +88,12 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         self.blacklist = self.config.get("persona_blacklist") or []
         self.load_personas(self.config.get("personas_path"))
         self.active_persona = None
-        self.add_event('persona:query', self.handle_persona_query)
-        self.add_event('persona:summon', self.handle_persona_summon)
-        self.add_event('persona:list', self.handle_persona_list)
-        self.add_event('persona:check', self.handle_persona_check)
-        self.add_event('persona:release', self.handle_persona_release)
+        # is_intent flag ensures "ovos.utterance.handled" is emitted
+        self.add_event('persona:query', self.handle_persona_query, is_intent=True)
+        self.add_event('persona:summon', self.handle_persona_summon, is_intent=True)
+        self.add_event('persona:list', self.handle_persona_list, is_intent=True)
+        self.add_event('persona:check', self.handle_persona_check, is_intent=True)
+        self.add_event('persona:release', self.handle_persona_release, is_intent=True)
         self.add_event("speak", self.handle_speak)
         self.add_event("recognizer_loop:utterance", self.handle_utterance)
         self.load_intent_files()
@@ -118,6 +119,7 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         return intents
 
     def load_intent_files(self):
+        # TODO - make intent backend configurable, padatious is not a good choice...
         intent_cache = expanduser(self.config.get('intent_cache') or
                                   f"{xdg_data_home()}/{get_xdg_base()}/intent_cache")
         intent_files = self.load_resource_files()
