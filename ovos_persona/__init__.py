@@ -78,19 +78,19 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
     def __init__(self, bus: Optional[Union[MessageBusClient, FakeBus]] = None,
                  config: Optional[Dict] = None):
         """
-                 Create and initialize the PersonaService, load personas and intent matchers, and register message-bus handlers.
-                 
-                 Parameters:
-                     bus (Optional[MessageBusClient | FakeBus]): Message bus client used for events and IPC. If omitted, a local FakeBus is created.
-                     config (Optional[dict]): Persona-specific configuration. If omitted, the service reads the "intents.persona" section from global Configuration.
-                 
-                 Behavior:
-                     - Initializes base application and confidence-matching pipeline.
-                     - Loads personas from configured paths and plugin providers.
-                     - Loads per-language intent matcher files.
-                     - Registers message-bus event handlers for persona operations and utterance/speak events.
-                     - Initializes runtime state: `message_history` (per-session history), `active_personas` (per-session active persona), `personas`, `intent_matchers`, `blacklist`, and `_active_sessions`.
-                 """
+        Create and initialize the PersonaService, load personas and intent matchers, and register message-bus handlers.
+         
+        Parameters:
+            bus (Optional[MessageBusClient | FakeBus]): Message bus client used for events and IPC. If omitted, a local FakeBus is created.
+            config (Optional[dict]): Persona-specific configuration. If omitted, the service reads the "intents.persona" section from global Configuration.
+         
+        Behavior:
+            - Initializes base application and confidence-matching pipeline.
+            - Loads personas from configured paths and plugin providers.
+            - Loads per-language intent matcher files.
+            - Registers message-bus event handlers for persona operations and utterance/speak events.
+            - Initializes runtime state: `message_history` (per-session history), `active_personas` (per-session active persona), `personas`, `intent_matchers`, `blacklist`, and `_active_sessions`.
+        """
         bus = bus or FakeBus()
         config = config or Configuration().get("intents", {}).get("persona", {})
         OVOSAbstractApplication.__init__(self, bus=bus, skill_id="persona.openvoiceos",
@@ -316,21 +316,21 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
                     message: Message = None,
                     stream: bool = True) -> Iterable[str]:
         """
-                    Ask a persona a prompt and yield its response(s), optionally as a streamed sequence.
-                    
-                    The target persona is resolved from the provided `persona` (fuzzy match) or from the message/session active persona (including the configured default). If short-term memory is enabled, recent per-session Q/A pairs from `message` are prepended to the prompt as context. Streaming delegates to the persona's streaming interface; non-streaming returns the full reply as a single yielded string.
-                    
-                    Parameters:
-                        prompt (str): The user prompt to send to the persona.
-                        persona (Optional[str]): Persona name or partial name to resolve; if omitted, the active/session/default persona is used.
-                        lang (Optional[str]): Language tag to use for the request; if omitted, the session language is used.
-                        message (Message): Optional message object used to resolve the session, language, and to gather short-term memory.
-                        stream (bool): If True, yield incremental/streamed response fragments; if False, yield one complete response.
-                    
-                    Returns:
-                        Iterable[str]: An iterator that yields response strings. Returns None (and yields nothing) if the resolved persona is not found.
-                    """
-                    persona = self.match_persona(persona) or self.get_active_persona(message, include_default=True)
+        Ask a persona a prompt and yield its response(s), optionally as a streamed sequence.
+        
+        The target persona is resolved from the provided `persona` (fuzzy match) or from the message/session active persona (including the configured default). If short-term memory is enabled, recent per-session Q/A pairs from `message` are prepended to the prompt as context. Streaming delegates to the persona's streaming interface; non-streaming returns the full reply as a single yielded string.
+        
+        Parameters:
+            prompt (str): The user prompt to send to the persona.
+            persona (Optional[str]): Persona name or partial name to resolve; if omitted, the active/session/default persona is used.
+            lang (Optional[str]): Language tag to use for the request; if omitted, the session language is used.
+            message (Message): Optional message object used to resolve the session, language, and to gather short-term memory.
+            stream (bool): If True, yield incremental/streamed response fragments; if False, yield one complete response.
+        
+        Returns:
+            Iterable[str]: An iterator that yields response strings. Returns None (and yields nothing) if the resolved persona is not found.
+        """
+        persona = self.match_persona(persona) or self.get_active_persona(message, include_default=True)
         if persona not in self.personas:
             LOG.error(f"unknown persona, choose one of {self.personas.keys()}")
             return None
@@ -394,26 +394,26 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
     def match_high(self, utterances: List[str], lang: Optional[str] = None,
                    message: Optional[Message] = None) -> Optional[IntentHandlerMatch]:
         """
-                   High-priority intent matcher for persona-related utterances.
-                   
-                   Analyzes the first utterance (language-normalized) for persona control and query intents. It:
-                   - Detects a release intent when a session has an active persona and returns a 'persona:release' match.
-                   - Uses per-language intent matchers to identify persona intents (summon, list, active_persona, ask).
-                   - Applies the configured minimum intent confidence threshold before accepting a match.
-                   - For 'summon.intent', returns a 'persona:summon' match when a persona entity is present.
-                   - For 'list_personas.intent', returns a 'persona:list' match.
-                   - For 'active_persona.intent', returns a 'persona:check' match.
-                   - For 'ask.intent', requires both persona and utterance entities and verifies the persona against registered personas via match_persona; returns a 'persona:query' match when verified.
-                   - If an active persona exists and no explicit persona intent is accepted, delegates to the low-priority matcher to allow persona-scoped handling.
-                   
-                   Parameters:
-                       utterances (List[str]): Candidate user utterances; only the first entry is used for matching.
-                       lang (Optional[str]): Language tag to use for intent matching; will be standardized if provided.
-                       message (Optional[Message]): Message object providing session/context (used to detect session active persona).
-                   
-                   Returns:
-                       IntentHandlerMatch or None: An IntentHandlerMatch for handled persona intents (`persona:release`, `persona:summon`, `persona:list`, `persona:check`, `persona:query`) or `None` if no high-priority persona intent was matched.
-                   """
+        High-priority intent matcher for persona-related utterances.
+       
+        Analyzes the first utterance (language-normalized) for persona control and query intents. It:
+        - Detects a release intent when a session has an active persona and returns a 'persona:release' match.
+        - Uses per-language intent matchers to identify persona intents (summon, list, active_persona, ask).
+        - Applies the configured minimum intent confidence threshold before accepting a match.
+        - For 'summon.intent', returns a 'persona:summon' match when a persona entity is present.
+        - For 'list_personas.intent', returns a 'persona:list' match.
+        - For 'active_persona.intent', returns a 'persona:check' match.
+        - For 'ask.intent', requires both persona and utterance entities and verifies the persona against registered personas via match_persona; returns a 'persona:query' match when verified.
+        - If an active persona exists and no explicit persona intent is accepted, delegates to the low-priority matcher to allow persona-scoped handling.
+       
+        Parameters:
+            utterances (List[str]): Candidate user utterances; only the first entry is used for matching.
+            lang (Optional[str]): Language tag to use for intent matching; will be standardized if provided.
+            message (Optional[Message]): Message object providing session/context (used to detect session active persona).
+       
+        Returns:
+            IntentHandlerMatch or None: An IntentHandlerMatch for handled persona intents (`persona:release`, `persona:summon`, `persona:list`, `persona:check`, `persona:query`) or `None` if no high-priority persona intent was matched.
+        """
         lang = lang or self.lang
         lang = standardize_lang_tag(lang)
         active_persona = self.get_active_persona(message, include_default=False)
@@ -552,18 +552,18 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
     def match_low(self, utterances: List[str], lang: Optional[str] = None,
                   message: Optional[Message] = None) -> Optional[IntentHandlerMatch]:
         """
-                  Attempt a final fallback match that routes the first utterance to an active or default persona.
-                  
-                  If a higher-priority medium match is found, it is returned. Otherwise, this method resolves the session's active persona (or the configured default when allowed) and constructs an IntentHandlerMatch of type "persona:query" containing the first utterance, language, and resolved persona. This match is intended as the last-resort handler in the matching pipeline and only produced when a persona is available (and fallback handling is enabled when necessary).
-                  
-                  Parameters:
-                      utterances (List[str]): Candidate utterances (first element is used for the fallback query).
-                      lang (Optional[str]): Language tag (e.g., "en-US") used for context resolution.
-                      message (Optional[Message]): Optional message object used to resolve session-specific active persona.
-                  
-                  Returns:
-                      Optional[IntentHandlerMatch]: An IntentHandlerMatch of type "persona:query" when a fallback persona is resolved, `None` if no persona match or fallback is applicable.
-                  """
+        Attempt a final fallback match that routes the first utterance to an active or default persona.
+          
+        If a higher-priority medium match is found, it is returned. Otherwise, this method resolves the session's active persona (or the configured default when allowed) and constructs an IntentHandlerMatch of type "persona:query" containing the first utterance, language, and resolved persona. This match is intended as the last-resort handler in the matching pipeline and only produced when a persona is available (and fallback handling is enabled when necessary).
+          
+        Parameters:
+            utterances (List[str]): Candidate utterances (first element is used for the fallback query).
+            lang (Optional[str]): Language tag (e.g., "en-US") used for context resolution.
+            message (Optional[Message]): Optional message object used to resolve session-specific active persona.
+          
+        Returns:
+            Optional[IntentHandlerMatch]: An IntentHandlerMatch of type "persona:query" when a fallback persona is resolved, `None` if no persona match or fallback is applicable.
+        """
         match = self.match_medium(utterances, lang, message)
         if match:
             return match
