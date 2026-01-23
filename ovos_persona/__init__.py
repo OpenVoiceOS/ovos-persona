@@ -186,10 +186,10 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
             persona = list(self.personas.keys())[0]
         return persona
 
-    def get_active_persona(self, message, include_default=True) -> Optional[str]:
+    def get_active_persona(self, message: Optional[Message]=None, include_default=True) -> Optional[str]:
         sess = SessionManager.get(message)
         # prioritize explicitly requested persona via message.data (eg, summon intent)
-        if message.data.get("persona"):
+        if message and message.data.get("persona"):
             persona = self.match_persona(message.data.get("persona"))
             if persona:
                 return persona
@@ -208,7 +208,7 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         """
         Finds the closest matching persona name to the given input using case-insensitive partial token set matching.
         
-        If no input is provided, returns the currently active persona or the default persona. Returns the matched persona name if the similarity score is at least 0.7; otherwise, returns None.
+        Returns the matched persona name if the similarity score is at least 0.7; otherwise, returns None.
         """
         if not persona:
             return None
@@ -582,7 +582,8 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         sess = SessionManager.get(message)
         LOG.info(f"Releasing Persona: {active_persona}  for session: {sess.session_id}")
         self.speak_dialog("release_persona", {"persona": active_persona})
-        self.active_personas[sess.session_id] = None
+        if sess.session_id in self.active_personas:
+            self.active_personas.pop(sess.session_id)
 
     def stop_session(self, session: Session):
         # since responses are streaming, this will exit the loop in hanle_persona_query
