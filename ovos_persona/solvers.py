@@ -1,13 +1,15 @@
 from typing import Optional, List, Iterable, Union, Dict, Type
 
-from ovos_utils import flatten_list
 from ovos_config import Configuration
+from ovos_plugin_manager.agents import find_chat_plugins, find_multimodal_chat_plugins, find_retrieval_plugins, \
+    find_document_indexer_plugins, find_qa_indexer_plugins
 from ovos_plugin_manager.solvers import find_chat_solver_plugins, find_question_solver_plugins
+from ovos_plugin_manager.templates.agents import MessageRole, AgentMessage, ChatEngine, MultimodalChatEngine, \
+    RetrievalEngine, DocumentIndexerEngine, QAIndexerEngine
 from ovos_plugin_manager.templates.solvers import ChatMessageSolver, QuestionSolver
+from ovos_utils import flatten_list
 from ovos_utils.fakebus import FakeBus
 from ovos_utils.log import LOG
-from ovos_plugin_manager.templates.agents import MessageRole, AgentMessage, ChatEngine, MultimodalChatEngine,   RetrievalEngine, DocumentIndexerEngine,  QAIndexerEngine
-
 
 UtteranceHandlerClass = Union[Type[ChatMessageSolver],
                          Type[QuestionSolver],
@@ -19,10 +21,14 @@ UtteranceHandlerClass = Union[Type[ChatMessageSolver],
 
 
 def get_utterance_handler_plugins() -> Dict[str, UtteranceHandlerClass]:
-    # TODO - load new AgentEngine plugins
     return {
         **find_question_solver_plugins(),
-        **find_chat_solver_plugins()
+        **find_chat_solver_plugins(),
+        **find_qa_indexer_plugins(),
+        **find_document_indexer_plugins(),
+        **find_retrieval_plugins(),
+        **find_chat_plugins(),
+        **find_multimodal_chat_plugins()
     }
 
 
