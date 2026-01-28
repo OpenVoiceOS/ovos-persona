@@ -65,7 +65,7 @@ class Persona:
         return f"Persona({self.name}:{list(self.solvers.loaded_modules.keys())})"
 
     def get_messages(self, utterance: str, sess: Session) -> List[AgentMessage]:
-        return self.memory.augment_context(utterance, sess.session_id)
+        return self.memory.build_conversation_context(utterance, sess.session_id)
 
     def chat(self, messages: List[AgentMessage], sess: Session) -> str:
         return self.solvers.chat_completion(messages, sess.lang, sess.system_unit)

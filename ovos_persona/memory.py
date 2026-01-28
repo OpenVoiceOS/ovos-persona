@@ -51,7 +51,7 @@ class BasicShortTermMemory(AgentContextManager):
         if len(self.session2history[session_id]) > max_size:
             self.session2history[session_id] = self.session2history[session_id][-max_size:]
 
-    def augment_context(self, utterance: str, session_id: str) -> List[AgentMessage]:
+    def build_conversation_context(self, utterance: str, session_id: str) -> List[AgentMessage]:
         """
         Produce augmented context for the agent by combining system prompt,
         session history, and current user input.

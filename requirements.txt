@@ -1,5 +1,5 @@
-# TODO - needs ovos-plugin-manager version bump to include AgentContextManager
-ovos-plugin-manager>=0.8.3,<3.0.0
+# TODO - needs ovos-plugin-manager version bump to include AbstractAgentEngine
+ovos-plugin-manager>=2.2.0a1,<3.0.0
 ovos-openai-plugin>=2.0.0,<3.0.0
 ovos-solver-failure-plugin
 ovos-utils>=0.8.0a1,<1.0.0
