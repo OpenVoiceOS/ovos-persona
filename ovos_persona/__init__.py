@@ -15,6 +15,7 @@ from ovos_plugin_manager.persona import find_persona_plugins
 from ovos_plugin_manager.solvers import find_question_solver_plugins
 from ovos_plugin_manager.templates.agents import MessageRole, AgentMessage, AgentContextManager
 from ovos_plugin_manager.templates.pipeline import ConfidenceMatcherPipeline, IntentHandlerMatch
+from ovos_plugin_manager.agents import load_memory_plugin
 from ovos_utils.bracket_expansion import expand_template
 from ovos_utils.fakebus import FakeBus
 from ovos_utils.lang import standardize_lang_tag, get_language_dir
@@ -46,7 +47,13 @@ class Persona:
         blacklist = blacklist or []
         self.name = name
         self.config = config
-        self.memory = BasicShortTermMemory()  # TODO - select plugin based on config
+
+        memory_plugin = self.config.get("memory_module", "ovos-agents-short-term-memory-plugin")
+        if memory_plugin:
+            memory_class = load_memory_plugin(memory_plugin)
+            self.memory = memory_class()
+        else:
+            self.memory = None
 
         plugin_order = config.get("handlers") or config.get("solvers") or []
         if not plugin_order:
@@ -65,6 +72,8 @@ class Persona:
         return f"Persona({self.name}:{list(self.solvers.loaded_modules.keys())})"
 
     def get_messages(self, utterance: str, sess: Session) -> List[AgentMessage]:
+        if self.memory is None:
+            return [AgentMessage(MessageRole.USER, utterance)]
         return self.memory.build_conversation_context(utterance, sess.session_id)
 
     def chat(self, messages: List[AgentMessage], sess: Session) -> str:
@@ -435,20 +444,22 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         sess = SessionManager.get(message)
         persona_id: str = self.active_persona or self.default_persona
         persona: Persona = self.personas[persona_id]
-        persona.memory.update_history(
-            new_messages=[AgentMessage(MessageRole.USER, utt)],
-            session_id=sess.session_id
-        )
+        if persona.memory:
+            persona.memory.update_history(
+                new_messages=[AgentMessage(MessageRole.USER, utt)],
+                session_id=sess.session_id
+            )
 
     def handle_speak(self, message):
         utt = message.data.get("utterance")
         sess = SessionManager.get(message)
         persona_id: str = self.active_persona or self.default_persona
         persona: Persona = self.personas[persona_id]
-        persona.memory.update_history(
-            new_messages=[AgentMessage(MessageRole.ASSISTANT, utt)],
-            session_id=sess.session_id
-        )
+        if persona.memory:
+            persona.memory.update_history(
+                new_messages=[AgentMessage(MessageRole.ASSISTANT, utt)],
+                session_id=sess.session_id
+            )
 
     def handle_persona_check(self, message: Optional[Message] = None):
         if self.active_persona:

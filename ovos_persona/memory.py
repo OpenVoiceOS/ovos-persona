@@ -45,6 +45,17 @@ class BasicShortTermMemory(AgentContextManager):
         """
         if session_id not in self.session2history:
             self.session2history[session_id] = []
+        else:
+            last_message = self.session2history[session_id][-1]
+            next_message = new_messages[0]
+
+            # drop any hanging user messages without a corresponding response
+            if next_message.role == MessageRole.USER and last_message.role == MessageRole.USER:
+                self.session2history[session_id].pop()
+            # merge consecutive speak messages
+            if next_message.role == MessageRole.ASSISTANT and last_message.role == MessageRole.ASSISTANT:
+                new_messages[0].content = last_message.content + "\n" + next_message.content
+                self.session2history[session_id].pop()
 
         self.session2history[session_id] += new_messages
         max_size = self.config.get("max_history", 5)
@@ -64,6 +75,12 @@ class BasicShortTermMemory(AgentContextManager):
             List[AgentMessage]: Messages representing the augmented context.
         """
         message_history = self.get_history(session_id)
+        if message_history:
+            # drop any hanging user messages without a corresponding response
+            # for any non-verbal actions that OVOS may take
+            while message_history[-1].role == MessageRole.USER:
+                message_history.pop()
+
         if self.system_prompt.strip():
             message_history.insert(0, AgentMessage(role=MessageRole.SYSTEM, content=self.system_prompt.strip()))
         message_history.append(AgentMessage(role=MessageRole.USER, content=utterance.strip()))
