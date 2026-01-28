@@ -1,4 +1,4 @@
-from typing import Optional, List, Iterable
+from typing import Optional, List, Iterable, Union, Dict, Type
 
 from ovos_utils import flatten_list
 from ovos_config import Configuration
@@ -7,6 +7,23 @@ from ovos_plugin_manager.templates.solvers import ChatMessageSolver, QuestionSol
 from ovos_utils.fakebus import FakeBus
 from ovos_utils.log import LOG
 from ovos_plugin_manager.templates.agents import MessageRole, AgentMessage, ChatEngine, MultimodalChatEngine,   RetrievalEngine, DocumentIndexerEngine,  QAIndexerEngine
+
+
+UtteranceHandlerClass = Union[Type[ChatMessageSolver],
+                         Type[QuestionSolver],
+                         Type[ChatEngine],
+                         Type[MultimodalChatEngine],
+                         Type[RetrievalEngine],
+                         Type[DocumentIndexerEngine],
+                         Type[QAIndexerEngine]]
+
+
+def get_utterance_handler_plugins() -> Dict[str, UtteranceHandlerClass]:
+    # TODO - load new AgentEngine plugins
+    return {
+        **find_question_solver_plugins(),
+        **find_chat_solver_plugins()
+    }
 
 
 class QuestionSolversService:
@@ -19,23 +36,13 @@ class QuestionSolversService:
         self.load_plugins()
 
     def load_plugins(self):
-        # TODO - load new AgentEngine plugins
-
-        for plug_name, plug in find_question_solver_plugins().items():
+        for plug_name, plug_class in get_utterance_handler_plugins().items():
             config = self.config.get(plug_name) or {}
             if not config.get("enabled", True):
                 continue
             LOG.debug(f"loading plugin with cfg: {config}")
-            self.loaded_modules[plug_name] = plug(config=config)
-            LOG.info(f"loaded question solver plugin: {plug_name}")
-
-        for plug_name, plug in find_chat_solver_plugins().items():
-            config = self.config.get(plug_name) or {}
-            if not config.get("enabled", True):
-                continue
-            LOG.debug(f"loading chat plugin with cfg: {config}")
-            self.loaded_modules[plug_name] = plug(config=config)
-            LOG.info(f"loaded chat solver plugin: {plug_name}")
+            self.loaded_modules[plug_name] = plug_class(config=config)
+            LOG.info(f"loaded {plug_class.__name__} plugin: {plug_name}")
 
         plugs = [p for p, c in self.config.items() if c.get("enabled", True)]
         for p in plugs:

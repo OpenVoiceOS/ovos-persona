@@ -4,17 +4,16 @@ from os.path import join, dirname, expanduser
 from typing import Optional, Dict, List, Union, Iterable
 
 from langcodes import closest_match
-from ovos_config.config import Configuration
-from ovos_config.locations import get_xdg_config_save_path
-from ovos_config.meta import get_xdg_base
-from ovos_persona.solvers import QuestionSolversService
-
 from ovos_bus_client import Session
 from ovos_bus_client.client import MessageBusClient
 from ovos_bus_client.message import Message, dig_for_message
 from ovos_bus_client.session import SessionManager
+from ovos_config.config import Configuration
+from ovos_config.locations import get_xdg_config_save_path
+from ovos_config.meta import get_xdg_base
 from ovos_plugin_manager.persona import find_persona_plugins
 from ovos_plugin_manager.solvers import find_question_solver_plugins
+from ovos_plugin_manager.templates.agents import MessageRole, AgentMessage, AgentContextManager
 from ovos_plugin_manager.templates.pipeline import ConfidenceMatcherPipeline, IntentHandlerMatch
 from ovos_utils.bracket_expansion import expand_template
 from ovos_utils.fakebus import FakeBus
@@ -24,8 +23,9 @@ from ovos_utils.log import LOG
 from ovos_utils.parse import match_one, MatchStrategy
 from ovos_utils.xdg_utils import xdg_data_home
 from ovos_workshop.app import OVOSAbstractApplication
+
 from ovos_persona.memory import BasicShortTermMemory
-from ovos_plugin_manager.templates.agents import MessageRole, AgentMessage, AgentContextManager
+from ovos_persona.solvers import QuestionSolversService, get_utterance_handler_plugins
 
 try:
     from ovos_plugin_manager.solvers import find_chat_solver_plugins
@@ -48,19 +48,18 @@ class Persona:
         self.config = config
         self.memory = BasicShortTermMemory()  # TODO - select plugin based on config
 
-        solver_order = config.get("solvers") or ["ovos-solver-failure-plugin"]
-        plugs = {p: {"enabled": True} for p in solver_order}
-        for plug_name, plug in find_question_solver_plugins().items():
-            if plug_name not in solver_order or plug_name in blacklist:
+        plugin_order = config.get("handlers") or config.get("solvers") or []
+        if not plugin_order:
+            raise ValueError("personas must have at least 1 utterance handler")
+
+        plugs = {p: {"enabled": True} for p in plugin_order}
+        for plug_name in get_utterance_handler_plugins().keys():
+            if plug_name not in plugin_order or plug_name in blacklist:
                 plugs[plug_name] = {"enabled": False}
             else:
                 plugs[plug_name] = config.get(plug_name) or {"enabled": True}
-        for plug_name, plug in find_chat_solver_plugins().items():
-            if plug_name not in solver_order or plug_name in blacklist:
-                plugs[plug_name] = {"enabled": False}
-            else:
-                plugs[plug_name] = config.get(plug_name) or {"enabled": True}
-        self.solvers = QuestionSolversService(config=plugs, sort_order=solver_order)
+
+        self.solvers = QuestionSolversService(config=plugs, sort_order=plugin_order)
 
     def __repr__(self):
         return f"Persona({self.name}:{list(self.solvers.loaded_modules.keys())})"
