@@ -1,6 +1,6 @@
 from typing import Dict, List
 
-from ovos_plugin_manager.templates.agents import AgentMessage, AgentContextManager
+from ovos_plugin_manager.templates.agents import MessageRole, AgentMessage, AgentContextManager
 
 
 class BasicShortTermMemory(AgentContextManager):
@@ -15,8 +15,8 @@ class BasicShortTermMemory(AgentContextManager):
             - system_prompt (str): Base system prompt to prepend to context.
     """
 
-    def __init__(self, config: dict):
-        super().__init__(config)
+    def __init__(self, config: dict = None):
+        super().__init__(config or {})
         self.session2history: Dict[str, List[AgentMessage]] = {}
 
     def augment_system_prompt(self) -> str:
@@ -78,6 +78,6 @@ class BasicShortTermMemory(AgentContextManager):
         message_history = self.get_history(session_id)
         system = self.system_prompt + "\n" + self.augment_system_prompt()
         if system.strip():
-            message_history.insert(0, AgentMessage(role="system", content=system.strip()))
-        message_history.append(AgentMessage(role="user", content=utterance.strip()))
+            message_history.insert(0, AgentMessage(role=MessageRole.SYSTEM, content=system.strip()))
+        message_history.append(AgentMessage(role=MessageRole.USER, content=utterance.strip()))
         return message_history

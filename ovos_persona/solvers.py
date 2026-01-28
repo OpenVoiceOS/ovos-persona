@@ -1,21 +1,12 @@
-from typing import Optional, List, Dict, Iterable
+from typing import Optional, List, Iterable
 
+from ovos_utils import flatten_list
 from ovos_config import Configuration
-from ovos_plugin_manager.solvers import find_question_solver_plugins
-from ovos_utils.log import LOG
+from ovos_plugin_manager.solvers import find_chat_solver_plugins, find_question_solver_plugins
+from ovos_plugin_manager.templates.solvers import ChatMessageSolver, QuestionSolver
 from ovos_utils.fakebus import FakeBus
-
-try:
-    from ovos_plugin_manager.solvers import find_chat_solver_plugins
-    from ovos_plugin_manager.templates.solvers import ChatMessageSolver
-except ImportError:
-    # using outdated ovos-plugin-manager
-    class ChatMessageSolver:
-        pass
-
-
-    def find_chat_solver_plugins():
-        return {}
+from ovos_utils.log import LOG
+from ovos_plugin_manager.templates.agents import MessageRole, AgentMessage, ChatEngine, MultimodalChatEngine,   RetrievalEngine, DocumentIndexerEngine,  QAIndexerEngine
 
 
 class QuestionSolversService:
@@ -28,6 +19,8 @@ class QuestionSolversService:
         self.load_plugins()
 
     def load_plugins(self):
+        # TODO - load new AgentEngine plugins
+
         for plug_name, plug in find_question_solver_plugins().items():
             config = self.config.get(plug_name) or {}
             if not config.get("enabled", True):
@@ -63,38 +56,64 @@ class QuestionSolversService:
             except:
                 pass
 
-    def chat_completion(self, messages: List[Dict[str, str]],
+    def chat_completion(self, messages: List[AgentMessage],
+                        session_id: str = "default",
                         lang: Optional[str] = None,
                         units: Optional[str] = None) -> Optional[str]:
         for module in self.modules:
             try:
-                if isinstance(module, ChatMessageSolver):
+                ans = None
+                if isinstance(module, (ChatEngine, MultimodalChatEngine)):
+                    response = module.continue_chat(messages,
+                                                    session_id=session_id,
+                                                    lang=lang, units=units)
+                    ans = response.content
+                elif isinstance(module, (RetrievalEngine, DocumentIndexerEngine, QAIndexerEngine)):
+                    document, conf = module.query(messages[-1].content,
+                                                  lang=lang, k=1)[0]
+                    ans = document
+                elif isinstance(module, ChatMessageSolver):
                     ans = module.get_chat_completion(messages=messages, lang=lang, units=units)
-                else:
+                elif isinstance(module, QuestionSolver):
                     LOG.debug(f"{module} does not supported chat history!")
-                    query = messages[-1]["content"]
+                    query = messages[-1].content
                     ans = module.spoken_answer(query, lang=lang, units=units)
                 if ans:
                     return ans
             except Exception as e:
                 LOG.error(e)
+        return None
 
-    def stream_completion(self, messages: List[Dict[str, str]],
+    def stream_completion(self, messages: List[AgentMessage],
+                          session_id: str = "default",
                           lang: Optional[str] = None,
                           units: Optional[str] = None) -> Iterable[str]:
         answered = False
         for module in self.modules:
             try:
-                if isinstance(module, ChatMessageSolver):
+                if isinstance(module, (ChatEngine, MultimodalChatEngine)):
+                    for response in module.stream_chat(messages,
+                                                    session_id=session_id,
+                                                    lang=lang, units=units):
+
+                        answered = True
+                        yield response.content
+                elif isinstance(module, (RetrievalEngine, DocumentIndexerEngine, QAIndexerEngine)):
+                    document, conf = module.query(messages[-1].content,
+                                                  lang=lang, k=1)[0]
+                    answered = True
+                    yield document
+                elif isinstance(module, ChatMessageSolver):
                     for ans in module.stream_chat_utterances(messages=messages, lang=lang, units=units):
                         answered = True
                         yield ans
-                else:
+                elif isinstance(module, QuestionSolver):
                     LOG.debug(f"{module} does not supported chat history!")
-                    query = messages[-1]["content"]
+                    query = messages[-1].content
                     for ans in module.stream_utterances(query, lang=lang, units=units):
                         answered = True
                         yield ans
+
             except Exception as e:
                 LOG.error(e)
             if answered:

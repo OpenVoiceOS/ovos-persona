@@ -24,6 +24,8 @@ from ovos_utils.log import LOG
 from ovos_utils.parse import match_one, MatchStrategy
 from ovos_utils.xdg_utils import xdg_data_home
 from ovos_workshop.app import OVOSAbstractApplication
+from ovos_persona.memory import BasicShortTermMemory
+from ovos_plugin_manager.templates.agents import MessageRole, AgentMessage, AgentContextManager
 
 try:
     from ovos_plugin_manager.solvers import find_chat_solver_plugins
@@ -44,6 +46,8 @@ class Persona:
         blacklist = blacklist or []
         self.name = name
         self.config = config
+        self.memory = BasicShortTermMemory()  # TODO - select plugin based on config
+
         solver_order = config.get("solvers") or ["ovos-solver-failure-plugin"]
         plugs = {p: {"enabled": True} for p in solver_order}
         for plug_name, plug in find_question_solver_plugins().items():
@@ -61,15 +65,14 @@ class Persona:
     def __repr__(self):
         return f"Persona({self.name}:{list(self.solvers.loaded_modules.keys())})"
 
-    def chat(self, messages: List[Dict[str, str]],
-             lang: Optional[str] = None,
-             units: Optional[str] = None) -> str:
-        return self.solvers.chat_completion(messages, lang, units)
+    def get_messages(self, utterance: str, sess: Session) -> List[AgentMessage]:
+        return self.memory.augment_context(utterance, sess.session_id)
 
-    def stream(self, messages: List[Dict[str, str]],
-               lang: Optional[str] = None,
-               units: Optional[str] = None) -> Iterable[str]:
-        return self.solvers.stream_completion(messages, lang, units)
+    def chat(self, messages: List[AgentMessage], sess: Session) -> str:
+        return self.solvers.chat_completion(messages, sess.lang, sess.system_unit)
+
+    def stream(self, messages: List[AgentMessage], sess: Session) -> Iterable[str]:
+        return self.solvers.stream_completion(messages, sess.lang, sess.system_unit)
 
 
 class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
@@ -96,7 +99,6 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         OVOSAbstractApplication.__init__(self, bus=bus, skill_id="persona.openvoiceos",
                                          resources_dir=f"{dirname(__file__)}")
         ConfidenceMatcherPipeline.__init__(self, bus=bus, config=config)
-        self.sessions = {}
         self.personas = {}
         self.intent_matchers = {}
         self.blacklist = self.config.get("persona_blacklist") or []
@@ -254,60 +256,12 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         if name in self.personas:
             self.personas.pop(name)
 
-    # Chatbot API
-    def chatbox_ask(self, prompt: str,
-                    persona: Optional[str] = None,
-                    lang: Optional[str] = None,
-                    message: Message = None,
-                    stream: bool = True) -> Iterable[str]:
-        persona = self.get_persona(persona) or self.active_persona or self.default_persona
-        if persona not in self.personas:
-            LOG.error(f"unknown persona, choose one of {self.personas.keys()}")
-            return None
-        messages = []
-        # TODO - history per persona , not only per session
-        # dont let context leak between personas
-        message = message or dig_for_message()
-        if message and self.config.get("short-term-memory", True):
-            for q, a in self._build_msg_history(message):
-                messages.append({"role": "user", "content": q})
-                messages.append({"role": "assistant", "content": a})
-        messages.append({"role": "user", "content": prompt})
-        sess = SessionManager.get(message)
-        lang = lang or sess.lang
-        if stream:
-            yield from self.personas[persona].stream(messages, lang, sess.system_unit)
-        else:
-            ans = self.personas[persona].chat(messages, lang, sess.system_unit)
-            if ans:
-                yield ans
-
-    def _build_msg_history(self, message: Message):
-        sess = SessionManager.get(message)
-        if sess.session_id not in self.sessions:
-            return []
-        messages = []  # tuple of question, answer
-
-        q = None
-        ans = None
-        for m in self.sessions[sess.session_id]:
-            if m[0] == "user":
-                if ans is not None and q is not None:
-                    # save previous q/a pair
-                    messages.append((q, ans))
-                    q = None
-                ans = None
-                q = m[1]  # track question
-            elif m[0] == "ai":
-                if ans is None:
-                    ans = m[1]  # track answer
-                else:  # merge multi speak answers
-                    ans = f"{ans}. {m[1]}"
-
-        # save last q/a pair
-        if ans is not None and q is not None:
-            messages.append((q, ans))
-        return messages
+    def query(self, utterance: str, persona_id: str, sess: Session = None) -> Iterable[str]:
+        sess = sess or SessionManager.get()
+        LOG.debug(f"Persona query ({sess.lang}): {persona_id} - \"{utterance}\"")
+        persona: Persona = self.personas[persona_id]
+        message_history = persona.get_messages(utterance, sess)
+        return persona.stream(message_history, sess)
 
     # Abstract methods
     def match_high(self, utterances: List[str], lang: Optional[str] = None,
@@ -480,15 +434,22 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
     def handle_utterance(self, message):
         utt = message.data.get("utterances")[0]
         sess = SessionManager.get(message)
-        if sess.session_id not in self.sessions:
-            self.sessions[sess.session_id] = []
-        self.sessions[sess.session_id].append(("user", utt))
+        persona_id: str = self.active_persona or self.default_persona
+        persona: Persona = self.personas[persona_id]
+        persona.memory.update_history(
+            new_messages=[AgentMessage(MessageRole.USER, utt)],
+            session_id=sess.session_id
+        )
 
     def handle_speak(self, message):
         utt = message.data.get("utterance")
         sess = SessionManager.get(message)
-        if sess.session_id in self.sessions:
-            self.sessions[sess.session_id].append(("ai", utt))
+        persona_id: str = self.active_persona or self.default_persona
+        persona: Persona = self.personas[persona_id]
+        persona.memory.update_history(
+            new_messages=[AgentMessage(MessageRole.ASSISTANT, utt)],
+            session_id=sess.session_id
+        )
 
     def handle_persona_check(self, message: Optional[Message] = None):
         if self.active_persona:
@@ -510,31 +471,28 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
             self.speak_dialog("no_personas")
             return
 
-        sess = SessionManager.get(message)
-        utt = message.data["utterance"]
-        lang = message.data.get("lang") or sess.lang
-        persona = message.data.get("persona", self.active_persona or self.default_persona)
-        persona = self.get_persona(persona) or persona
-        if persona not in self.personas:
-            self.speak_dialog("unknown_persona", {"persona": persona})
+        persona_id = message.data.get("persona", self.active_persona or self.default_persona)
+        persona_id = self.get_persona(persona_id) or persona_id
+
+        if persona_id not in self.personas:
+            self.speak_dialog("unknown_persona", {"persona": persona_id})
             self.handle_persona_list()
             return
 
-        LOG.debug(f"Persona query ({lang}): {persona} - \"{utt}\"")
-        handled = False
+        sess = SessionManager.get(message)
+        utt = message.data["utterance"]
 
+        handled = False
         self._active_sessions[sess.session_id] = True
-        for ans in self.chatbox_ask(utt, lang=lang,
-                                    persona=persona,
-                                    message=message):
+        for ans in self.query(utt, persona_id, sess):
             if not self._active_sessions[sess.session_id]: # stopped
-                LOG.debug(f"Persona stopped: {persona}")
+                LOG.debug(f"Persona stopped: {persona_id}")
                 return
             if ans:  # might be None
                 self.speak(ans)
                 handled = True
         if not handled:
-            self.speak_dialog("persona_error", {"persona": persona})
+            self.speak_dialog("persona_error", {"persona": persona_id})
         self._active_sessions[sess.session_id] = False
 
     def handle_persona_summon(self, message):
@@ -580,7 +538,7 @@ if __name__ == "__main__":
     print(b.match_high(["enable remote llama"]))
 
 #    b.handle_persona_query(Message("", {"utterance": "tell me about yourself"}))
-    for ans in b.chatbox_ask("what is the speed of light"):
+    for ans in b.query("what is the speed of light", b.default_persona):
         print(ans)
     # The speed of light has a value of about 300 million meters per second
     # The telephone was invented by Alexander Graham Bell
