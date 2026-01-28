@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Optional, Any
 
 from ovos_plugin_manager.templates.agents import MessageRole, AgentMessage, AgentContextManager
 
@@ -15,21 +15,9 @@ class BasicShortTermMemory(AgentContextManager):
             - system_prompt (str): Base system prompt to prepend to context.
     """
 
-    def __init__(self, config: dict = None):
-        super().__init__(config or {})
+    def __init__(self, config: Optional[Dict[str, Any]] = None):
+        super().__init__(config)
         self.session2history: Dict[str, List[AgentMessage]] = {}
-
-    def augment_system_prompt(self) -> str:
-        """
-        Generate additional system prompt content for the session.
-
-        Can be overridden to provide dynamic context, e.g., conversation summaries,
-        memory retrievals, or tool definitions.
-
-        Returns:
-            str: Additional system prompt content.
-        """
-        return ""
 
     def get_history(self, session_id: str) -> List[AgentMessage]:
         """
@@ -76,8 +64,7 @@ class BasicShortTermMemory(AgentContextManager):
             List[AgentMessage]: Messages representing the augmented context.
         """
         message_history = self.get_history(session_id)
-        system = self.system_prompt + "\n" + self.augment_system_prompt()
-        if system.strip():
-            message_history.insert(0, AgentMessage(role=MessageRole.SYSTEM, content=system.strip()))
+        if self.system_prompt.strip():
+            message_history.insert(0, AgentMessage(role=MessageRole.SYSTEM, content=self.system_prompt.strip()))
         message_history.append(AgentMessage(role=MessageRole.USER, content=utterance.strip()))
         return message_history
