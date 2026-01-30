@@ -7,7 +7,6 @@ from ovos_plugin_manager.solvers import find_chat_solver_plugins, find_question_
 from ovos_plugin_manager.templates.agents import MessageRole, AgentMessage, ChatEngine, MultimodalChatEngine, \
     RetrievalEngine, DocumentIndexerEngine, QAIndexerEngine
 from ovos_plugin_manager.templates.solvers import ChatMessageSolver, QuestionSolver
-from ovos_utils import flatten_list
 from ovos_utils.fakebus import FakeBus
 from ovos_utils.log import LOG
 
@@ -105,12 +104,12 @@ class QuestionSolversService:
         for module in self.modules:
             try:
                 if isinstance(module, (ChatEngine, MultimodalChatEngine)):
-                    for response in module.stream_chat(messages,
+                    for response in module.stream_sentences(messages,
                                                     session_id=session_id,
                                                     lang=lang, units=units):
 
                         answered = True
-                        yield response.content
+                        yield response
                 elif isinstance(module, (RetrievalEngine, DocumentIndexerEngine, QAIndexerEngine)):
                     document, conf = module.query(messages[-1].content,
                                                   lang=lang, k=1)[0]
