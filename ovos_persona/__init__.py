@@ -530,6 +530,10 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         self.speak_dialog("release_persona", {"persona": self.active_persona})
         self.active_persona = None
 
+    def can_stop(self, message: Message) -> bool:
+        sess = SessionManager.get(message)
+        return self._active_sessions.get(sess.session_id) or False
+        
     def stop_session(self, session: Session):
         if self._active_sessions.get(session.session_id):
             self._active_sessions[session.session_id] = False
