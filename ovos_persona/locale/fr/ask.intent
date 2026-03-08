@@ -1,8 +1,7 @@
-(demander|demande) à {persona} (de partager|) son (point de vue|opinion) (à propos de|sur) {utterance}
-(demander|demande) à {persona} (son|sa|ses|) (analyse|commentaire|impression|interprétation|perception|réaction|point de vue|pensées|compréhension) (sur|de|à propos de) {utterance}
-(demander|demande) à {persona} ce qu'(il|elle) (a à dire|pense) (sur|de|à propos de) {utterance}
-(demander|demande) à {persona} {utterance}
-(sonde|demande|interroge|pose la question à) {persona} (son|sa|ses) (opinion|pensées|point de vue|interprétation|position|vue) (de|sur|à propos de) {utterance}
-(sonde|demande|interroge|pose la question à) {persona} (sur|de|à propos de) {utterance}
-(sonde|demande|interroge|pose la question à) {persona} pour connaître son point de vue sur {utterance}
-que (pense|dit) {persona} (sur|de|à propos de) {utterance}
+(demande|demander) à {persona} ce (qu'il|qu'elle) a à dire sur {utterance}
+(demande|demander) à {persona} ce (qu'il|qu'elle) pense de {utterance}
+(demande|demander) à {persona} de réagir à {utterance}
+(demande|demander) à {persona} son (avis|point de vue|analyse) sur {utterance}
+(interroge|interroger|questionne|questionner) {persona} au sujet de {utterance}
+(pose|poser) une question à {persona} au sujet de {utterance}
+que (pense|dit) {persona} de {utterance}
