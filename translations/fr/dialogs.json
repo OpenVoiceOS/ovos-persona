@@ -11,25 +11,25 @@
     "La personnalité active est {persona}.",
     "Vous parlez actuellement à {persona}.",
     "J'utilise actuellement {persona}.",
-    "La persona en cours est {persona}.",
+    "La personnalité en cours est {persona}.",
     "{persona} est la personnalité active."
   ],
   "list_personas.dialog": [
     "Voici les personas disponibles.",
     "J'ai les personnalités suivantes.",
-    "Les personas disponibles sont les suivantes."
+    "Les personnalités disponibles sont les suivantes."
   ],
   "no_active_persona.dialog": [
     "Aucune personnalité n'est active pour le moment. Je réponds avec ma personnalité par défaut.",
-    "Aucune persona n'est active pour l'instant. J'utilise ma personnalité de base.",
+    "Aucune personnalité n'est active pour l'instant. J'utilise ma personnalité de base.",
     "Je n'ai trouvé aucune personnalité active. Je vous réponds donc normalement.",
-    "Il n'y a pas de persona active pour le moment."
+    "Il n'y a pas de personnalité active pour le moment."
   ],
   "no_personas.dialog": [
     "Aucune personnalité n'est disponible pour le moment.",
-    "Je n'ai trouvé aucune persona disponible pour l'instant.",
+    "Je n'ai trouvé aucune personnalité disponible pour l'instant.",
     "Il n'y a pas de personnalité avec laquelle interagir pour le moment.",
-    "Désolé, aucune persona n'est disponible actuellement."
+    "Désolé, aucune personnalité n'est disponible actuellement."
   ],
   "persona_error.dialog": [
     "Un problème est survenu pendant la conversation avec {persona}.",
