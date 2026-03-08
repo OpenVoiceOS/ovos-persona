@@ -12,7 +12,7 @@
     "active (le persona|la personnalité)"
   ],
   "ask.intent": [
-    "(sonde|demande|interroge|pose la question à) {personne} (son|sa|ses) (opinion|pensées|point de vue|interprétation|position|vue) (de|sur|à propos de) {utterance}",
+    "(sonde|demande|interroge|pose la question à) {persona} (son|sa|ses) (opinion|pensées|point de vue|interprétation|position|vue) (de|sur|à propos de) {utterance}",
     "(sonde|demande|interroge|pose la question à) {persona} pour connaître son point de vue sur {utterance}",
     "(sonde|demande|interroge|pose la question à) {persona} (sur|de|à propos de) {utterance}",
     "(demander|demande) à {persona} (de partager|) son (point de vue|opinion) (à propos de|sur) {utterance}",

@@ -1,4 +1,42 @@
 {
+  "ask.voc": [
+    "demande",
+    "demander",
+    "interroge",
+    "interroger",
+    "pose une question",
+    "questionne",
+    "questionner",
+    "sollicite l'avis de"
+  ],
+  "opinion.voc": [
+    "analyse",
+    "avis",
+    "commentaire",
+    "impression",
+    "interprétation",
+    "pensées",
+    "perception",
+    "point de vue",
+    "position",
+    "réaction"
+  ],
+  "persona.voc": [
+    "IA",
+    "IAs",
+    "LLM",
+    "LLMs",
+    "agent",
+    "assistant",
+    "assistant virtuel",
+    "assistante virtuelle",
+    "bot",
+    "chatbot",
+    "grand modèle de langage",
+    "persona",
+    "personnalité",
+    "personnalités"
+  ],
   "Release.voc": [
     "(finir|finis|fermer|ferme|stop|arrêter|arrête|sortir de|sors de|quitter|quitte|abandonner|abandonne|terminer|termine|interrompre|interromps|désactiver|désactive) [le|la] (chat|chatbot|persona|IA|LLM|Large Language Model|interaction|conversation|discussion|dialogue)",
     "(retirer|retire|supprimer|supprimer|arrêter|arrête|terminer|termine) (chat|chatbot|persona|IA|LLM|Large Language Model|)",
@@ -12,5 +50,11 @@
     "mettre (chatbot|persona|IA|LLM) en sommeil",
     "(ferme ta bouche|ferme-la)",
     "(arrêter|arrête) (de discuter|de communiquer|de répondre|de parler)"
+  ],
+  "summon.voc": [
+    "(activer|active|réveiller|réveille|invoquer|invoque|appeler|appelle)",
+    "(connecte-moi|je veux parler) (à|avec)",
+    "(démarrer|démarre|initier|initie|commencer|commence|ouvrir|ouvre) (un|une) (chat|discussion|conversation|dialogue)",
+    "[laisse-moi] (parler|chatter|interagir|discuter) (avec|à)"
   ]
 }
