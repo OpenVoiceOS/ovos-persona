@@ -3,7 +3,7 @@
     "J'ai activé {persona}.",
     "{persona} est maintenant active.",
     "{persona} est prête.",
-    "Vous parlez maintenant à {persona}.",
+    "Vous parlez maintenant avec {persona}.",
     "{persona} est désormais en ligne.",
     "{persona} est opérationnelle."
   ],
@@ -40,7 +40,7 @@
   ],
   "persona_select.dialog": [
     "Quelle personnalité voulez-vous activer ?",
-    "Avec quelle personnalité voulez-vous interagir ?",
+    "Avec quelle personnalité voulez-vous discuter ?",
     "Laquelle voulez-vous utiliser ?"
   ],
   "release_persona.dialog": [
@@ -48,7 +48,7 @@
     "{persona} est maintenant désactivée.",
     "Je n'utilise plus {persona}.",
     "{persona} n'est plus active.",
-    "{persona} a été mise hors tension."
+    "Je ne parle plus avec {persona}."
   ],
   "unknown_persona.dialog": [
     "Je ne connais pas {persona}.",

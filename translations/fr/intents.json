@@ -9,12 +9,12 @@
     "qui me répond (en ce moment|actuellement|)"
   ],
   "ask.intent": [
-    "(demande|demander) à {persona} son (avis|point de vue|analyse) sur {utterance}",
-    "(demande|demander) à {persona} ce (qu'il|qu'elle) pense de {utterance}",
-    "(demande|demander) à {persona} ce (qu'il|qu'elle) a à dire sur {utterance}",
-    "(demande|demander) à {persona} de réagir à {utterance}",
-    "(interroge|interroger|questionne|questionner) {persona} au sujet de {utterance}",
-    "(pose|poser) une question à {persona} au sujet de {utterance}",
+    "demande à {persona} son (avis|point de vue|analyse) sur {utterance}",
+    "demande à {persona} ce (qu'il|qu'elle) pense de {utterance}",
+    "demande à {persona} ce (qu'il|qu'elle) a à dire sur {utterance}",
+    "demande à {persona} de réagir à {utterance}",
+    "interroge {persona} au sujet de {utterance}",
+    "pose une question à {persona} au sujet de {utterance}",
     "que (pense|dit) {persona} de {utterance}"
   ],
   "list_personas.intent": [
@@ -26,9 +26,9 @@
   ],
   "summon.intent": [
     "(connecte-moi|mets-moi en relation|je veux parler) (à|avec) {persona}",
-    "(active|activer|réveille|réveiller|invoque|invoquer) {persona}",
-    "(active|activer|réveille|réveiller) (la|le) {persona} (persona|personnalité|assistant|chatbot|agent|IA|)",
-    "(démarre|démarrer|ouvre|ouvrir|commence|commencer) (une|la) (conversation|discussion|interaction) avec {persona}",
+    "(active|réveille|invoque) {persona}",
+    "(active|réveille) (la|le) {persona} (persona|personnalité|assistant|chatbot|agent|IA|)",
+    "(démarre|ouvre|commence) (une|la) (conversation|discussion|interaction) avec {persona}",
     "[laisse-moi] (parler|discuter|interagir) (avec|à) {persona}"
   ]
 }
