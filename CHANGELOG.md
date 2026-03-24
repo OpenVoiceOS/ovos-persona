@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.7.4a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.4a1) (2026-03-24)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.3a1...0.7.4a1)
+
+**Merged pull requests:**
+
+- fix: rename bare lang code locale directories [\#149](https://github.com/OpenVoiceOS/ovos-persona/pull/149) ([ovos-localize[bot]](https://github.com/apps/ovos-localize))
+- Add missing French persona vocab [\#148](https://github.com/OpenVoiceOS/ovos-persona/pull/148) ([goldyfruit](https://github.com/goldyfruit))
+
 ## [0.7.3a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.3a1) (2026-03-06)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.1...0.7.3a1)
