@@ -1,8 +1,8 @@
 # Changelog
 
-## [0.7.4a2](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.4a2) (2026-03-29)
+## [0.7.4a3](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.4a3) (2026-03-29)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a1...0.7.4a2)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a1...0.7.4a3)
 
 **Merged pull requests:**
 
