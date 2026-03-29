@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.7.4a2](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.4a2) (2026-03-29)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a1...0.7.4a2)
+
+**Merged pull requests:**
+
+- translate\(it-IT\): update ask.voc [\#154](https://github.com/OpenVoiceOS/ovos-persona/pull/154) ([ovos-localize[bot]](https://github.com/apps/ovos-localize))
+- translate\(it-IT\): update active\_persona.intent [\#153](https://github.com/OpenVoiceOS/ovos-persona/pull/153) ([ovos-localize[bot]](https://github.com/apps/ovos-localize))
+- translate\(it-IT\): update activated\_persona.dialog [\#152](https://github.com/OpenVoiceOS/ovos-persona/pull/152) ([ovos-localize[bot]](https://github.com/apps/ovos-localize))
+- translate\(it-IT\): update Release.voc [\#151](https://github.com/OpenVoiceOS/ovos-persona/pull/151) ([ovos-localize[bot]](https://github.com/apps/ovos-localize))
+
 ## [0.7.4a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.4a1) (2026-03-24)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.3a1...0.7.4a1)
