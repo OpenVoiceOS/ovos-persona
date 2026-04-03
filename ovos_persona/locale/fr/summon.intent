@@ -1,5 +1,0 @@
-(active|réveille) (la|le) {persona} (persona|personnalité|assistant|chatbot|agent|IA|)
-(active|réveille|invoque) {persona}
-(connecte-moi|mets-moi en relation|je veux parler) (à|avec) {persona}
-(démarre|ouvre|commence) (une|la) (conversation|discussion|interaction) avec {persona}
-[laisse-moi] (parler|discuter|interagir) (avec|à) {persona}
