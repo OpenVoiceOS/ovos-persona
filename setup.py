@@ -46,7 +46,6 @@ with open(os.path.join(BASEDIR, "README.md"), "r") as f:
 
 
 PLUGIN_ENTRY_POINT = 'ovos-persona-pipeline-plugin=ovos_persona:PersonaService'
-HM_PLUGIN_ENTRY_POINT = 'hivemind-persona-agent-plugin=ovos_persona.hpm:PersonaProtocol'
 
 setup(
     name='ovos_persona',
@@ -62,6 +61,5 @@ setup(
     install_requires=required("requirements.txt"),
     long_description=long_description,
     long_description_content_type='text/markdown',
-    entry_points={'opm.pipeline': PLUGIN_ENTRY_POINT,
-                  'hivemind.agent.protocol': HM_PLUGIN_ENTRY_POINT},
+    entry_points={'opm.pipeline': PLUGIN_ENTRY_POINT},
 )
