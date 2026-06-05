@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ovos-persona"
+dynamic = ["version"]
+description = "persona pipeline for ovos"
+license = { text = "Apache-2.0" }
+readme = "README.md"
+authors = [
+    { name = "JarbasAI", email = "jarbasai@mailfence.com" },
+]
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "ovos-plugin-manager>=0.8.3,<3.0.0",
+    "ovos-openai-plugin>=2.0.0,<3.0.0",
+    "ovos-solver-failure-plugin",
+    "ovos-utils>=0.8.0a1,<1.0.0",
+    "langcodes",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-cov",
+]
+
+[project.urls]
+Homepage = "https://github.com/OpenVoiceOS/ovos-persona"
+Issues = "https://github.com/OpenVoiceOS/ovos-persona/issues"
+
+[project.entry-points."opm.pipeline"]
+ovos-persona-pipeline-plugin = "ovos_persona:PersonaService"
+
+[tool.setuptools.dynamic]
+version = { attr = "ovos_persona.version.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["ovos_persona*"]
