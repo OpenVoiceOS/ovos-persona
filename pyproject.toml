@@ -42,6 +42,9 @@ Issues = "https://github.com/OpenVoiceOS/ovos-persona/issues"
 [project.entry-points."opm.pipeline"]
 ovos-persona-pipeline-plugin = "ovos_persona:PersonaService"
 
+[project.entry-points."opm.agents.memory"]
+ovos-agents-short-term-memory-plugin = "ovos_persona.memory:BasicShortTermMemory"
+
 [tool.setuptools.dynamic]
 version = { attr = "ovos_persona.version.__version__" }
 
