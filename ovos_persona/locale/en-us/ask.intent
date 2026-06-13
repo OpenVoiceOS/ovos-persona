@@ -1,0 +1,8 @@
+(query|probe|request|seek|question|ask|inquire|get) {persona} (perspective|opinion|thoughts|viewpoint|interpretation|feedback|stance|view) (of|on) {utterance}
+(query|probe|request|seek|question|ask|inquire|interrogate) {persona} for their views on {utterance}
+(query|probe|request|seek|question|ask|inquire|interrogate|pose a question to) {persona} (regarding|about) {utterance}
+ask {persona} (about|to share|) their (perspective|opinion) (about|of|on) {utterance}
+ask {persona} about {utterance}
+ask {persona} for (their|) (insights|analysis|comment|impression|interpretation|perception|reaction|standpoint|take|thoughts|understanding|viewpoint) (on|of) {utterance}
+ask {persona} what they (have to say|think) about {utterance}
+what does {persona} (think|say) about {utterance}

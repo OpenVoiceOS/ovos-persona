@@ -1,0 +1,92 @@
+{
+  "activated_persona.dialog": [
+    "{persona} geactiveerd",
+    "{persona} ingeschakeld",
+    "{persona} is geactiveerd.",
+    "{persona} is ingeschakeld.",
+    "{persona} is gestart.",
+    "{persona} is ingeschakeld.",
+    "{persona} is nu geactiveerd.",
+    "{persona} is nu actief",
+    "{persona} is nu ingeschakeld",
+    "{persona} is nu volledig ingeschakeld.",
+    "{persona} is nu live.",
+    "{persona} is nu online.",
+    "{persona} is nu klaar voor gebruik.",
+    "{persona} is nu operationeel."
+  ],
+  "active_persona.dialog": [
+    "Momenteel is {persona} de actieve persona",
+    "Ik gebruik nu {persona} om met  je te communiceren",
+    "Op dit moment is de actieve persona {persona}",
+    "De actieve persona is {persona}",
+    "De persona die op dit moment in gebruik is, is {persona}",
+    "Je spreekt momenteel met {persona}"
+  ],
+  "list_personas.dialog": [
+    "Dit zijn de beschikbare persona's",
+    "Ik heb de volgende persona's",
+    "De beschikbare persona's zijn"
+  ],
+  "no_active_persona.dialog": [
+    "Momenteel zijn er geen persona's geactiveerd, dus zul je met mij als basispersoonlijkheid in gesprek zijn",
+    "Ik kon geen actieve persona's vinden, dus ik zal met je in contact zijn met mijn standaard persona",
+    "Het lijkt erop dat er op dit moment geen actieve persona's zijn, dus ik zal als mijzelf reageren",
+    "Er zijn geen persona's actief, ik gebruik mijn basispersoonlijkheid",
+    "Er zijn momenteel geen persona's actief. Ik gebruik mijn basispersoonlijkheid om met jou te communiceren.",
+    "Omdat er geen persona's actief zijn, blijf ik voorlopig mijn standaardpersoonlijkheid gebruiken"
+  ],
+  "no_personas.dialog": [
+    "Ik kon op dit moment geen persona's vinden. Probeer het later nog eens.",
+    "Het lijkt erop dat er momenteel geen persona's beschikbaar zijn",
+    "Het lijkt erop dat er op dit moment geen persona's beschikbaar zijn om mee te communiceren",
+    "Sorry, ik kon op dit moment geen persona's vinden",
+    "Er zijn momenteel geen persona's beschikbaar om mee te communiceren",
+    "Helaas zijn er op dit moment geen persona's"
+  ],
+  "persona_error.dialog": [
+    "Er is een storing opgetreden tijdens het gesprek met {persona}.",
+    "Er is een probleem opgetreden tijdens het spreken met {persona}.",
+    "Er deed zich een technisch probleem voor tijdens het gesprek met {persona}.",
+    "Er is een fout opgetreden tijdens het communiceren met {persona}.",
+    "Er is een probleem opgetreden tijdens de communicatie met {persona}.",
+    "Er ging iets mis tijdens een chatgesprek met {persona}.",
+    "Er is iets misgegaan tijdens de interactie met {persona}.",
+    "Er was een storing tijdens het gesprek met {persona}.",
+    "Er was een probleem tijdens het gesprek met {persona}.",
+    "Er is een fout opgetreden tijdens het chatten met {persona}."
+  ],
+  "persona_select.dialog": [
+    "Laat me weten welke je wilt activeren",
+    "Welke zou je willen kiezen?",
+    "Met welke van de twee zou je graag willen communiceren?"
+  ],
+  "release_persona.dialog": [
+    "{persona} gedeactiveerd",
+    "{persona} uitgeschakeld",
+    "{persona} is gedeactiveerd",
+    "{persona} is uitgeschakeld",
+    "{persona} is uitgeschakeld en is niet langer actief.",
+    "{persona} is uitgeschakeld.",
+    "{persona} is uitgeschakeld.",
+    "{persona} is afgesloten.",
+    "{persona} is uit gezet.",
+    "{persona} is niet langer actief.",
+    "{persona} is niet langer ingeschakeld.",
+    "{persona} is nu gedeactiveerd.",
+    "{persona} is nu inactief en uitgeschakeld.",
+    "{persona} is nu inactief."
+  ],
+  "unknown_persona.dialog": [
+    "Ik weet niet wie {persona} is",
+    "Ik ken {persona} niet",
+    "Ik weet niet wie {persona} moet voorstellen.",
+    "Ik herken {persona} niet.",
+    "Ik heb geen idee wie {persona} is.",
+    "Ik heb nog nooit van {persona} gehoord.",
+    "Ik ken {persona} niet.",
+    "Ik weet niet zeker wie {persona} is.",
+    "Ik ben niet bekend met {persona}.",
+    "{persona} is mij onbekend."
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "Release.voc": [
+    "(acabar|acaba|terminar|termina|rematar|remata|finalizar|finaliza|concluír|conclúe|pechar|pecha|fechar|fecha|cesar|cesa|suspender|suspende|parar|para|deixar|deixa|saír|sae|interromper|interrompe|abandonar|abandona|cancelar|cancela|desconectar|desconecta|desactivar|desactiva) (o|a|do|da) (chat|chatbot|bot de leria|bot de charla|bot de conversa|personaxe|perfil|IA|intelixencia artificial|LLM|modelo de lingua|modelo de linguaxe|interacción|conversación|conversa|diálogo|charla|leria|palique|parola|coloquio|discusión|debate|argumentación)",
+    "(parar|para|quitar|quita|deter|detén|retirar|retira|apartar|aparta|eliminar|elimina|deixar|deixa|sacar|saca) (o|a|) (chat|chatbot|bot de leria|bot de charla|bot de conversa|personaxe|perfil|IA|intelixencia artificial|LLM|modelo de lingua|modelo de linguaxe|)",
+    "(apagar|apaga|desactivar|desactiva|desconectar|desconecta|pechar|pecha) (o|a|) (chat|chatbot|bot de leria|bot de charla|bot de conversa|personaxe|perfil|IA|intelixencia artificial|LLM|modelo de lingua|modelo de linguaxe|)",
+    "(abur|aburiño|chao|ata loguiño|até loguiño|deica loguiño)",
+    "(chega|abonda) de (conversación|conversa|charla|leria|palique|parola)",
+    "(vai de aí|sáeme de diante|vaite|marcha|lisca|volve ao teu tobo|volve á túa cova|vaite deitar|hiberna)",
+    "(ata logo|até logo|deica logo|adeus|ata outra|até outra|ata a próxima|até a próxima)",
+    "(deter|detén|parar|para) (a|o) (interacción|conversación|conversa|diálogo|charla|leria|palique|parola|coloquio|discusión|debate|argumentación)",
+    "déixame en paz",
+    "(poñer|pór|pon) (o|a) (chat|chatbot|bot de leria|bot de charla|bot de conversa|personaxe|perfil|IA|intelixencia artificial|LLM|modelo de lingua|modelo de linguaxe) a durmir",
+    "(cala|cala a boca)",
+    "(parar|para|deixar|deixa|deter|detén|abonda|chega) (de|a) (conversar|conversación|conversa|charla|leria|comunicarte|comunicarnos|comunicación|responder|falar)"
+  ],
+  "ask.voc": [
+    "preguntar",
+    "(conseguir|obter)",
+    "ter que dicir",
+    "preguntar",
+    "inquirir",
+    "opinión sobre",
+    "formular unha pregunta",
+    "investigar",
+    "consulta",
+    "pregunta",
+    "solicitude",
+    "dicir sobre",
+    "(buscar|procurar)",
+    "pensar en"
+  ],
+  "opinion.voc": [
+    "análise",
+    "comentario",
+    "impresión",
+    "información",
+    "interpretación",
+    "percepción",
+    "reacción",
+    "punto de vista",
+    "visión",
+    "as súas opinións",
+    "pensamentos",
+    "entendemento",
+    "punto de vista"
+  ],
+  "persona.voc": [
+    "IA",
+    "LLM",
+    "LLMs",
+    "(grandes modelos de lingua|grandes modelos de linguaxe)",
+    "axente",
+    "asistente",
+    "bot",
+    "chatbot",
+    "persona",
+    "personalidades",
+    "personas",
+    "asistente virtual"
+  ],
+  "summon.voc": [
+    "(conéctame|quero falar|ponme) (con|con)",
+    "(activar|acceder|despertar|chamar|invocar|conxurar|invocar)",
+    "(iniciar|comezar|empezar|entrar|abrir) (chat|faladoiro|interacción|comunicación|conversa|diálogo)",
+    "(comezar|iniciar|empezar|entrar|establecer) (un|unha|) (chat|discusión|conversa|diálogo)",
+    "[quero] (chatear|falar|interactuar) (con|con)"
+  ]
+}

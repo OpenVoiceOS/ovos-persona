@@ -1,0 +1,92 @@
+{
+  "activated_persona.dialog": [
+    "{persona} ativado",
+    "{persona} habilitado",
+    "{persona} foi ativado.",
+    "{persona} foi habilitado.",
+    "{persona} foi inicializado.",
+    "{persona} foi ativado.",
+    "{persona} agora está ativado.",
+    "{persona} agora está ativo",
+    "{persona} agora está habilitado",
+    "{persona} agora está totalmente habilitado.",
+    "{persona} já está no ar.",
+    "{persona} agora está online.",
+    "{persona} agora está pronto para ser usado.",
+    "{persona} já está instalado e funcionando."
+  ],
+  "active_persona.dialog": [
+    "Atualmente, a (personalidade|persona)  ativa é {persona}",
+    "Estou a usar {persona} agora para interagir contigo",
+    "No momento, a (personalidade|persona)  ativa é {persona}",
+    "A (personalidade|persona) ativa é {persona}",
+    "A (personalidade|persona) em uso no momento é {persona}",
+    "Estás a falar com {persona}"
+  ],
+  "list_personas.dialog": [
+    "Aqui estão as (personalidades|personas) disponíveis",
+    "Eu tenho as seguintes (personalidades|personas)",
+    "As (personalidades|personas) disponíveis são"
+  ],
+  "no_active_persona.dialog": [
+    "Atualmente, não há personas ativas, então você falará comigo como a personalidade base",
+    "Não consegui encontrar nenhuma persona ativa, então vou interagir como o meu eu padrão",
+    "Parece que não há nenhuma persona ativa no momento, então vou responder como eu mesmo",
+    "Nenhuma persona ativa, estou a usar a minha personalidade base",
+    "Nenhuma persona está ativa agora. Estou a usar a minha personalidade base para te responder",
+    "Como nenhuma persona está ativa, continuo a usar a minha personalidade padrão por enquanto"
+  ],
+  "no_personas.dialog": [
+    "Não consegui encontrar nenhuma (personalidade|persona) no momento. Por favor, verifique novamente mais tarde",
+    "Parece que não há (personalidades|personas) disponíveis no momento",
+    "Parece que não há (personalidades|personas)  disponíveis para interagir agora",
+    "Desculpe, não consegui encontrar nenhuma (personalidade|persona) agora",
+    "Não há (personalidades|personas) disponíveis para interagir no momento",
+    "Infelizmente, não há (personalidades|personas) no momento"
+  ],
+  "persona_error.dialog": [
+    "Ocorreu uma falha ao falar com {persona}.",
+    "Ocorreu um problema ao falar com {persona}.",
+    "Ocorreu um problema técnico ao falar com {persona}.",
+    "Ocorreu um erro ao interagir com {persona}.",
+    "Ocorreu um problema durante a comunicação com {persona}.",
+    "Algo deu errado durante a conversa com {persona}.",
+    "Algo deu errado ao interagir com {persona}.",
+    "Ocorreu um problema durante a conversa com {persona}.",
+    "Houve um problema durante a conversa com {persona}.",
+    "Encontrei um erro ao conversar com {persona}."
+  ],
+  "persona_select.dialog": [
+    "Qual queres ativar",
+    "Qual queres escolher",
+    "Com qual gostarias de interagir"
+  ],
+  "release_persona.dialog": [
+    "{persona} desativado",
+    "{persona} desabilitado",
+    "{persona} foi desativado",
+    "{persona} foi desabilitado",
+    "{persona} foi desabilitado e não está mais funcional.",
+    "{persona} foi desabilitado.",
+    "{persona} foi desligado.",
+    "{persona} foi encerrado.",
+    "{persona} foi desativado.",
+    "{persona} não está mais ativo.",
+    "{persona} não está mais habilitado.",
+    "{persona} agora está desativado.",
+    "{persona} agora está inativo e desabilitado.",
+    "{persona} agora está inativo."
+  ],
+  "unknown_persona.dialog": [
+    "Eu não sei quem é {persona}",
+    "Eu não sei {persona}",
+    "Não sei quem {persona} é suposto ser.",
+    "Não reconheço {persona}.",
+    "Não tenho ideia de quem é {persona}.",
+    "Eu nunca ouvi falar de {persona}.",
+    "Não estou familiarizado com {persona}.",
+    "Não tenho certeza de quem é {persona}.",
+    "Não estou familiarizado com {persona}.",
+    "{persona} é desconhecido para mim."
+  ]
+}
