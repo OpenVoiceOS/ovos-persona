@@ -2,7 +2,7 @@
 
 PersonaService keeps independent state per session:
   - active_personas: {session_id -> persona name}
-  - active_personas: {session_id -> persona name}
+  - per-session conversation memory (BasicShortTermMemory keyed by session_id)
 
 All tests drive the real PersonaService handlers through a FakeBus;
 no network access or LLM downloads are required (ovos-solver-failure-plugin only).
@@ -77,15 +77,20 @@ def svc():
 
 @pytest.fixture(autouse=True)
 def fresh_sessions(svc):
-    """Reset per-session state between tests so tests are independent."""
-    svc.active_personas.clear()
-    svc._active_sessions.clear()
+    """Reset per-session state (active personas + conversation memory) between tests."""
+    def _reset():
+        svc.active_personas.clear()
+        svc._active_sessions.clear()
+        for _p in svc.personas.values():
+            if _p.memory:
+                _p.memory.session2history.clear()
+    _reset()
     # Re-register sessions in the global SessionManager
     for sid in ("s1", "s2"):
         sess = Session(session_id=sid)
         SessionManager.sessions[sid] = sess
     yield
-    svc.active_personas.clear()
+    _reset()
 
 
 # ---------------------------------------------------------------------------
@@ -171,3 +176,50 @@ class TestDefaultFallback:
         sess1 = SessionManager.sessions["s1"]
         persona = svc.get_active_persona(_msg(sess1), include_default=False)
         assert persona is None
+
+
+class TestMemoryIsolation:
+    """Conversation memory must stay isolated per session, end-to-end."""
+
+    def test_memory_isolated_per_session_same_persona(self, svc):
+        """Two sessions on the default persona keep independent histories."""
+        sess1 = SessionManager.sessions["s1"]
+        sess2 = SessionManager.sessions["s2"]
+
+        # drive the REAL handlers (no summon -> both use the default persona)
+        svc.handle_utterance(_utterance_msg(sess1, "my secret is s1-token"))
+        svc.handle_speak(_speak_msg(sess1, "acknowledged s1-token"))
+        svc.handle_utterance(_utterance_msg(sess2, "my secret is s2-token"))
+        svc.handle_speak(_speak_msg(sess2, "acknowledged s2-token"))
+
+        persona = svc.personas[svc.default_persona]
+        assert persona.memory is not None, "default short-term memory must always be available"
+
+        h1 = [m.content for m in persona.memory.get_history("s1")]
+        h2 = [m.content for m in persona.memory.get_history("s2")]
+
+        assert "my secret is s1-token" in h1 and "acknowledged s1-token" in h1
+        assert "my secret is s2-token" in h2 and "acknowledged s2-token" in h2
+        # no cross-contamination between sessions
+        assert all("s2-token" not in c for c in h1), f"s2 leaked into s1: {h1}"
+        assert all("s1-token" not in c for c in h2), f"s1 leaked into s2: {h2}"
+        # an unknown session has no memory
+        assert persona.memory.get_history("never-seen") == []
+
+    def test_memory_isolated_across_distinct_personas(self, svc):
+        """Different personas summoned per session keep memory in separate stores."""
+        sess1 = SessionManager.sessions["s1"]
+        sess2 = SessionManager.sessions["s2"]
+        svc.handle_persona_summon(_summon_msg(sess1, "Alice"))
+        svc.handle_persona_summon(_summon_msg(sess2, "Bob"))
+
+        svc.handle_utterance(_utterance_msg(sess1, "this is for Alice"))
+        svc.handle_utterance(_utterance_msg(sess2, "this is for Bob"))
+
+        alice = svc.personas["Alice"]
+        bob = svc.personas["Bob"]
+        assert "this is for Alice" in [m.content for m in alice.memory.get_history("s1")]
+        assert "this is for Bob" in [m.content for m in bob.memory.get_history("s2")]
+        # Alice never saw s2's turn; Bob never saw s1's
+        assert alice.memory.get_history("s2") == []
+        assert bob.memory.get_history("s1") == []

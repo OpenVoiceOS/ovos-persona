@@ -58,6 +58,8 @@ The **`PersonaPipeline`** brings multi-persona management to OpenVoiceOS (OVOS),
 
 - **🧑‍💻 Multiple Personas**: Manage a list of personas, each with its unique solvers.  
 - **🔄 Dynamic Switching**: Seamlessly switch between personas as needed.  
+- **🧵 Per-session state**: The active persona and conversation memory are tracked **per session**, so concurrent conversations stay isolated.  
+- **🧠 Short-term memory**: A default short-term memory ships with ovos-persona and is **always available** (per-session history); swap it for any `opm.agents.memory` plugin via `memory_module`. See [`docs/memory.md`](docs/memory.md).  
 - **💬 Conversational**: Let personas handle utterances directly for richer interaction.  
 - **🎨 Personalize**: Create your own personas with simple `.json` files.
 

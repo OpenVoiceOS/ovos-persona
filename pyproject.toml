@@ -33,6 +33,8 @@ dependencies = [
 test = [
     "pytest",
     "pytest-cov",
+    "ovoscope",
+    "ovos-solver-failure-plugin",
 ]
 
 [project.urls]

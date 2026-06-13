@@ -82,3 +82,19 @@ context = memory.build_conversation_context("what is the capital of France?", "s
 | `build_conversation_context(utterance, session_id)` | Produce the full message list for a solver query |
 
 Install a third-party plugin and set `memory_module` in the persona config to its entry point name to use it.
+
+---
+
+## Default plugin & per-session isolation
+
+`BasicShortTermMemory` is **shipped and registered by ovos-persona itself** as the
+entry point `ovos-agents-short-term-memory-plugin` (group `opm.agents.memory`), so a
+default short-term memory is **always available** — no extra package required. Every
+`Persona` loads it automatically unless `memory_module` is set to another plugin (or
+to a falsy value to disable memory). If a configured `memory_module` is unavailable,
+the persona degrades gracefully with memory disabled rather than failing to load.
+
+History is **isolated per session**: all storage and retrieval are keyed by
+`session_id` (`session2history[session_id]`), so concurrent conversations on different
+sessions never see each other's context. With per-session active personas, each
+session's turns are recorded against the persona active *for that session*.
