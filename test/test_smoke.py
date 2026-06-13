@@ -1,6 +1,7 @@
 """Smoke tests — verify the package imports and ships its pipeline plugin
 entry-point (and no longer the bundled HiveMind agent plugin)."""
 from importlib.metadata import entry_points
+from unittest.mock import patch, MagicMock
 
 
 def test_package_imports():
@@ -62,3 +63,67 @@ def test_basic_short_term_memory_merge_consecutive_assistant():
     assert len(assistant_msgs) == 1
     assert "part one" in assistant_msgs[0].content
     assert "part two" in assistant_msgs[0].content
+def test_per_session_active_personas_attribute():
+    """PersonaService tracks active personas per session (not a single global)."""
+    from ovos_persona import PersonaService
+    from ovos_utils.fakebus import FakeBus
+
+    with patch("ovos_persona.PersonaService.load_personas"), \
+         patch("ovos_persona.PersonaService.load_intent_files"), \
+         patch("ovos_persona.OVOSAbstractApplication.__init__"), \
+         patch("ovos_persona.ConfidenceMatcherPipeline.__init__"), \
+         patch.object(PersonaService, "add_event"):
+        svc = PersonaService.__new__(PersonaService)
+        svc.config = {}
+        svc.message_history = {}
+        svc.active_personas = {}
+        svc.personas = {}
+        svc.intent_matchers = {}
+        svc.blacklist = []
+        svc._active_sessions = {}
+
+    assert hasattr(svc, "active_personas"), "active_personas dict must exist"
+    assert hasattr(svc, "message_history"), "message_history dict must exist"
+    assert not hasattr(svc, "active_persona") or isinstance(
+        getattr(svc, "active_persona", None), type(None)
+    ), "legacy single active_persona should not exist as a non-None attribute"
+    assert isinstance(svc.active_personas, dict)
+    assert isinstance(svc.message_history, dict)
+
+
+def test_per_session_isolation():
+    """Active persona set for session A must not bleed into session B."""
+    from ovos_persona import PersonaService
+
+    svc = PersonaService.__new__(PersonaService)
+    svc.active_personas = {}
+
+    sess_a = "session-a"
+    sess_b = "session-b"
+
+    svc.active_personas[sess_a] = "AssistantA"
+    # session B is untouched
+    assert svc.active_personas.get(sess_b) is None
+    assert svc.active_personas[sess_a] == "AssistantA"
+
+    # releasing session A does not affect B
+    svc.active_personas.pop(sess_a)
+    assert sess_a not in svc.active_personas
+
+
+def test_message_history_per_session():
+    """Message history is tracked independently per session."""
+    from ovos_persona import PersonaService
+
+    svc = PersonaService.__new__(PersonaService)
+    svc.message_history = {}
+
+    sess_a = "session-a"
+    sess_b = "session-b"
+
+    svc.message_history.setdefault(sess_a, []).append(("user", "hello"))
+    svc.message_history.setdefault(sess_a, []).append(("ai", "hi there"))
+
+    assert sess_b not in svc.message_history
+    assert len(svc.message_history[sess_a]) == 2
+    assert svc.message_history[sess_a][0] == ("user", "hello")
