@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.8.0a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.8.0a1) (2026-06-13)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.5a2...0.8.0a1)
+
+**Merged pull requests:**
+
+- feat: "memory" plugins [\#143](https://github.com/OpenVoiceOS/ovos-persona/pull/143) ([JarbasAl](https://github.com/JarbasAl))
+- Update README.md [\#117](https://github.com/OpenVoiceOS/ovos-persona/pull/117) ([Dante1975X](https://github.com/Dante1975X))
+
 ## [0.7.5a2](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.5a2) (2026-06-06)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.5a1...0.7.5a2)
