@@ -27,7 +27,7 @@ dependencies = [
     "ovos-workshop>=0.1.0,<9.0.0",
     "ovos-bus-client>=1.0.0,<3.0.0",
     "ovos-config>=0.0.13,<3.0.0",
-    "pydantic",  # required by ovos-plugin-manager agent_tools (imported by the persona pipeline)
+    "pydantic",  # imported at runtime by ovos-plugin-manager agent_tools (only a test-extra there)
 ]
 
 [project.optional-dependencies]
