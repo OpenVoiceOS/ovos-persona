@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.9.0a3](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a3) (2026-06-15)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a2...0.9.0a3)
+
+**Merged pull requests:**
+
+- fix: ship locale resources in the wheel [\#172](https://github.com/OpenVoiceOS/ovos-persona/pull/172) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.9.0a2](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a2) (2026-06-14)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a1...0.9.0a2)
