@@ -47,9 +47,23 @@ ovos-persona-pipeline-plugin = "ovos_persona:PersonaService"
 [project.entry-points."opm.agents.memory"]
 ovos-agents-short-term-memory-plugin = "ovos_persona.memory:BasicShortTermMemory"
 
+[tool.setuptools]
+include-package-data = true
+
 [tool.setuptools.dynamic]
 version = { attr = "ovos_persona.version.__version__" }
 
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["ovos_persona*"]
+
+[tool.setuptools.package-data]
+ovos_persona = [
+    "locale/**/*.voc",
+    "locale/**/*.intent",
+    "locale/**/*.dialog",
+    "locale/**/*.entity",
+    "locale/**/*.rx",
+    "locale/**/*.word",
+    "locale/**/*",
+]
