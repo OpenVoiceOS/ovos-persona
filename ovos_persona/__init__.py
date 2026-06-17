@@ -55,7 +55,9 @@ class Persona:
                 LOG.warning(f"memory plugin '{memory_plugin}' not available; short-term memory disabled")
             self.memory = None
         else:
-            self.memory = memory_class()
+            # pass the persona's per-plugin config block (keyed by plugin name),
+            # mirroring how solver configs are resolved below
+            self.memory = memory_class(config=self.config.get(memory_plugin) or {})
 
         plugin_order = config.get("handlers") or config.get("solvers") or []
         if not plugin_order:
