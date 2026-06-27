@@ -211,13 +211,23 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
     def get_active_persona(self, message, include_default=True) -> Optional[str]:
         """
         Determine the active persona for the given message/session following priority rules.
-        
-        Checks, in order: an explicitly requested persona in message.data, a session-scoped active persona, the session's default persona (if include_default), and the configured default persona (if include_default).
-        
+
+        Per OVOS-PERSONA-1 §3, the active persona is **session-resident**: it lives
+        in ``session.persona_id`` and is carried unchanged across derivations and
+        utterances of the same session. This method reads that field as the
+        authoritative source. The in-memory ``active_personas`` dict is kept only as
+        a best-effort cache for the single-orchestrator case and is consulted after
+        the session field.
+
+        Checks, in order: an explicitly requested persona in message.data, the
+        session-resident ``persona_id``, the legacy in-memory ``active_personas``
+        cache, and (when include_default) the configured default persona.
+
         Parameters:
             message: The incoming message object containing session/context data.
-            include_default (bool): If True, allow falling back to the session or configured default persona.
-        
+            include_default (bool): If True, allow falling back to the configured
+                default persona.
+
         Returns:
             Optional[str]: The resolved persona name if one is found, `None` otherwise.
         """
@@ -227,16 +237,38 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
             persona = self.match_persona(message.data.get("persona"))
             if persona:
                 return persona
-        # check if a persona is active
+        # session-resident persona_id is authoritative (OVOS-PERSONA-1 §3)
+        if sess.persona_id:
+            return sess.persona_id
+        # legacy in-memory cache (single-orchestrator best-effort)
         if sess.session_id in self.active_personas:
             return self.active_personas[sess.session_id]
-        # default persona from Session
-        elif sess.persona_id and include_default:
-            return sess.persona_id
         # default persona from config
-        elif self.default_persona and include_default:
+        if self.default_persona and include_default:
             return self.default_persona
         return None
+
+    @staticmethod
+    def _with_persona_id(sess: Session, persona_id: Optional[str]) -> Session:
+        """
+        Return the session with ``persona_id`` set (summon) or cleared (release).
+
+        OVOS-PERSONA-1 §3/§5/§6: the active persona is session-resident. Summon
+        sets ``session.persona_id``; dismiss clears it (empty string, semantically
+        equivalent to absent per §3). The mutated session is propagated to the
+        orchestrator via ``IntentHandlerMatch.updated_session`` (§7.5), which
+        ovos-core carries forward on the dispatch and all subsequent derivations.
+
+        Parameters:
+            sess (Session): The inbound session resolved from the message.
+            persona_id (Optional[str]): The identity to activate, or ``None`` to
+                clear (dismiss).
+
+        Returns:
+            Session: The same session object with ``persona_id`` updated.
+        """
+        sess.persona_id = persona_id or ""
+        return sess
 
     def match_persona(self, persona: str):
         """
@@ -356,12 +388,16 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         """
         lang = lang or self.lang
         lang = standardize_lang_tag(lang)
+        sess = SessionManager.get(message)
         active_persona = self.get_active_persona(message, include_default=False)
         if active_persona and self.voc_match(utterances[0], "Release", lang):
+            # OVOS-PERSONA-1 §6: dismiss clears session.persona_id via
+            # Match.updated_session
             return IntentHandlerMatch(match_type='persona:release',
                                       match_data={"persona": active_persona},
                                       skill_id="persona.openvoiceos",
-                                      utterance=utterances[0])
+                                      utterance=utterances[0],
+                                      updated_session=self._with_persona_id(sess, None))
 
         supported_langs = list(self.intent_matchers.keys())
         closest_lang, distance = closest_match(lang, supported_langs, max_distance=10)
@@ -379,10 +415,17 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
                 persona = entities.get("persona")
                 query = entities.get("utterance")
                 if name == "summon.intent" and persona: # if persona name not in match, its a misclassification
+                    # OVOS-PERSONA-1 §5: summon sets session.persona_id via
+                    # Match.updated_session so the persona is active for
+                    # subsequent utterances. Only set it when the named persona
+                    # resolves to a loaded identity (§5 unique-identity rule).
+                    resolved = self.match_persona(persona)
                     return IntentHandlerMatch(match_type='persona:summon',
                                               match_data={"persona": persona},
                                               skill_id="persona.openvoiceos",
-                                              utterance=utterances[0])
+                                              utterance=utterances[0],
+                                              updated_session=self._with_persona_id(
+                                                  sess, resolved) if resolved else sess)
                 elif name == "list_personas.intent":
                     return IntentHandlerMatch(match_type='persona:list',
                                               match_data={"lang": lang},
@@ -407,8 +450,15 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
                         LOG.debug("Discarding ask.intent, requested persona doesn't match any registered persona")
                         # TODO - consider matching and reprompting user
 
-            # override regular intent parsing, handle utterance until persona is released
+            # OVOS-PERSONA-1 §7.1 route 2: active-persona catch-all. No embedded
+            # command was detected, so consult session.persona_id.
             if active_persona:
+                if active_persona not in self.personas:
+                    # §7.1 MUST: persona_id set to a value this plugin does NOT
+                    # support -> return None (let another stage / fallback handle it)
+                    LOG.debug(f"Unsupported persona_id, declining: {active_persona}")
+                    return None
+                # §7.2: an active, supported persona claims every utterance
                 LOG.debug(f"Persona is active: {active_persona}")
                 return self.match_low(utterances, lang, message)
 
@@ -429,12 +479,15 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         lang = lang or self.lang
         lang = standardize_lang_tag(lang)
 
+        sess = SessionManager.get(message)
         active_persona = self.get_active_persona(message, include_default=False)
         if active_persona and self.voc_match(utterances[0], "Release", lang):
+            # OVOS-PERSONA-1 §6: clear session.persona_id on dismiss
             return IntentHandlerMatch(match_type='persona:release',
                                       match_data={"persona": active_persona},
                                       skill_id="persona.openvoiceos",
-                                      utterance=utterances[0])
+                                      utterance=utterances[0],
+                                      updated_session=self._with_persona_id(sess, None))
 
         supported_langs = list(self.intent_matchers.keys())
         closest_lang, distance = closest_match(lang, supported_langs, max_distance=10)
@@ -474,10 +527,14 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
                 persona = entities.get("persona")
                 query = entities.get("query")
                 if name == "summon.intent" and persona:  # if persona name not in match, its a misclassification
+                    # OVOS-PERSONA-1 §5: summon sets session.persona_id
+                    resolved = self.match_persona(persona)
                     return IntentHandlerMatch(match_type='persona:summon',
                                               match_data={"persona": persona},
                                               skill_id="persona.openvoiceos",
-                                              utterance=utterances[0])
+                                              utterance=utterances[0],
+                                              updated_session=self._with_persona_id(
+                                                  sess, resolved) if resolved else sess)
                 elif name == "ask.intent" and persona:  # if persona name not in match, its a misclassification
                     persona = self.match_persona(persona)
                     if persona and query:  # else its a misclassification
@@ -651,6 +708,10 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
             self.speak_dialog("unknown_persona", {"persona": persona})
         else:
             LOG.info(f"Persona enabled: {persona}")
+            # session-resident state (OVOS-PERSONA-1 §3); the match phase already
+            # set this via updated_session, mirror it here for handler-side
+            # session mutation (§8.2) and keep the legacy cache in sync
+            sess.persona_id = persona
             self.active_personas[sess.session_id] = persona
             self.speak_dialog("activated_persona", {"persona": persona})
 
@@ -672,6 +733,9 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         sess = SessionManager.get(message)
         LOG.info(f"Releasing Persona: {active_persona}  for session: {sess.session_id}")
         self.speak_dialog("release_persona", {"persona": active_persona})
+        # clear session-resident state (OVOS-PERSONA-1 §6); the match phase already
+        # cleared this via updated_session, mirror it here and drop the legacy cache
+        sess.persona_id = ""
         if sess.session_id in self.active_personas:
             self.active_personas.pop(sess.session_id)
 
