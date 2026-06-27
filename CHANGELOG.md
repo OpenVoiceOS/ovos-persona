@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.9.0a9](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a9) (2026-06-27)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a8...0.9.0a9)
+
+**Merged pull requests:**
+
+- fix: lift ovos-workshop cap to \<10.0.0 [\#184](https://github.com/OpenVoiceOS/ovos-persona/pull/184) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.9.0a8](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a8) (2026-06-25)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a7...0.9.0a8)
