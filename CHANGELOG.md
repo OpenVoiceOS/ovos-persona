@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.9.0a11](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a11) (2026-06-27)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a10...0.9.0a11)
+
+**Merged pull requests:**
+
+- feat: emit OVOS-PERSONA-1 spec bus events \(§11/§8.5/§8.7\) [\#186](https://github.com/OpenVoiceOS/ovos-persona/pull/186) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.9.0a10](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a10) (2026-06-27)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a9...0.9.0a10)
