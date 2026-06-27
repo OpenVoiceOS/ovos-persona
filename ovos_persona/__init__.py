@@ -124,6 +124,10 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         self.add_event('persona:release', self.handle_persona_release, is_intent=True)
         self.add_event("speak", self.handle_speak)
         self.add_event("recognizer_loop:utterance", self.handle_utterance)
+        # OVOS-PERSONA-1 §8.5 out-of-band query / §8.7 discovery (bus-level,
+        # outside the pipeline; registered directly on the bus, not as intents)
+        self.bus.on("ovos.persona.query", self.handle_oob_query)
+        self.bus.on("ovos.persona.list", self.handle_persona_list_request)
         self.load_intent_files()
         self._active_sessions = {}
 
@@ -714,6 +718,10 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
             sess.persona_id = persona
             self.active_personas[sess.session_id] = persona
             self.speak_dialog("activated_persona", {"persona": persona})
+            # OVOS-PERSONA-1 §11: best-effort activation broadcast
+            self.bus.emit(message.forward("ovos.persona.activated",
+                                          {"persona_id": persona,
+                                           "session_id": sess.session_id}))
 
     def handle_persona_release(self, message):
         # NOTE: below never happens, this intent only matches if self.active_persona
@@ -738,6 +746,10 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         sess.persona_id = ""
         if sess.session_id in self.active_personas:
             self.active_personas.pop(sess.session_id)
+        # OVOS-PERSONA-1 §11: best-effort dismiss broadcast
+        self.bus.emit(message.forward("ovos.persona.dismissed",
+                                      {"persona_id": active_persona,
+                                       "session_id": sess.session_id}))
 
     def stop_session(self, session: Session):
         # since responses are streaming, this will exit the loop in hanle_persona_query
@@ -756,6 +768,49 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
             self._active_sessions[session.session_id] = False
             return True
         return False
+
+    # OVOS-PERSONA-1 §8.5 / §8.7 — out-of-band interfaces (bypass the pipeline)
+    def handle_oob_query(self, message: Message):
+        """
+        Answer an out-of-band ``ovos.persona.query`` on ``ovos.persona.answer``.
+
+        OVOS-PERSONA-1 §8.5: a stateless request/response query that bypasses the
+        pipeline, dispatch, and the handler-lifecycle trio. The request payload is
+        ``{persona_id, utterance}``; the response payload is
+        ``{persona_id, utterance, response}``. If ``persona_id`` is not supported,
+        the plugin MUST still respond — with ``response=None`` — rather than
+        silently drop the request. This MUST NOT mutate ``session.persona_id``.
+        """
+        persona_id = self.match_persona(message.data.get("persona_id") or "") \
+            or message.data.get("persona_id")
+        utt = message.data.get("utterance") or ""
+        if persona_id not in self.personas:
+            LOG.debug(f"OOB query for unsupported persona_id: {persona_id}")
+            self.bus.emit(message.reply("ovos.persona.answer",
+                                        {"persona_id": message.data.get("persona_id"),
+                                         "utterance": utt,
+                                         "response": None}))
+            return
+        sess = SessionManager.get(message)
+        answer = "".join(a for a in self.query(utt, persona_id, sess) if a) or None
+        self.bus.emit(message.reply("ovos.persona.answer",
+                                    {"persona_id": persona_id,
+                                     "utterance": utt,
+                                     "response": answer}))
+
+    def handle_persona_list_request(self, message: Message):
+        """
+        Answer ``ovos.persona.list`` on ``ovos.persona.list.response`` (§8.7/§11).
+
+        Enumerates the ``persona_id`` values this plugin supports so routing
+        skills and UIs can make informed summon decisions. Independent of the
+        utterance lifecycle.
+        """
+        personas = [{"persona_id": name, "name": name}
+                    for name in self.personas]
+        self.bus.emit(message.reply("ovos.persona.list.response",
+                                    {"pipeline_id": self.skill_id,
+                                     "personas": personas}))
 
 
 if __name__ == "__main__":
