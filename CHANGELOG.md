@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.9.0a10](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a10) (2026-06-27)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a9...0.9.0a10)
+
+**Merged pull requests:**
+
+- fix: make active persona session-resident via persona\_id \(PERSONA-1 §3/§5/§6/§7\) [\#185](https://github.com/OpenVoiceOS/ovos-persona/pull/185) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.9.0a9](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a9) (2026-06-27)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a8...0.9.0a9)
