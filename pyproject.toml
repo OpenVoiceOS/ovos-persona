@@ -24,7 +24,7 @@ dependencies = [
     "ovos-solver-failure-plugin",
     "ovos-utils>=0.8.0a1,<1.0.0",
     "langcodes",
-    "ovos-workshop>=0.1.0,<9.0.0",
+    "ovos-workshop>=0.1.0,<10.0.0",
     "ovos-bus-client>=1.0.0,<3.0.0",
     "ovos-config>=0.0.13,<3.0.0",
 ]
