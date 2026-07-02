@@ -123,12 +123,20 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         self.intent_matchers = {}
         self.blacklist = self.config.get("persona_blacklist") or []
         self.load_personas(self.config.get("personas_path"))
-        # is_intent flag ensures "ovos.utterance.handled" is emitted
-        self.add_event('persona:query', self.handle_persona_query, is_intent=True)
-        self.add_event('persona:summon', self.handle_persona_summon, is_intent=True)
-        self.add_event('persona:list', self.handle_persona_list, is_intent=True)
-        self.add_event('persona:check', self.handle_persona_check, is_intent=True)
-        self.add_event('persona:release', self.handle_persona_release, is_intent=True)
+        # OVOS-PIPELINE-1 §8: handler_info makes each dispatched handler emit the
+        # framework done-signal (mycroft.skill.handler.complete/.error, keyed by
+        # this service's skill_id) so the orchestrator's IntentDispatcher fires
+        # the §9.5 ovos.utterance.handled end-marker for persona matches.
+        self.add_event('persona:query', self.handle_persona_query,
+                       handler_info='mycroft.skill.handler', is_intent=True)
+        self.add_event('persona:summon', self.handle_persona_summon,
+                       handler_info='mycroft.skill.handler', is_intent=True)
+        self.add_event('persona:list', self.handle_persona_list,
+                       handler_info='mycroft.skill.handler', is_intent=True)
+        self.add_event('persona:check', self.handle_persona_check,
+                       handler_info='mycroft.skill.handler', is_intent=True)
+        self.add_event('persona:release', self.handle_persona_release,
+                       handler_info='mycroft.skill.handler', is_intent=True)
         self.add_event("speak", self.handle_speak)
         self.add_event("recognizer_loop:utterance", self.handle_utterance)
         # OVOS-PERSONA-1 §8.5 out-of-band query / §8.7 discovery (bus-level,
