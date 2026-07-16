@@ -258,8 +258,9 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         Return the session with ``persona_id`` set (summon) or cleared (release).
 
         OVOS-PERSONA-1 §3/§5/§6: the active persona is session-resident. Summon
-        sets ``session.persona_id``; dismiss clears it (empty string, semantically
-        equivalent to absent per §3). The mutated session is propagated to the
+        sets ``session.persona_id``; dismiss clears it by omission (``None``) —
+        SESSION-1 §2.1/§3.4: an empty value is expressed by omitting the field,
+        never by sending an empty string. The mutated session is propagated to the
         orchestrator via ``IntentHandlerMatch.updated_session`` (§7.5), which
         ovos-core carries forward on the dispatch and all subsequent derivations.
 
@@ -271,7 +272,7 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         Returns:
             Session: The same session object with ``persona_id`` updated.
         """
-        sess.persona_id = persona_id or ""
+        sess.persona_id = persona_id or None
         return sess
 
     def match_persona(self, persona: str):
@@ -743,7 +744,7 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         self.speak_dialog("release_persona", {"persona": active_persona})
         # clear session-resident state (OVOS-PERSONA-1 §6); the match phase already
         # cleared this via updated_session, mirror it here and drop the legacy cache
-        sess.persona_id = ""
+        sess.persona_id = None
         if sess.session_id in self.active_personas:
             self.active_personas.pop(sess.session_id)
         # OVOS-PERSONA-1 §11: best-effort dismiss broadcast
