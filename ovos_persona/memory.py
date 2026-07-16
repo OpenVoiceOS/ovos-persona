@@ -75,11 +75,10 @@ class BasicShortTermMemory(AgentContextManager):
             List[AgentMessage]: Messages representing the augmented context.
         """
         message_history = self.get_history(session_id)
-        if message_history:
-            # drop any hanging user messages without a corresponding response
-            # for any non-verbal actions that OVOS may take
-            while message_history[-1].role == MessageRole.USER:
-                message_history.pop()
+        # drop any hanging user messages without a corresponding response
+        # for any non-verbal actions that OVOS may take
+        while message_history and message_history[-1].role == MessageRole.USER:
+            message_history.pop()
 
         if self.system_prompt.strip():
             message_history.insert(0, AgentMessage(role=MessageRole.SYSTEM, content=self.system_prompt.strip()))

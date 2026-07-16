@@ -67,6 +67,20 @@ def test_hanging_user_message_dropped():
     assert user_msgs[0].content == "corrected question"
 
 
+def test_context_with_only_hanging_user_history():
+    """A history consisting solely of hanging USER messages (no assistant
+    reply persisted yet) must not crash context assembly; the hanging
+    messages are dropped and the current utterance stands alone."""
+    mem = BasicShortTermMemory(config={"max_history": 10})
+    sess = "hang-only-session"
+
+    mem.update_history([_user("unanswered question")], session_id=sess)
+
+    ctx = mem.build_conversation_context("new question", sess)
+    assert [m.content for m in ctx] == ["new question"]
+    assert ctx[-1].role == MessageRole.USER
+
+
 # ---------------------------------------------------------------------------
 # 3. Consecutive assistant merge (exact content)
 # ---------------------------------------------------------------------------

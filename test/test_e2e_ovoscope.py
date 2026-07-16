@@ -125,14 +125,17 @@ class TestPersonaSpeaksThroughPipeline:
         messages = _drive_utterance(mc, sess, "hello there", timeout=30)
 
         msg_types = [m.msg_type for m in messages]
-        speak_msgs = [m for m in messages if m.msg_type == "speak"]
+        speak_msgs = [m for m in messages
+                      if m.msg_type == "ovos.utterance.speak"]
 
         assert speak_msgs, (
-            f"Expected at least one 'speak' message; got msg_types: {msg_types}"
+            f"Expected at least one 'ovos.utterance.speak' message; "
+            f"got msg_types: {msg_types}"
         )
         spoken = speak_msgs[0].data.get("utterance", "")
         assert spoken.strip(), (
-            f"'speak' message had an empty utterance; data={speak_msgs[0].data}"
+            f"'ovos.utterance.speak' message had an empty utterance; "
+            f"data={speak_msgs[0].data}"
         )
 
     def test_speak_message_has_non_empty_utterance(self, mc):
@@ -142,14 +145,14 @@ class TestPersonaSpeaksThroughPipeline:
         messages = _drive_utterance(mc, sess, "what is the meaning of life", timeout=30)
 
         for msg in messages:
-            if msg.msg_type == "speak":
+            if msg.msg_type == "ovos.utterance.speak":
                 assert msg.data.get("utterance", "").strip(), (
                     f"speak message has empty utterance: {msg.data}"
                 )
                 return   # found a non-empty speak — test passes
 
         pytest.fail(
-            f"No 'speak' message found in pipeline output. "
+            f"No 'ovos.utterance.speak' message found in pipeline output. "
             f"Message types received: {[m.msg_type for m in messages]}"
         )
 

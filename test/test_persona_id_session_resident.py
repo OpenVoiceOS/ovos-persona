@@ -102,13 +102,14 @@ class TestSummonSetsSessionPersonaId:
 class TestReleaseClearsSessionPersonaId:
     def test_release_clears_preset_persona_id(self, svc):
         """§6 MUST: with persona_id pre-set, a release clears it via
-        updated_session (empty string == absent per §3)."""
+        updated_session. SESSION-1 §2.1/§3.4: cleared means omitted (None),
+        never an empty string on the wire."""
         sess = _session("s-release", persona_id="Alice")
         match = svc.match_high(["stop talking to alice"], "en-US", _msg(sess))
         assert match is not None, "release was not matched"
         assert match.match_type == "persona:release"
         assert match.updated_session is not None
-        assert match.updated_session.persona_id in (None, "")
+        assert match.updated_session.persona_id is None
 
 
 # ---------------------------------------------------------------------------
@@ -175,4 +176,4 @@ class TestTwoSessionsAreIndependent:
         active = _msg(summoned.updated_session)
         released = svc.match_high(["stop talking to alice"], "en-US", active)
         assert released is not None and released.match_type == "persona:release"
-        assert released.updated_session.persona_id in (None, "")
+        assert released.updated_session.persona_id is None
