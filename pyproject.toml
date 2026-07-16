@@ -36,6 +36,7 @@ test = [
     "pytest-timeout",
     "ovoscope<1.0.0",
     "ovos-solver-failure-plugin",
+    "ovos-spec-tools>=1.5.0a1,<2.0.0",
 ]
 
 [project.urls]
