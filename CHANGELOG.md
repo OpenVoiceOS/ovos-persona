@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.9.0a12](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a12) (2026-07-16)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a11...0.9.0a12)
+
+**Merged pull requests:**
+
+- fix: clear session persona\_id by omission and guard empty memory history [\#197](https://github.com/OpenVoiceOS/ovos-persona/pull/197) ([JarbasAl](https://github.com/JarbasAl))
+- Fix French ask intent training [\#195](https://github.com/OpenVoiceOS/ovos-persona/pull/195) ([goldyfruit](https://github.com/goldyfruit))
+
 ## [0.9.0a11](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a11) (2026-06-27)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a10...0.9.0a11)
@@ -115,7 +124,7 @@
 
 ## [0.7.5a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.5a1) (2026-06-05)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a5...0.7.5a1)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a4...0.7.5a1)
 
 **Merged pull requests:**
 
@@ -123,13 +132,13 @@
 - fix\(i18n\): normalize locale folders to canonical BCP-47 [\#158](https://github.com/OpenVoiceOS/ovos-persona/pull/158) ([JarbasAl](https://github.com/JarbasAl))
 - Change 'persona' to 'system\_prompt' in README [\#157](https://github.com/OpenVoiceOS/ovos-persona/pull/157) ([denics](https://github.com/denics))
 
-## [0.7.4a5](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.4a5) (2026-03-29)
-
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a4...0.7.4a5)
-
 ## [0.7.4a4](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.4a4) (2026-03-29)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a3...0.7.4a4)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a5...0.7.4a4)
+
+## [0.7.4a5](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.4a5) (2026-03-29)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a3...0.7.4a5)
 
 ## [0.7.4a3](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.4a3) (2026-03-29)
 
