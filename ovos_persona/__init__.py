@@ -1,6 +1,6 @@
 import json
 import os
-from os.path import join, dirname, expanduser
+from os.path import join, dirname, expanduser, isdir
 from typing import Optional, Dict, List, Union, Iterable
 
 from langcodes import closest_match
@@ -18,11 +18,12 @@ from ovos_plugin_manager.templates.pipeline import ConfidenceMatcherPipeline, In
 from ovos_plugin_manager.agents import load_memory_plugin
 from ovos_utils.bracket_expansion import expand_template
 from ovos_utils.fakebus import FakeBus
-from ovos_utils.lang import standardize_lang_tag, get_language_dir
+from ovos_utils.lang import standardize_lang_tag
 from ovos_utils.list_utils import flatten_list
 from ovos_utils.log import LOG
 from ovos_utils.parse import match_one, MatchStrategy
 from ovos_utils.xdg_utils import xdg_data_home
+from ovos_spec_tools import closest_lang
 from ovos_workshop.app import OVOSAbstractApplication
 
 from ovos_persona.memory import BasicShortTermMemory
@@ -146,7 +147,10 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         langs = set([standardize_lang_tag(l) for l in langs])
         for lang in langs:
             intents[lang] = {}
-            locale_folder = get_language_dir(join(dirname(__file__), "locale"), lang)
+            locale_root = join(dirname(__file__), "locale")
+            match = closest_lang(lang, [d for d in os.listdir(locale_root)
+                                        if isdir(join(locale_root, d))])
+            locale_folder = join(locale_root, match) if match else None
             if locale_folder is not None:
                 for f in os.listdir(locale_folder):
                     path = join(locale_folder, f)
