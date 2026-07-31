@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.9.0a16](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a16) (2026-07-31)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a15...0.9.0a16)
+
+**Merged pull requests:**
+
+- docs: rewrite README in Simplified Technical English [\#204](https://github.com/OpenVoiceOS/ovos-persona/pull/204) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.9.0a15](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a15) (2026-07-17)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a14...0.9.0a15)
