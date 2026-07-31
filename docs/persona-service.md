@@ -31,9 +31,9 @@ svc.load_personas(personas_path=None)
 
 Two sources are merged, with user files taking priority:
 
-1. **User-defined JSON files** — all `.json` files in `personas_path` (default: `~/.config/ovos_persona/`). If the JSON has a `"name"` field it is used as the persona name; otherwise the filename (without `.json`) is used.
+1. **User-defined JSON files**: all `.json` files in `personas_path` (default: `~/.config/ovos_persona/`). If the JSON has a `"name"` field, it is used as the persona name. Otherwise the filename (without `.json`) is used.
 
-2. **Plugin personas** — discovered via `find_persona_plugins()` (entry point group `opm.persona`). Skipped if `ignore_plugin_personas: true` or if a user file with the same name was already loaded.
+2. **Plugin personas**: discovered through `find_persona_plugins()` (entry point group `opm.persona`). Skipped if `ignore_plugin_personas: true`, or if a user file with the same name was already loaded.
 
 Personas in `persona_blacklist` are silently skipped from both sources.
 
@@ -53,12 +53,12 @@ svc.deregister_persona("MyBot")
 
 Runs the utterance through the language-appropriate padatious/padacioso container. Handles:
 
-- **`summon.intent`** → `persona:summon` — if persona name is in the match entities
-- **`ask.intent`** → `persona:query` — if both persona name and query are present and persona exists
+- **`summon.intent`** → `persona:summon`, if the persona name is in the match entities
+- **`ask.intent`** → `persona:query`, if both the persona name and the query are present and the persona exists
 - **`list_personas.intent`** → `persona:list`
 - **`active_persona.intent`** → `persona:check`
-- Release vocabulary → `persona:release` — if a persona is currently active
-- **Active persona passthrough** — if a persona is active and no management intent matches, delegates to `match_low`
+- Release vocabulary → `persona:release`, if a persona is currently active
+- **Active persona passthrough**: if a persona is active and no management intent matches, delegates to `match_low`
 
 Minimum confidence is controlled by `min_intent_confidence` (default `0.6`).
 
@@ -68,7 +68,7 @@ Adapt-like keyword fallback for when padatious confidence is insufficient. Check
 
 ### `match_low(utterances, lang, message)`
 
-Routes directly to the active persona (or default persona if `handle_fallback: true`). Always returns a match when a persona is available — use as a last-resort stage only.
+Routes directly to the active persona (or default persona if `handle_fallback: true`). Always returns a match when a persona is available. Use it as a last-resort stage only.
 
 ---
 
@@ -147,3 +147,6 @@ All speech output uses `self.speak()` / `self.speak_dialog()` from `OVOSAbstract
 | `no_personas` | No personas are loaded |
 | `list_personas` | Prefix before listing persona names |
 | `persona_error` | Persona failed to produce an answer |
+
+---
+[Home](index.md) · [Persona →](persona.md)

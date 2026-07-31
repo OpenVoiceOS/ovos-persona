@@ -1,6 +1,6 @@
 # ovos-persona
 
-`ovos-persona` is a pipeline plugin that routes utterances to named AI "personas" — configurable combinations of LLM, solver, and retrieval plugins that give OVOS alternative response personalities beyond normal intent matching.
+`ovos-persona` is a pipeline plugin that routes utterances to named AI "personas": configurable combinations of LLM, solver, and retrieval plugins. A persona gives OVOS an alternative response personality, beyond normal intent matching.
 
 ---
 
@@ -8,7 +8,7 @@
 
 - **Persona**: a named configuration that specifies an ordered list of utterance handler plugins (LLMs, solvers, RAG engines). Each persona has its own handler priority order and optional short-term memory.
 - **PersonaService**: the pipeline stage that loads all personas, matches persona-management intents (`summon`, `ask`, `list`, `release`), and routes utterances to the active persona.
-- **Active persona**: when a user summons a persona by name, all subsequent utterances in that session are routed directly to it — bypassing the normal intent pipeline — until released.
+- **Active persona**: when a user summons a persona by name, all subsequent utterances in that session are routed directly to it, bypassing the normal intent pipeline, until released.
 - **Default persona**: a fallback persona used when `handle_fallback: true` is set in config, allowing the persona system to act as the last-resort pipeline stage.
 
 ---
@@ -41,11 +41,11 @@ Pipeline (ConfidenceMatcherPipeline)
 
 | Document | Contents |
 |---|---|
-| [persona-service.md](persona-service.md) | `PersonaService` — pipeline integration, intent matching, bus events |
-| [persona.md](persona.md) | `Persona` class — solvers, memory, chat/stream API |
-| [solvers.md](solvers.md) | `QuestionSolversService` — plugin types, ordering, completion |
-| [memory.md](memory.md) | `BasicShortTermMemory` — session history, context building |
-| [hivemind.md](hivemind.md) | `PersonaProtocol` — HiveMind agent integration |
+| [persona-service.md](persona-service.md) | `PersonaService`: pipeline integration, intent matching, bus events |
+| [persona.md](persona.md) | `Persona` class: solvers, memory, chat/stream API |
+| [solvers.md](solvers.md) | `QuestionSolversService`: plugin types, ordering, completion |
+| [memory.md](memory.md) | `BasicShortTermMemory`: session history, context building |
+| [hivemind.md](hivemind.md) | `PersonaProtocol`: HiveMind agent integration |
 | [defining-personas.md](defining-personas.md) | Persona JSON format, file locations, plugin entry points |
 
 ---

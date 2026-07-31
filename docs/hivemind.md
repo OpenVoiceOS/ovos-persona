@@ -72,3 +72,6 @@ This differs from `PersonaService.handle_persona_query()`, which uses `persona.s
 ## Session Tracking
 
 Per-session history is maintained in `self.sessions: Dict[str, List[Dict]]` as raw `{"role": ..., "content": ...}` dicts (compatible with OpenAI-style APIs), keyed by `session_id`.
+
+---
+[← Memory](memory.md) · [Home](index.md) · [Defining Personas →](defining-personas.md)
