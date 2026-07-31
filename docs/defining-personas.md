@@ -77,13 +77,13 @@ The `handlers` list may include plugins from any of these entry point groups:
 
 | Entry point group | Example plugin | Description |
 |---|---|---|
-| `opm.solver` | `ovos-question-solver-wikipedia-plugin` | Q&A — answers single questions, no chat history |
+| `opm.solver` | `ovos-question-solver-wikipedia-plugin` | Q&A, answers single questions, no chat history |
 | `opm.solver.chat` | `ovos-solver-openai-plugin` | Chat solver with history support |
 | `opm.agents.chat` | `ovos-agent-llama-plugin` | Full LLM chat engine |
-| `opm.agents.chat.multimodal` | — | Multimodal LLM engine |
-| `opm.agents.retrieval` | — | RAG retrieval engine |
-| `opm.agents.indexer.document` | — | Document indexer for RAG |
-| `opm.agents.indexer.qa` | — | QA indexer for RAG |
+| `opm.agents.chat.multimodal` | none | Multimodal LLM engine |
+| `opm.agents.retrieval` | none | RAG retrieval engine |
+| `opm.agents.indexer.document` | none | Document indexer for RAG |
+| `opm.agents.indexer.qa` | none | QA indexer for RAG |
 
 Plugins are tried in the order listed in `handlers`. The first handler that returns a non-empty response wins.
 
@@ -135,3 +135,6 @@ Install any `opm.agents.memory` plugin and reference it by entry point name:
   }
 }
 ```
+
+---
+[← HiveMind](hivemind.md) · [Home](index.md)

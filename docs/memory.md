@@ -85,16 +85,20 @@ Install a third-party plugin and set `memory_module` in the persona config to it
 
 ---
 
-## Default plugin & per-session isolation
+## Default plugin and per-session isolation
 
-`BasicShortTermMemory` is **shipped and registered by ovos-persona itself** as the
-entry point `ovos-agents-short-term-memory-plugin` (group `opm.agents.memory`), so a
-default short-term memory is **always available** — no extra package required. Every
-`Persona` loads it automatically unless `memory_module` is set to another plugin (or
-to a falsy value to disable memory). If a configured `memory_module` is unavailable,
-the persona degrades gracefully with memory disabled rather than failing to load.
+`ovos-persona` ships and registers `BasicShortTermMemory` itself, as the entry point
+`ovos-agents-short-term-memory-plugin` in the `opm.agents.memory` group. A default
+short-term memory is therefore always available, with no extra package required.
+Every `Persona` loads it automatically, unless `memory_module` is set to another
+plugin or to a falsy value that disables memory. If a configured `memory_module` is
+unavailable, the persona loads with memory disabled instead of failing to load.
 
-History is **isolated per session**: all storage and retrieval are keyed by
-`session_id` (`session2history[session_id]`), so concurrent conversations on different
-sessions never see each other's context. With per-session active personas, each
-session's turns are recorded against the persona active *for that session*.
+History is isolated per session. All storage and retrieval are keyed by
+`session_id` (`session2history[session_id]`), so concurrent conversations on
+different sessions never see each other's context. With per-session active
+personas, each session's turns are recorded against the persona active for that
+session.
+
+---
+[← Solvers](solvers.md) · [Home](index.md) · [HiveMind →](hivemind.md)

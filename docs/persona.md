@@ -94,3 +94,6 @@ Both methods delegate to `QuestionSolversService`, passing `sess.lang` and `sess
 repr(persona)
 # → "Persona(MyChatBot:['ovos-solver-openai-plugin', 'ovos-solver-wolfram-alpha-plugin'])"
 ```
+
+---
+[← PersonaService](persona-service.md) · [Home](index.md) · [Solvers →](solvers.md)

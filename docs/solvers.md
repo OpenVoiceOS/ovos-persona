@@ -12,15 +12,15 @@ Manages the ordered pipeline of utterance handler plugins for a `Persona`. Tries
 
 | Entry point group | Base class | Chat history support | Streaming |
 |---|---|---|---|
-| `opm.solver` | `QuestionSolver` | No — last message only | Yes (`stream_utterances`) |
+| `opm.solver` | `QuestionSolver` | No, last message only | Yes (`stream_utterances`) |
 | `opm.solver.chat` | `ChatMessageSolver` | Yes | Yes (`stream_chat_utterances`) |
 | `opm.agents.chat` | `ChatEngine` | Yes | Yes (`stream_sentences`) |
 | `opm.agents.chat.multimodal` | `MultimodalChatEngine` | Yes | Yes (`stream_sentences`) |
-| `opm.agents.retrieval` | `RetrievalEngine` | No — last message only | No |
-| `opm.agents.indexer.document` | `DocumentIndexerEngine` | No — last message only | No |
-| `opm.agents.indexer.qa` | `QAIndexerEngine` | No — last message only | No |
+| `opm.agents.retrieval` | `RetrievalEngine` | No, last message only | No |
+| `opm.agents.indexer.document` | `DocumentIndexerEngine` | No, last message only | No |
+| `opm.agents.indexer.qa` | `QAIndexerEngine` | No, last message only | No |
 
-All plugin types are treated uniformly by `QuestionSolversService` — it dispatches to the appropriate method based on the plugin's class.
+`QuestionSolversService` treats all plugin types the same way. It dispatches to the method that matches the plugin's class.
 
 ---
 
@@ -37,7 +37,7 @@ service = QuestionSolversService(
 
 If `sort_order` is empty, plugins are sorted by their `priority` attribute (lower = tried first).
 
-`stream_completion` stops after the first handler that yields at least one sentence — subsequent handlers are not tried.
+`stream_completion` stops after the first handler that yields at least one sentence. It does not try the remaining handlers.
 
 ---
 
@@ -104,3 +104,6 @@ Each handler plugin is configured by its entry point name inside the persona con
 ```
 
 Handlers not in the persona's `handlers` list are disabled regardless of their `enabled` key. If a handler listed in `handlers` is not installed, `ImportError` is raised during `load_plugins()`.
+
+---
+[← Persona](persona.md) · [Home](index.md) · [Memory →](memory.md)
