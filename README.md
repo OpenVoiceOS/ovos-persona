@@ -75,130 +75,17 @@ pip install ovos-persona
 
 ## Persona Intents
 
-The persona service supports voice intents for managing persona interactions. Each intent corresponds to a messagebus event.
+The persona service supports voice intents for managing persona interactions: listing personas, checking the active persona, activating a persona, asking a persona a single question, and stopping the conversation. Each intent corresponds to a messagebus event.
 
-### List personas
-
-Example utterances:
-- "What personas are available?"
-- "Can you list the personas?"
-- "What personas can I use?"
-
-### Check the active persona
-
-Example utterances:
-- "Who am I talking to right now?"
-- "Is there an active persona?"
-- "Which persona is in use?"
-
-### Activate a persona
-
-Example utterances:
-- "Connect me to {persona}"
-- "Enable {persona}"
-- "Awaken the {persona} assistant"
-- "Start a conversation with {persona}"
-- "Let me chat with {persona}"
-
-### Ask a persona a single question
-
-These utterances query a persona directly, without starting an interactive session.
-
-Example utterances:
-- "Ask {persona} what they think about {utterance}"
-- "What does {persona} say about {utterance}?"
-- "Query {persona} for insights on {utterance}"
-- "Ask {persona} for their perspective on {utterance}"
-
-### Stop the conversation
-
-Example utterances:
-- "Stop the interaction"
-- "Terminate persona"
-- "Deactivate the chatbot"
-- "Go dormant"
-- "Enough talking"
-- "Shut up"
+See the [OVOS technical manual: Persona Pipeline](https://tigregotico.github.io/ovos-technical-manual/persona-pipeline/) for the full list of example utterances and bus events.
 
 ---
 
 ## Pipeline Configuration
 
-When a persona is active, you have two options:
-- send every utterance to the persona and ignore all skills, or
-- let high-confidence skills match before the persona does.
+Where you place `"ovos-persona-pipeline-plugin-high"` in the pipeline decides whether the active persona gets full control of an utterance, or only handles it after high-confidence skills fail to match. `"ovos-persona-pipeline-plugin-low"` handles utterances as a fallback even when no persona is explicitly active, replacing [OpenVoiceOS/ovos-skill-fallback-chatgpt](https://github.com/OpenVoiceOS/ovos-skill-fallback-chatgpt).
 
-Where you place `"ovos-persona-pipeline-plugin-high"` in the pipeline decides which behavior you get. `"ovos-persona-pipeline-plugin-low"` handles utterances even when no persona is explicitly active.
-
-#### Option 1: send all utterances to the active persona
-
-With this option, the persona has full control over user utterances. It will most likely fail to perform actions such as playing music, telling the time, or setting alarms. You must explicitly deactivate the persona to use that functionality.
-
-Add the persona pipeline before the `_high` pipeline matchers. The `"..."` below is a placeholder for your existing pipeline entries, not literal text.
-
-```json
-{
-  "intents": {
-      "pipeline": [
-          "ovos-persona-pipeline-plugin-high",
-          "stop_high",
-          "converse",
-          "ocp_high",
-          "padatious_high",
-          "adapt_high",
-          "...",
-          "fallback_low"
-    ]
-  }
-}
-```
-
-#### Option 2: let high-confidence skills match before using the persona
-
-With this option, skills can still trigger even when a persona is active, so not every answer comes from the persona.
-
-Add the persona pipeline after the `_high` pipeline matchers. The `"..."` below is a placeholder for your existing pipeline entries, not literal text.
-
-```json
-{
-  "intents": {
-      "pipeline": [
-          "stop_high",
-          "converse",
-          "ocp_high",
-          "padatious_high",
-          "adapt_high",
-          "ovos-persona-pipeline-plugin-high",
-          "ocp_medium",
-          "...",
-          "fallback_low"
-    ]
-  }
-}
-```
-
-#### Extra option: as a fallback skill
-
-You can configure `ovos-persona` to handle utterances when all skills fail, even if no persona is active. This is handled through `"ovos-persona-pipeline-plugin-low"`. The `"..."` below is a placeholder for your existing pipeline entries, not literal text.
-
-```json
-{
-  "intents": {
-      "persona": {
-        "handle_fallback":  true,
-        "default_persona": "Remote Llama"
-      },
-      "pipeline": [
-          "...",
-          "fallback_medium",
-          "ovos-persona-pipeline-plugin-low",
-          "fallback_low"
-    ]
-  }
-}
-```
-
-`"ovos-persona-pipeline-plugin-low"` is meant to replace [OpenVoiceOS/ovos-skill-fallback-chatgpt](https://github.com/OpenVoiceOS/ovos-skill-fallback-chatgpt).
+See the [OVOS technical manual: Persona Pipeline](https://tigregotico.github.io/ovos-technical-manual/persona-pipeline/) for the pipeline configuration strategies and example `mycroft.conf` snippets.
 
 ---
 
@@ -214,7 +101,7 @@ Example: a persona using a local OpenAI-compatible server. Save this as `~/.conf
 ```json
 {
   "name": "My Local LLM",
-  "solvers": [
+  "handlers": [
     "ovos-solver-openai-plugin"
   ],
   "ovos-solver-openai-plugin": {
@@ -231,7 +118,7 @@ Example: OldSchoolBot, a persona built from non-LLM solvers.
 ```json
 {
   "name": "OldSchoolBot",
-  "solvers": [
+  "handlers": [
     "ovos-solver-wikipedia-plugin",
     "ovos-solver-ddg-plugin",
     "ovos-solver-plugin-wolfram-alpha",
