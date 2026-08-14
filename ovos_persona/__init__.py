@@ -82,10 +82,16 @@ class Persona:
         return self.memory.build_conversation_context(utterance, sess.session_id)
 
     def chat(self, messages: List[AgentMessage], sess: Session) -> str:
-        return self.solvers.chat_completion(messages, sess.lang, sess.system_unit)
+        return self.solvers.chat_completion(messages,
+                                            session_id=sess.session_id,
+                                            lang=sess.lang,
+                                            units=sess.system_unit)
 
     def stream(self, messages: List[AgentMessage], sess: Session) -> Iterable[str]:
-        return self.solvers.stream_completion(messages, sess.lang, sess.system_unit)
+        return self.solvers.stream_completion(messages,
+                                              session_id=sess.session_id,
+                                              lang=sess.lang,
+                                              units=sess.system_unit)
 
 
 class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
