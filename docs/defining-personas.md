@@ -21,8 +21,8 @@ The filename (without `.json`) is used as the persona name unless the JSON provi
 ```json
 {
   "name": "MyChatBot",
-  "handlers": ["ovos-solver-openai-plugin"],
-  "ovos-solver-openai-plugin": {
+  "handlers": ["ovos-chat-openai-plugin"],
+  "ovos-chat-openai-plugin": {
     "api_url": "https://api.openai.com/v1",
     "key": "sk-..."
   }
@@ -35,21 +35,21 @@ The filename (without `.json`) is used as the persona name unless the JSON provi
 {
   "name": "Researcher",
   "handlers": [
-    "ovos-solver-openai-plugin",
-    "ovos-solver-wolfram-alpha-plugin",
-    "ovos-question-solver-wikipedia-plugin"
+    "ovos-chat-openai-plugin",
+    "ovos-wolfram-alpha-plugin",
+    "ovos-wikipedia-plugin"
   ],
   "memory_module": "ovos-agents-short-term-memory-plugin",
   "ovos-agents-short-term-memory-plugin": {
     "max_history": 10,
     "system_prompt": "You are a helpful research assistant. Answer factually and cite sources."
   },
-  "ovos-solver-openai-plugin": {
+  "ovos-chat-openai-plugin": {
     "api_url": "https://api.openai.com/v1",
     "key": "sk-...",
     "model": "gpt-4"
   },
-  "ovos-solver-wolfram-alpha-plugin": {
+  "ovos-wolfram-alpha-plugin": {
     "key": "..."
   }
 }
@@ -77,13 +77,13 @@ The `handlers` list may include plugins from any of these entry point groups:
 
 | Entry point group | Example plugin | Description |
 |---|---|---|
-| `opm.solver` | `ovos-question-solver-wikipedia-plugin` | Q&A, answers single questions, no chat history |
-| `opm.solver.chat` | `ovos-solver-openai-plugin` | Chat solver with history support |
-| `opm.agents.chat` | `ovos-agent-llama-plugin` | Full LLM chat engine |
+| `opm.solver.question` | `ovos-solver-rivescript-plugin` | Q&A, answers single questions, no chat history |
+| `opm.solver.chat` | none | Chat solver with history support |
+| `opm.agents.chat` | `ovos-chat-openai-plugin` | Full LLM chat engine |
 | `opm.agents.chat.multimodal` | none | Multimodal LLM engine |
-| `opm.agents.retrieval` | none | RAG retrieval engine |
-| `opm.agents.indexer.document` | none | Document indexer for RAG |
-| `opm.agents.indexer.qa` | none | QA indexer for RAG |
+| `opm.agents.retrieval` | `ovos-wolfram-alpha-plugin`, `ovos-wikipedia-plugin` | RAG retrieval engine, answers directly with no LLM in front of it |
+| `opm.agents.retrieval.documents` | none | Document indexer for RAG |
+| `opm.agents.retrieval.qa` | none | QA indexer for RAG |
 
 Plugins are tried in the order listed in `handlers`. The first handler that returns a non-empty response wins.
 
@@ -112,7 +112,7 @@ To create a stateless persona (no conversation history):
 ```json
 {
   "name": "Stateless",
-  "handlers": ["ovos-solver-openai-plugin"],
+  "handlers": ["ovos-chat-openai-plugin"],
   "memory_module": null
 }
 ```
@@ -128,9 +128,9 @@ Install any `opm.agents.memory` plugin and reference it by entry point name:
 ```json
 {
   "name": "LongMemory",
-  "handlers": ["ovos-solver-openai-plugin"],
-  "memory_module": "ovos-agents-long-term-memory-plugin",
-  "ovos-agents-long-term-memory-plugin": {
+  "handlers": ["ovos-chat-openai-plugin"],
+  "memory_module": "ovos-memory-plugin-longterm",
+  "ovos-memory-plugin-longterm": {
     "db_path": "~/.local/share/mycroft/persona_memory.db"
   }
 }
