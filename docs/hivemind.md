@@ -44,7 +44,7 @@ If no path is provided, the default persona is:
 ```json
 {
   "name": "ChatGPT",
-  "solvers": ["ovos-solver-openai-plugin"],
+  "handlers": ["ovos-solver-openai-plugin"],
   "ovos-solver-openai-plugin": {
     "api_url": "https://llama.smartgic.io/v1",
     "key": "sk-xxxx",
