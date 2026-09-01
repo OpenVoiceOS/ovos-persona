@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.9.0a20](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a20) (2026-09-01)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a19...0.9.0a20)
+
+**Merged pull requests:**
+
+- fix: emit PIPELINE-1 §8 done-signal for persona dispatches \(§9.5 end-marker\) [\#192](https://github.com/OpenVoiceOS/ovos-persona/pull/192) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.9.0a19](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a19) (2026-09-01)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a18...0.9.0a19)
@@ -180,7 +188,7 @@
 
 ## [0.7.5a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.5a1) (2026-06-05)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a3...0.7.5a1)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a4...0.7.5a1)
 
 **Merged pull requests:**
 
@@ -188,17 +196,17 @@
 - fix\(i18n\): normalize locale folders to canonical BCP-47 [\#158](https://github.com/OpenVoiceOS/ovos-persona/pull/158) ([JarbasAl](https://github.com/JarbasAl))
 - Change 'persona' to 'system\_prompt' in README [\#157](https://github.com/OpenVoiceOS/ovos-persona/pull/157) ([denics](https://github.com/denics))
 
-## [0.7.4a3](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.4a3) (2026-03-29)
-
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a4...0.7.4a3)
-
 ## [0.7.4a4](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.4a4) (2026-03-29)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a5...0.7.4a4)
 
 ## [0.7.4a5](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.4a5) (2026-03-29)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a2...0.7.4a5)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a3...0.7.4a5)
+
+## [0.7.4a3](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.4a3) (2026-03-29)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a2...0.7.4a3)
 
 ## [0.7.4a2](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.4a2) (2026-03-29)
 
