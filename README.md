@@ -1,69 +1,71 @@
 # OVOS-Persona
 
-The **`PersonaPipeline`** brings multi-persona management to OpenVoiceOS (OVOS), enabling interactive conversations with virtual assistants. 🎙️ With personas, you can customize how queries are handled by assigning specific solvers to each persona.  
+`PersonaPipeline` adds multi-persona management to OpenVoiceOS (OVOS). Personas are configurable virtual assistants: each one assigns its own set of solver plugins to answer queries, so you can customize how OVOS handles a conversation.
+
+See [docs/index.md](docs/index.md) for the architecture and API reference.
 
 ---
 
-## 🚀 TLDR - Quick Start
+## Quick Start
 
-- update core and install persona
-    ```bash
-    pip install -U ovos-core>=0.5.1 ovos-persona
-    ```
-- install/update plugins and skills
-    ```bash
-    pip install -U skill-wolfie ovos-skill-wikipedia ovos-skill-wikihow skill-wordnet ovos-openai-plugin
-    ```
-- uninstall chatgpt skill
-    ```bash
-    pip uninstall skill-ovos-fallback-chatgpt
-    ```
-- edit mycroft.conf
-    > ⚠️ don't just copy paste, the `"..."` is a placeholder and invalid. adjust to your existing pipeline config
-    ```json
-    {
-      "intents": {
-          "persona": {
-            "handle_fallback":  true,
-            "default_persona": "Remote Llama",
-            "short-term-memory": true
-          },
-          "pipeline": [
-              "stop_high",
-              "converse",
-              "ocp_high",
-              "padatious_high",
-              "adapt_high",
-              "ovos-persona-pipeline-plugin-high",
-              "ocp_medium",
-              "...",
-              "fallback_medium",
-              "ovos-persona-pipeline-plugin-low",
-              "fallback_low"
-        ]
-      }
-    }
-    ```
-- restart ovos
-- check logs to see persona loading, ensure there are no errors
-    ```bash
-    cat ~/.local/state/mycroft/skills.log | grep persona
-    ```
-- read the intents section below
-- 🎉
-  
----
-
-## ✨ Features
-
-- **🧑‍💻 Multiple Personas**: Manage a list of personas, each with its unique solvers.  
-- **🔄 Dynamic Switching**: Seamlessly switch between personas as needed.  
-- **💬 Conversational**: Let personas handle utterances directly for richer interaction.  
-- **🎨 Personalize**: Create your own personas with simple `.json` files.
+1. Update the core and install the plugin:
+   ```bash
+   pip install -U ovos-core>=0.5.1 ovos-persona
+   ```
+2. Install or update the plugins and skills a persona needs:
+   ```bash
+   pip install -U skill-wolfie ovos-skill-wikipedia ovos-skill-wikihow skill-wordnet ovos-openai-plugin
+   ```
+3. Uninstall the ChatGPT fallback skill, since `ovos-persona` replaces it:
+   ```bash
+   pip uninstall skill-ovos-fallback-chatgpt
+   ```
+4. Edit `mycroft.conf`. The `"..."` below is a placeholder for your existing pipeline entries, not literal text.
+   ```json
+   {
+     "intents": {
+         "persona": {
+           "handle_fallback":  true,
+           "default_persona": "Remote Llama",
+           "short-term-memory": true
+         },
+         "pipeline": [
+             "stop_high",
+             "converse",
+             "ocp_high",
+             "padatious_high",
+             "adapt_high",
+             "ovos-persona-pipeline-plugin-high",
+             "ocp_medium",
+             "...",
+             "fallback_medium",
+             "ovos-persona-pipeline-plugin-low",
+             "fallback_low"
+       ]
+     }
+   }
+   ```
+5. Restart OVOS.
+6. Check the logs to confirm the persona loaded without errors:
+   ```bash
+   cat ~/.local/state/mycroft/skills.log | grep persona
+   ```
+7. Read the [Persona Intents](#persona-intents) section for the voice commands.
 
 ---
 
-## 🛠️ Installation
+## Features
+
+- **Multiple personas**: manage a list of personas, each with its own solver plugins.
+- **Dynamic switching**: activate a different persona at any time.
+- **Per-session state**: the active persona and conversation memory are tracked per session, so concurrent conversations stay isolated.
+- **Short-term memory**: a default short-term memory ships with `ovos-persona` and is always available. Swap it for any `opm.agents.memory` plugin through the `memory_module` config key. See [docs/memory.md](docs/memory.md).
+- **Conversational**: personas can handle utterances directly, without a matching skill.
+- **Personalize**: create a persona with a simple `.json` file. See [docs/defining-personas.md](docs/defining-personas.md).
+
+---
+
+## Installation
 
 ```bash
 pip install ovos-persona
@@ -71,181 +73,52 @@ pip install ovos-persona
 
 ---
 
-## 🗣️ Persona Intents
+## Persona Intents
 
-The Persona Service supports a set of core voice intents to manage persona interactions seamlessly. These intents correspond to the **messagebus events** but are designed for **voice-based activation**.  
+The persona service supports voice intents for managing persona interactions: listing personas, checking the active persona, activating a persona, asking a persona a single question, and stopping the conversation. Each intent corresponds to a messagebus event.
 
-These intents provide **out-of-the-box functionality** for controlling the Persona Service, ensuring smooth integration with the conversational pipeline and enhancing user experience.
-
-### **List Personas**
-
-**Example Utterances**:
-- "What personas are available?"
-- "Can you list the personas?"
-- "What personas can I use?"
-
-### **Check Active Persona**
-
-**Example Utterances**:
-
-- "Who am I talking to right now?"
-- "Is there an active persona?"
-- "Which persona is in use?"
-
-### **Activate a Persona**
-
-**Example Utterances**:
-- "Connect me to {persona}"  
-- "Enable {persona}"  
-- "Awaken the {persona} assistant"  
-- "Start a conversation with {persona}"  
-- "Let me chat with {persona}"  
-
-
-### **Single-Shot Persona Questions**
-
-Enables users to query a persona directly without entering an interactive session.  
-
-**Example Utterances**:
-- "Ask {persona} what they think about {utterance}"  
-- "What does {persona} say about {utterance}?"  
-- "Query {persona} for insights on {utterance}"  
-- "Ask {persona} for their perspective on {utterance}"  
-
-
-### **Stop Conversation**
-
-**Example Utterances**:
-- "Stop the interaction"  
-- "Terminate persona"  
-- "Deactivate the chatbot"  
-- "Go dormant"  
-- "Enough talking"  
-- "Shut up"  
+See the [OVOS technical manual: Persona Pipeline](https://tigregotico.github.io/ovos-technical-manual/persona-pipeline/) for the full list of example utterances and bus events.
 
 ---
 
+## Pipeline Configuration
 
-## 📖  Pipeline Configuration
+Where you place `"ovos-persona-pipeline-plugin-high"` in the pipeline decides whether the active persona gets full control of an utterance, or only handles it after high-confidence skills fail to match. `"ovos-persona-pipeline-plugin-low"` handles utterances as a fallback even when no persona is explicitly active, replacing [OpenVoiceOS/ovos-skill-fallback-chatgpt](https://github.com/OpenVoiceOS/ovos-skill-fallback-chatgpt).
 
-When a persona is active you have 2 options:
-- send all utterances to the persona and ignore all skills
-- let high confidence skills match before using persona
-
-Where to place `"ovos-persona-pipeline-plugin-high"` in your pipeline depends on the desired outcome
-
-Additionally, you have `"ovos-persona-pipeline-plugin-low"` to handle utterances even when a persona isnt explicitly active
-
-
-##### Option 1: send all utterances to active persona
-
-In this scenario the persona will most likely fail to perform actions like playing music, telling the time and setting alarms. 
-
-You will need to explicitly deactivate a persona to use that functionality, the persona has **full control** over the user utterances
-
-Add the persona pipeline to your mycroft.conf **before** the `_high` pipeline matchers
-
-> ⚠️ don't just copy paste, the `"..."` is a placeholder and invalid. adjust to your existing pipeline config
-```json
-{
-  "intents": {
-      "pipeline": [
-          "ovos-persona-pipeline-plugin-high",
-          "stop_high",
-          "converse",
-          "ocp_high",
-          "padatious_high",
-          "adapt_high",
-          "...",
-          "fallback_low"
-    ]
-  }
-}
-```
-
-##### Option 2: let high confidence skills match before using persona
-
-With this option you still allow skills to trigger even when a persona is active, not all answers are handled by the persona in this case
-
-Add the persona pipeline to your mycroft.conf **after** the `_high` pipeline matchers
-
-> ⚠️ don't just copy paste, the `"..."` is a placeholder and invalid. adjust to your existing pipeline config
-```json
-{
-  "intents": {
-      "pipeline": [
-          "stop_high",
-          "converse",
-          "ocp_high",
-          "padatious_high",
-          "adapt_high",
-          "ovos-persona-pipeline-plugin-high",
-          "ocp_medium",
-          "...",
-          "fallback_low"
-    ]
-  }
-}
-```
-
-##### Extra Option: as fallback skill
-
-You can configure ovos-persona to handle utterances when all skills fail even if a persona is not active, this is handled via `"ovos-persona-pipeline-plugin-low"`
-
-> ⚠️ don't just copy paste, the `"..."` is a placeholder and invalid. adjust to your existing pipeline config
-
-```json
-{
-  "intents": {
-      "persona": {
-        "handle_fallback":  true,
-        "default_persona": "Remote Llama"
-      },
-      "pipeline": [
-          "...",
-          "fallback_medium",
-          "ovos-persona-pipeline-plugin-low",
-          "fallback_low"
-    ]
-  }
-}
-```
-
-> ⚠️ `"ovos-persona-pipeline-plugin-low"` is meant to replace [ovos-skill-fallback-chatgpt](https://github.com/OpenVoiceOS/ovos-skill-fallback-chatgpt)
+See the [OVOS technical manual: Persona Pipeline](https://tigregotico.github.io/ovos-technical-manual/persona-pipeline/) for the pipeline configuration strategies and example `mycroft.conf` snippets.
 
 ---
 
-## 🔧 Creating a Persona
+## Creating a Persona
 
-Personas are configured using JSON files. These can be:  
-1️⃣ Provided by **plugins** (e.g., [OpenAI plugin](https://github.com/OpenVoiceOS/ovos-openai-plugin/pull/12)).  
-2️⃣ Created as **user-defined JSON files** in `~/.config/ovos_persona`.  
+Personas are configured with JSON files. A persona can come from:
+1. a plugin (for example, the [OpenVoiceOS/ovos-openai-plugin](https://github.com/OpenVoiceOS/ovos-openai-plugin)), or
+2. a user-defined JSON file in `~/.config/ovos_persona`.
 
-Personas rely on [solver plugins](https://openvoiceos.github.io/ovos-technical-manual/solvers/), which attempt to answer queries in sequence until a response is found.  
+Personas rely on [solver plugins](https://openvoiceos.github.io/ovos-technical-manual/solvers/), which try to answer a query in sequence until one succeeds.
 
-🛠️ **Example:** Using a local OpenAI-compatible server.  
-Save this in `~/.config/ovos_persona/llm.json`:  
+Example: a persona using a local OpenAI-compatible server. Save this as `~/.config/ovos_persona/llm.json`:
 ```json
 {
   "name": "My Local LLM",
-  "solvers": [
+  "handlers": [
     "ovos-solver-openai-plugin"
   ],
   "ovos-solver-openai-plugin": {
     "api_url": "https://llama.smartgic.io/v1",
     "key": "sk-xxxx",
-    "persona": "helpful, creative, clever, and very friendly."
+    "system_prompt": "helpful, creative, clever, and very friendly."
   }
 }
 ```
 
-> 💡 **Tip**: Personas don't have to use LLMs! Even without a GPU, you can leverage simpler solvers.  
+A persona does not need an LLM. Simpler solvers work too, even without a GPU.
 
-🛠️ **Example:** OldSchoolBot:  
+Example: OldSchoolBot, a persona built from non-LLM solvers.
 ```json
 {
   "name": "OldSchoolBot",
-  "solvers": [
+  "handlers": [
     "ovos-solver-wikipedia-plugin",
     "ovos-solver-ddg-plugin",
     "ovos-solver-plugin-wolfram-alpha",
@@ -256,25 +129,46 @@ Save this in `~/.config/ovos_persona/llm.json`:
   "ovos-solver-plugin-wolfram-alpha": {"appid": "Y7353-xxxxxx"}
 }
 ```
-**Behavior**:
-- 🌐 Searches online (Wikipedia, Wolfram Alpha, etc.).  
-- 📖 Falls back to offline word lookups via WordNet.  
-- 🤖 Uses local chatbot (RiveScript) for chitchat.  
-- ❌ The "failure" solver ensures errors are gracefully handled and we always get a response.
+Behavior:
+- Searches online sources such as Wikipedia and Wolfram Alpha.
+- Falls back to offline word lookups through WordNet.
+- Uses a local chatbot (RiveScript) for chitchat.
+- The "failure" solver catches errors so the persona always returns a response.
 
 ---
 
-## 📡 HiveMind Integration
+## HiveMind Integration
 
-This project includes a native [hivemind-plugin-manager](https://github.com/JarbasHiveMind/hivemind-plugin-manager) integration, providing seamless interoperability with the HiveMind ecosystem.
+This project includes a native [hivemind-plugin-manager](https://github.com/JarbasHiveMind/hivemind-plugin-manager) integration for interoperability with the HiveMind ecosystem.
 
-- **Agent Protocol**: Provides `hivemind-persona-agent-plugin` allowing to connect satellites directly to a persona
-  
+- **Agent protocol**: [hivemind-persona-agent-plugin](https://github.com/JarbasHiveMind/hivemind-persona-agent-plugin) lets HiveMind satellites connect directly to a persona. See [docs/hivemind.md](docs/hivemind.md).
 
 ---
 
+## Related Projects
 
-## 🤝 Contributing
+- [OpenVoiceOS/ovos-persona-server](https://github.com/OpenVoiceOS/ovos-persona-server) — standalone server for persona-based conversations.
+- [TigreGotico/ovos-persona-marketplace](https://github.com/TigreGotico/ovos-persona-marketplace) — a marketplace for sharing persona configurations.
+- [JarbasHiveMind/hivemind-persona-agent-plugin](https://github.com/JarbasHiveMind/hivemind-persona-agent-plugin) — HiveMind agent protocol plugin for `ovos-persona`.
+- [OpenVoiceOS/ovos-openai-plugin](https://github.com/OpenVoiceOS/ovos-openai-plugin) — OpenAI-compatible solver plugin.
 
-Got ideas or found bugs?  
-Submit an issue or create a pull request to help us improve! 🌟  
+---
+
+## Contributing
+
+Found a bug or have an idea? Open an issue or submit a pull request.
+
+---
+
+## Credits
+
+Developed by [TigreGótico](https://tigregotico.pt) for
+[OpenVoiceOS](https://openvoiceos.org).
+
+[![NGI0 Commons Fund](./ngi.png)](https://nlnet.nl/project/OpenVoiceOS)
+
+This project was funded through the [NGI0 Commons Fund](https://nlnet.nl/commonsfund),
+a fund established by [NLnet](https://nlnet.nl) with financial support from the
+European Commission's [Next Generation Internet](https://ngi.eu) programme, under
+the aegis of [DG Communications Networks, Content and Technology](https://commission.europa.eu/about-european-commission/departments-and-executive-agencies/communications-networks-content-and-technology_en)
+under grant agreement No [101135429](https://cordis.europa.eu/project/id/101135429).

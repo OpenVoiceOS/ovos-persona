@@ -1,0 +1,76 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ovos-persona"
+dynamic = ["version"]
+description = "persona pipeline for ovos"
+license = { text = "Apache-2.0" }
+readme = "README.md"
+authors = [
+    { name = "JarbasAI", email = "jarbasai@mailfence.com" },
+]
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "ovos-plugin-manager>=2.3.0a1,<3.0.0",
+    "ovos-openai-plugin>=2.0.7a8,<3.0.0",
+    "ovos-solver-failure-plugin",
+    "ovos-utils>=0.8.0a1,<1.0.0",
+    "langcodes",
+    "ovos-workshop>=0.1.0,<10.0.0",
+    "ovos-bus-client>=1.0.0,<3.0.0",
+    "ovos-config>=0.0.13,<4.0.0",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-cov",
+    "pytest-timeout",
+    "ovoscope<1.0.0",
+    "ovos-solver-failure-plugin",
+    "ovos-spec-tools>=1.5.0a1,<2.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/OpenVoiceOS/ovos-persona"
+Issues = "https://github.com/OpenVoiceOS/ovos-persona/issues"
+
+[project.entry-points."opm.pipeline"]
+ovos-persona-pipeline-plugin = "ovos_persona:PersonaService"
+
+[project.entry-points."opm.agents.memory"]
+ovos-agents-short-term-memory-plugin = "ovos_persona.memory:BasicShortTermMemory"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.dynamic]
+version = { attr = "ovos_persona.version.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["ovos_persona*"]
+
+[tool.setuptools.package-data]
+ovos_persona = [
+    "locale/**/*.voc",
+    "locale/**/*.intent",
+    "locale/**/*.dialog",
+    "locale/**/*.entity",
+    "locale/**/*.rx",
+    "locale/**/*.word",
+    "locale/**/*",
+]
+
+[tool.pytest.ini_options]
+# abort a hung test with a full thread dump instead of stalling the whole job
+timeout = 600
+timeout_method = "thread"
