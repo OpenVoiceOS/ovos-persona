@@ -26,8 +26,7 @@ See [docs/index.md](docs/index.md) for the architecture and API reference.
      "intents": {
          "persona": {
            "handle_fallback":  true,
-           "default_persona": "Remote Llama",
-           "short-term-memory": true
+           "default_persona": "Remote Llama"
          },
          "pipeline": [
              "stop_high",
