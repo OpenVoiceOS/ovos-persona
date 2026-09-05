@@ -77,7 +77,7 @@ pip install ovos-persona
 
 The persona service supports voice intents for managing persona interactions: listing personas, checking the active persona, activating a persona, asking a persona a single question, and stopping the conversation. Each intent corresponds to a messagebus event.
 
-See the [OVOS technical manual: Persona Pipeline](https://tigregotico.github.io/ovos-technical-manual/persona-pipeline/) for the full list of example utterances and bus events.
+See the [OVOS technical manual: Persona Pipeline](https://openvoiceos.github.io/beta-technical-manual/persona-pipeline/) for the full list of example utterances and bus events.
 
 ---
 
@@ -85,7 +85,7 @@ See the [OVOS technical manual: Persona Pipeline](https://tigregotico.github.io/
 
 Where you place `"ovos-persona-pipeline-plugin-high"` in the pipeline decides whether the active persona gets full control of an utterance, or only handles it after high-confidence skills fail to match. `"ovos-persona-pipeline-plugin-low"` handles utterances as a fallback even when no persona is explicitly active, replacing [OpenVoiceOS/ovos-skill-fallback-chatgpt](https://github.com/OpenVoiceOS/ovos-skill-fallback-chatgpt).
 
-See the [OVOS technical manual: Persona Pipeline](https://tigregotico.github.io/ovos-technical-manual/persona-pipeline/) for the pipeline configuration strategies and example `mycroft.conf` snippets.
+See the [OVOS technical manual: Persona Pipeline](https://openvoiceos.github.io/beta-technical-manual/persona-pipeline/) for the pipeline configuration strategies and example `mycroft.conf` snippets.
 
 ---
 
