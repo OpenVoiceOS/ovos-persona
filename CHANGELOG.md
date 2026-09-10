@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.9.0a23](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a23) (2026-09-10)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a22...0.9.0a23)
+
+**Merged pull requests:**
+
+- docs: point manual links at OpenVoiceOS/beta-technical-manual [\#216](https://github.com/OpenVoiceOS/ovos-persona/pull/216) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.9.0a22](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a22) (2026-09-10)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a21...0.9.0a22)
@@ -401,15 +409,10 @@
 **Merged pull requests:**
 
 - Release 0.6.22a2 [\#108](https://github.com/OpenVoiceOS/ovos-persona/pull/108) ([github-actions[bot]](https://github.com/apps/github-actions))
-- Update requirements.txt [\#107](https://github.com/OpenVoiceOS/ovos-persona/pull/107) ([JarbasAl](https://github.com/JarbasAl))
 
 ## [0.6.22a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.22a1) (2025-05-05)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.21a1...0.6.22a1)
-
-**Merged pull requests:**
-
-- Release 0.6.22a1 [\#106](https://github.com/OpenVoiceOS/ovos-persona/pull/106) ([github-actions[bot]](https://github.com/apps/github-actions))
 
 ## [0.6.21a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.21a1) (2025-05-05)
 
