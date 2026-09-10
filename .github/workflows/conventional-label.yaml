@@ -1,10 +1,9 @@
-# auto add labels to PRs
+name: Conventional Label
+
 on:
-  pull_request_target:
-    types: [ opened, edited ]
-name: conventional-release-labels
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
 jobs:
   label:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: bcoe/conventional-release-labels@v1
+    uses: OpenVoiceOS/gh-automations/.github/workflows/conventional-label.yml@dev
