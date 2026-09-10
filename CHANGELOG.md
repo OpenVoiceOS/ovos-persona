@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.9.0a26](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a26) (2026-09-10)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a25...0.9.0a26)
+
+**Merged pull requests:**
+
+- fix: raise ovos-workshop floor to 9.8.1a1 for voc\_list lang fix [\#223](https://github.com/OpenVoiceOS/ovos-persona/pull/223) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.9.0a25](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a25) (2026-09-10)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a24...0.9.0a25)
@@ -228,7 +236,7 @@
 
 ## [0.7.5a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.5a1) (2026-06-05)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a4...0.7.5a1)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a5...0.7.5a1)
 
 **Merged pull requests:**
 
@@ -236,13 +244,13 @@
 - fix\(i18n\): normalize locale folders to canonical BCP-47 [\#158](https://github.com/OpenVoiceOS/ovos-persona/pull/158) ([JarbasAl](https://github.com/JarbasAl))
 - Change 'persona' to 'system\_prompt' in README [\#157](https://github.com/OpenVoiceOS/ovos-persona/pull/157) ([denics](https://github.com/denics))
 
-## [0.7.4a4](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.4a4) (2026-03-29)
-
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a5...0.7.4a4)
-
 ## [0.7.4a5](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.4a5) (2026-03-29)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a3...0.7.4a5)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a4...0.7.4a5)
+
+## [0.7.4a4](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.4a4) (2026-03-29)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a3...0.7.4a4)
 
 ## [0.7.4a3](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.4a3) (2026-03-29)
 
@@ -393,17 +401,9 @@
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.22a4...0.6.22)
 
-**Merged pull requests:**
-
-- Release 0.6.22a4 [\#113](https://github.com/OpenVoiceOS/ovos-persona/pull/113) ([github-actions[bot]](https://github.com/apps/github-actions))
-
 ## [0.6.22a4](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.22a4) (2025-06-07)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.22a3...0.6.22a4)
-
-**Merged pull requests:**
-
-- nl-nl translation [\#112](https://github.com/OpenVoiceOS/ovos-persona/pull/112) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
 
 ## [0.6.22a3](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.22a3) (2025-06-04)
 
