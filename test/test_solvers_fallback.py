@@ -189,3 +189,38 @@ def test_stream_retrieval_yields_document(messages):
     eng = _retrieval_engine("paris is the capital")
     svc = _service([("retr", eng)])
     assert list(svc.stream_completion(messages)) == ["paris is the capital"]
+
+
+# --- the last handler error survives the chain ---------------------------------
+
+def _raising_chat_engine(exc):
+    m = MagicMock(spec=ChatEngine)
+    m.continue_chat.side_effect = exc
+    return m
+
+
+def test_last_error_is_kept_when_no_handler_answers():
+    exc = RuntimeError("HTTP error: 401 Client Error")
+    svc = _service([("a", _raising_chat_engine(exc)), ("b", _chat_engine(""))])
+    assert svc.chat_completion([AgentMessage(MessageRole.USER, "hi")]) is None
+    assert svc.last_error is exc
+
+
+def test_last_error_is_reset_per_call():
+    exc = RuntimeError("boom")
+    svc = _service([("a", _raising_chat_engine(exc)), ("b", _chat_engine("ok"))])
+    assert svc.chat_completion([AgentMessage(MessageRole.USER, "hi")]) == "ok"
+    assert svc.last_error is exc
+    svc.loaded_modules["a"].continue_chat.side_effect = None
+    svc.loaded_modules["a"].continue_chat.return_value = AgentMessage(MessageRole.ASSISTANT, "fine")
+    assert svc.chat_completion([AgentMessage(MessageRole.USER, "again")]) == "fine"
+    assert svc.last_error is None
+
+
+def test_last_error_is_kept_on_stream():
+    exc = RuntimeError("HTTP error: 503")
+    m = MagicMock(spec=ChatEngine)
+    m.stream_sentences.side_effect = exc
+    svc = _service([("a", m)])
+    assert list(svc.stream_completion([AgentMessage(MessageRole.USER, "hi")])) == []
+    assert svc.last_error is exc

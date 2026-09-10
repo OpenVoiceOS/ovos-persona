@@ -85,6 +85,10 @@ class QuestionSolversService:
     def __init__(self, bus=None, config=None, sort_order=None):
         self.config_core = Configuration()
         self.loaded_modules = {}
+        # the exception the most recent handler raised during the last completion
+        # call, or None; a caller that got no answer reads it to tell a silent
+        # chain from a failing backend
+        self.last_error: Optional[BaseException] = None
         self.sort_order = sort_order or []
         self.bus = bus or FakeBus()
         self.config = config or {}
@@ -122,6 +126,7 @@ class QuestionSolversService:
                         session_id: str = "default",
                         lang: Optional[str] = None,
                         units: Optional[str] = None) -> Optional[str]:
+        self.last_error = None
         for module in self.modules:
             try:
                 ans = None
@@ -143,6 +148,7 @@ class QuestionSolversService:
                 if ans:
                     return ans
             except Exception as e:
+                self.last_error = e
                 LOG.error(e)
         return None
 
@@ -151,6 +157,7 @@ class QuestionSolversService:
                           lang: Optional[str] = None,
                           units: Optional[str] = None) -> Iterable[str]:
         answered = False
+        self.last_error = None
         for module in self.modules:
             try:
                 if isinstance(module, (ChatEngine, MultimodalChatEngine)):
@@ -177,6 +184,7 @@ class QuestionSolversService:
                         yield ans
 
             except Exception as e:
+                self.last_error = e
                 LOG.error(e)
             if answered:
                 break
