@@ -7,8 +7,8 @@
 ## Concepts
 
 - **Persona**: a named configuration that specifies an ordered list of utterance handler plugins (LLMs, solvers, RAG engines). Each persona has its own handler priority order and optional short-term memory.
-- **PersonaService**: the pipeline stage that loads all personas, matches persona-management intents (`summon`, `ask`, `list`, `release`), and routes utterances to the active persona.
-- **Active persona**: when a user summons a persona by name, all subsequent utterances in that session are routed directly to it, bypassing the normal intent pipeline, until released.
+- **PersonaService**: the pipeline stage that loads all personas, matches persona-management intents (`persona:summon`, `persona:query`, `persona:list`, `persona:check`, `persona:release`), and routes utterances to the active persona.
+- **Active persona**: when a user summons a persona by name, later utterances in that session reach it through `match_low()` -- the last stage of the matching pipeline. Higher-priority matching still runs first, so an utterance a skill claims goes to the skill; only what nothing else matched is routed to the persona, until it is released.
 - **Default persona**: a fallback persona used when `handle_fallback: true` is set in config, allowing the persona system to act as the last-resort pipeline stage.
 
 ---
@@ -21,7 +21,7 @@ Pipeline (ConfidenceMatcherPipeline)
     └── PersonaService
             │
             ├── match_high()     ← padatious/padacioso intent matching
-            │       └── persona:summon / persona:ask / persona:list / persona:check / persona:release
+            │       └── persona:summon / persona:query / persona:list / persona:check / persona:release
             │
             ├── match_medium()   ← keyword/voc matching fallback
             │

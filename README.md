@@ -10,7 +10,7 @@ See [docs/index.md](docs/index.md) for the architecture and API reference.
 
 1. Update the core and install the plugin:
    ```bash
-   pip install -U ovos-core>=0.5.1 ovos-persona
+   pip install -U "ovos-core>=0.5.1" ovos-persona
    ```
 2. Install or update the plugins and skills a persona needs:
    ```bash
