@@ -8,17 +8,17 @@ Manages the ordered pipeline of utterance handler plugins for a `Persona`. Tries
 
 ## Supported Plugin Types
 
-`QuestionSolversService` supports six plugin categories, all discovered via `ovos-plugin-manager`:
+`QuestionSolversService` supports seven plugin categories, all discovered via `ovos-plugin-manager`:
 
 | Entry point group | Base class | Chat history support | Streaming |
 |---|---|---|---|
-| `opm.solver` | `QuestionSolver` | No, last message only | Yes (`stream_utterances`) |
+| `opm.solver.question` | `QuestionSolver` | No, last message only | Yes (`stream_utterances`) |
 | `opm.solver.chat` | `ChatMessageSolver` | Yes | Yes (`stream_chat_utterances`) |
 | `opm.agents.chat` | `ChatEngine` | Yes | Yes (`stream_sentences`) |
 | `opm.agents.chat.multimodal` | `MultimodalChatEngine` | Yes | Yes (`stream_sentences`) |
 | `opm.agents.retrieval` | `RetrievalEngine` | No, last message only | No |
-| `opm.agents.indexer.document` | `DocumentIndexerEngine` | No, last message only | No |
-| `opm.agents.indexer.qa` | `QAIndexerEngine` | No, last message only | No |
+| `opm.agents.retrieval.documents` | `DocumentIndexerEngine` | No, last message only | No |
+| `opm.agents.retrieval.qa` | `QAIndexerEngine` | No, last message only | No |
 
 `QuestionSolversService` treats all plugin types the same way. It dispatches to the method that matches the plugin's class.
 
@@ -50,7 +50,7 @@ plugins = get_utterance_handler_plugins()
 # → {entry_point_name: PluginClass, ...}
 ```
 
-Merges all six plugin entry point groups into a single dict. Used by `Persona.__init__` to build the handler config.
+Merges all seven plugin entry point groups into a single dict. Used by `Persona.__init__` to build the handler config.
 
 ---
 
