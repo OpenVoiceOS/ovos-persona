@@ -21,7 +21,7 @@ Pipeline (ConfidenceMatcherPipeline)
     └── PersonaService
             │
             ├── match_high()     ← padatious/padacioso intent matching
-            │       └── persona:summon / persona:ask / persona:list / persona:check / persona:release
+            │       └── persona:summon / persona:query / persona:list / persona:check / persona:release
             │
             ├── match_medium()   ← keyword/voc matching fallback
             │
