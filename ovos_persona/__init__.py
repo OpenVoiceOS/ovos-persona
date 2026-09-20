@@ -209,9 +209,13 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
                     path = join(locale_folder, f)
                     if f in cls.INTENTS:
                         with open(path) as intent:
-                            samples = intent.read().split("\n")
-                            for idx, s in enumerate(samples):
-                                samples[idx] = s.replace("{{", "{").replace("}}", "}")
+                            # A blank line is not a sample. Splitting on "\n"
+                            # makes one out of the newline that ends a text
+                            # file, and expand_template rejects it, which
+                            # costs the whole pipeline plugin its load.
+                            samples = [line.replace("{{", "{").replace("}}", "}")
+                                       for line in intent.read().split("\n")
+                                       if line.strip()]
                             intents[lang][f] = samples
         return intents
 
