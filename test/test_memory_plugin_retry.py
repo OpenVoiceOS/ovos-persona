@@ -5,30 +5,41 @@ On a runtime whose skill installer finishes after the pipeline has loaded,
 without memory until the next restart -- no history, and anything the memory
 plugin injects (retrieved knowledge, for one) silently missing.
 """
+import threading
+import time
 from unittest.mock import patch
 
 from ovos_bus_client import Session
+from ovos_plugin_manager.templates.agents import AgentMessage, MessageRole
 
 from ovos_persona import Persona
+from ovos_persona.memory import BasicShortTermMemory
 
 
 class _DummyHandler:
+    """Stand-in utterance handler; never invoked."""
+
     def __init__(self, config=None):
+        """Keep the config like a real plugin."""
         self.config = config or {}
 
     def shutdown(self):
-        pass
+        """Nothing to release."""
 
 
-class _Memory:
+class _Memory(BasicShortTermMemory):
+    """The stock short-term memory, counting how often it is built."""
+
+    built = 0
+
     def __init__(self, config=None):
-        self.config = config or {}
-
-    def build_conversation_context(self, utterance, session_id):
-        return [("remembered", utterance, self.config.get("depth"))]
+        """Count the construction."""
+        type(self).built += 1
+        super().__init__(config=config)
 
 
 def _persona(load):
+    """A persona whose memory plugin lookups go through ``load``."""
     with patch("ovos_persona.solvers.get_utterance_handler_plugins",
                return_value={"dummy": _DummyHandler}), \
          patch("ovos_persona.get_utterance_handler_plugins",
@@ -36,37 +47,95 @@ def _persona(load):
          patch("ovos_persona.load_memory_plugin", side_effect=load):
         return Persona(name="test", config={"handlers": ["dummy"],
                                             "memory_module": "late-memory",
-                                            "late-memory": {"depth": 3}})
+                                            "late-memory": {"max_history": 7}})
+
+
+def _session(sid="s1"):
+    """A session with a fixed id."""
+    session = Session()
+    session.session_id = sid
+    return session
 
 
 def test_a_memory_plugin_installed_later_is_used_on_a_later_question():
+    """Found later, used with its own config block, and looked up no more."""
     installed = {"yes": False}
     load = lambda name: _Memory if installed["yes"] else None  # noqa: E731
     persona = _persona(load)
     assert persona.memory is None
-
+    sess = _session()
     with patch("ovos_persona.load_memory_plugin", side_effect=load):
-        # still missing: no memory, the question alone
-        assert len(persona.get_messages("hi", Session())) == 1
+        assert [m.content for m in persona.get_messages("hi", sess)] == ["hi"]
         installed["yes"] = True
         persona._memory_retry_at = 0.0  # the rate limit is tested below
-        assert persona.get_messages("hi", Session()) == [("remembered", "hi", 3)]
-    # its own config block, and no further lookups once loaded
-    assert persona.memory.config == {"depth": 3}
+        context = persona.get_messages("hello again", sess)
+    assert isinstance(persona.memory, _Memory)
+    assert persona.memory.config == {"max_history": 7}
     assert persona._memory_plugin is None
+    # the question appears once, as the last message
+    assert [(m.role, m.content) for m in context] == [(MessageRole.USER, "hello again")]
+
+
+def test_the_first_turn_is_recorded_so_the_answer_is_not_orphaned():
+    """handle_utterance skipped the question while memory was absent; the
+    answer that handle_speak records next must not sit there alone."""
+    persona = _persona(lambda name: _Memory)
+    persona.memory, persona._memory_plugin = None, "late-memory"
+    sess = _session()
+    with patch("ovos_persona.load_memory_plugin", side_effect=lambda name: _Memory):
+        persona.get_messages("what is thalovant", sess)
+    persona.memory.update_history([AgentMessage(MessageRole.ASSISTANT, "A voice platform.")], sess.session_id)
+    history = persona.memory.get_history(sess.session_id)
+    assert [(m.role, m.content) for m in history] == [
+        (MessageRole.USER, "what is thalovant"), (MessageRole.ASSISTANT, "A voice platform.")]
+
+
+def test_a_plugin_that_fails_to_start_does_not_fail_the_question():
+    """The answer goes out without memory; the plugin is tried again later."""
+    def broken(config=None):
+        raise RuntimeError("redis down")
+
+    persona = _persona(lambda name: None)
+    with patch("ovos_persona.load_memory_plugin", side_effect=lambda name: broken):
+        persona._memory_retry_at = 0.0
+        context = persona.get_messages("hi", _session())
+    assert [m.content for m in context] == ["hi"]
+    assert persona.memory is None and persona._memory_plugin == "late-memory"
 
 
 def test_a_missing_memory_plugin_is_looked_up_at_most_once_per_interval():
+    """One entry-point scan per interval, however many questions arrive."""
     calls = []
     persona = _persona(lambda name: calls.append(name))
     calls.clear()
     with patch("ovos_persona.load_memory_plugin", side_effect=lambda name: calls.append(name)):
         for _ in range(5):
-            persona.get_messages("hi", Session())
+            persona.get_messages("hi", _session())
     assert calls == ["late-memory"]
 
 
+def test_concurrent_questions_build_one_memory():
+    """A second instance would replace the first and lose what it recorded."""
+    _Memory.built = 0
+    persona = _persona(lambda name: None)
+
+    def slow_load(name):
+        time.sleep(0.05)
+        return _Memory
+
+    with patch("ovos_persona.load_memory_plugin", side_effect=slow_load):
+        persona._memory_retry_at = 0.0
+        threads = [threading.Thread(target=persona.get_messages, args=("hi", _session(f"s{i}")))
+                   for i in range(8)]
+        for thread in threads:
+            thread.start()
+        for thread in threads:
+            thread.join()
+    assert _Memory.built == 1
+
+
 def test_no_memory_configured_means_no_lookups():
+    """``memory_module: null`` is a choice, not a failure to recover from."""
     calls = []
     with patch("ovos_persona.solvers.get_utterance_handler_plugins",
                return_value={"dummy": _DummyHandler}), \
@@ -74,5 +143,5 @@ def test_no_memory_configured_means_no_lookups():
                return_value={"dummy": _DummyHandler}), \
          patch("ovos_persona.load_memory_plugin", side_effect=lambda n: calls.append(n)):
         persona = Persona(name="test", config={"handlers": ["dummy"], "memory_module": None})
-        persona.get_messages("hi", Session())
+        persona.get_messages("hi", _session())
     assert calls == []

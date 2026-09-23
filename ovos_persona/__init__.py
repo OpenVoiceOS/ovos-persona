@@ -1,6 +1,7 @@
 import importlib
 import json
 import os
+import threading
 import time
 from os.path import join, dirname, expanduser, isdir
 from typing import Optional, Dict, List, Union, Iterable
@@ -58,6 +59,7 @@ class Persona:
         # was asked for, so a later question can still pick it up.
         self._memory_plugin = memory_plugin if memory_class is None else None
         self._memory_retry_at = 0.0
+        self._memory_lock = threading.Lock()
         if memory_class is None:
             if memory_plugin:
                 LOG.warning(f"memory plugin '{memory_plugin}' not available; short-term memory disabled")
@@ -86,28 +88,68 @@ class Persona:
     #: Seconds between attempts to load a memory plugin that was missing.
     MEMORY_RETRY_SECONDS = 30.0
 
-    def _retry_memory_plugin(self) -> None:
+    def _retry_memory_plugin(self, utterance: str, sess: Session) -> None:
         """Load the configured memory plugin if it has appeared since startup.
 
         Rate-limited: a plugin that is genuinely absent costs one entry-point
-        scan every ``MEMORY_RETRY_SECONDS``, not one per question.
+        scan every ``MEMORY_RETRY_SECONDS``, not one per question. Serialized,
+        so concurrent questions never build two instances (the second would
+        replace the first and lose what it recorded). A plugin whose
+        constructor raises is logged and retried later; the question is
+        answered without memory rather than failed.
+
+        On success the triggering user turn is recorded: ``handle_utterance``
+        skipped it while memory was absent, and ``handle_speak`` will record
+        the answer, which would otherwise sit in history without its question.
+
+        Args:
+            utterance: the question being answered.
+            sess: its session.
         """
-        now = time.monotonic()
-        if now < self._memory_retry_at:
-            return
-        self._memory_retry_at = now + self.MEMORY_RETRY_SECONDS
-        # a package installed after startup is invisible to cached finders
-        importlib.invalidate_caches()
-        memory_class = load_memory_plugin(self._memory_plugin)
-        if memory_class is None:
-            return
-        self.memory = memory_class(config=self.config.get(self._memory_plugin) or {})
-        LOG.info(f"memory plugin '{self._memory_plugin}' is now available; memory enabled")
-        self._memory_plugin = None
+        with self._memory_lock:
+            if self.memory is not None or not self._memory_plugin:
+                return  # another request finished the job
+            now = time.monotonic()
+            if now < self._memory_retry_at:
+                return
+            self._memory_retry_at = now + self.MEMORY_RETRY_SECONDS
+            # a package installed after startup is invisible to cached finders
+            importlib.invalidate_caches()
+            name = self._memory_plugin
+            memory_class = load_memory_plugin(name)
+            if memory_class is None:
+                return
+            try:
+                memory = memory_class(config=self.config.get(name) or {})
+            except Exception as error:  # a broken plugin must not break the answer
+                LOG.warning(f"memory plugin '{name}' failed to start ({error!r}); retrying later")
+                return
+            try:
+                memory.update_history(
+                    new_messages=[AgentMessage(MessageRole.USER, utterance)],
+                    session_id=sess.session_id,
+                )
+            except Exception as error:
+                LOG.warning(f"memory plugin '{name}' could not record the first turn ({error!r})")
+            self.memory = memory
+            self._memory_plugin = None
+            LOG.info(f"memory plugin '{name}' is now available; memory enabled")
 
     def get_messages(self, utterance: str, sess: Session) -> List[AgentMessage]:
+        """The context for ``utterance``: from memory when there is one.
+
+        A memory plugin missing at startup is looked for again here (see
+        ``_retry_memory_plugin``).
+
+        Args:
+            utterance: the question being answered.
+            sess: its session.
+
+        Returns:
+            The messages handed to the solvers.
+        """
         if self.memory is None and self._memory_plugin:
-            self._retry_memory_plugin()
+            self._retry_memory_plugin(utterance, sess)
         if self.memory is None:
             return [AgentMessage(MessageRole.USER, utterance)]
         return self.memory.build_conversation_context(utterance, sess.session_id)
