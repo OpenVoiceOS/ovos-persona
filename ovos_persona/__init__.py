@@ -1,5 +1,7 @@
+import importlib
 import json
 import os
+import time
 from os.path import join, dirname, expanduser, isdir
 from typing import Optional, Dict, List, Union, Iterable
 
@@ -51,6 +53,11 @@ class Persona:
 
         memory_plugin = self.config.get("memory_module", "ovos-agents-short-term-memory-plugin")
         memory_class = load_memory_plugin(memory_plugin) if memory_plugin else None
+        # A memory plugin missing now may be installed moments later -- a
+        # skill installer finishing after the pipeline loaded. Remember what
+        # was asked for, so a later question can still pick it up.
+        self._memory_plugin = memory_plugin if memory_class is None else None
+        self._memory_retry_at = 0.0
         if memory_class is None:
             if memory_plugin:
                 LOG.warning(f"memory plugin '{memory_plugin}' not available; short-term memory disabled")
@@ -76,7 +83,31 @@ class Persona:
     def __repr__(self):
         return f"Persona({self.name}:{list(self.solvers.loaded_modules.keys())})"
 
+    #: Seconds between attempts to load a memory plugin that was missing.
+    MEMORY_RETRY_SECONDS = 30.0
+
+    def _retry_memory_plugin(self) -> None:
+        """Load the configured memory plugin if it has appeared since startup.
+
+        Rate-limited: a plugin that is genuinely absent costs one entry-point
+        scan every ``MEMORY_RETRY_SECONDS``, not one per question.
+        """
+        now = time.monotonic()
+        if now < self._memory_retry_at:
+            return
+        self._memory_retry_at = now + self.MEMORY_RETRY_SECONDS
+        # a package installed after startup is invisible to cached finders
+        importlib.invalidate_caches()
+        memory_class = load_memory_plugin(self._memory_plugin)
+        if memory_class is None:
+            return
+        self.memory = memory_class(config=self.config.get(self._memory_plugin) or {})
+        LOG.info(f"memory plugin '{self._memory_plugin}' is now available; memory enabled")
+        self._memory_plugin = None
+
     def get_messages(self, utterance: str, sess: Session) -> List[AgentMessage]:
+        if self.memory is None and self._memory_plugin:
+            self._retry_memory_plugin()
         if self.memory is None:
             return [AgentMessage(MessageRole.USER, utterance)]
         return self.memory.build_conversation_context(utterance, sess.session_id)
