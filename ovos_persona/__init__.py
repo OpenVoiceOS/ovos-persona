@@ -770,6 +770,26 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
                                       {"persona_id": active_persona,
                                        "session_id": sess.session_id}))
 
+    def can_stop(self, message: Message) -> bool:
+        """
+        Whether a stop request should reach this service for the message's session.
+
+        ovos-workshop requires ``can_stop`` of every skill that implements
+        ``stop_session``: without it the stop pipeline's ``ovos.stop.ping`` raised
+        ``NotImplementedError`` whenever the persona was the active skill, and
+        "stop" could not interrupt a persona answer. A persona is stoppable
+        exactly while an answer is still streaming for that session -- the state
+        ``stop_session`` clears.
+
+        Parameters:
+            message (Message): the stop ping; its session is resolved via SessionManager.
+
+        Returns:
+            bool: ``True`` while a persona answer is streaming for the session.
+        """
+        sess = SessionManager.get(message)
+        return bool(self._active_sessions.get(sess.session_id))
+
     def stop_session(self, session: Session):
         # since responses are streaming, this will exit the loop in hanle_persona_query
         """
