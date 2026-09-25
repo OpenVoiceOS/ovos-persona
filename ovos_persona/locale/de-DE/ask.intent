@@ -1,0 +1,9 @@
+(frage | suche in)  {persona} über (seine|ihre) (Perspektive | Meinung | Gedanken | Interpretation | Haltung | Ansicht) (von|über|zu) {utterance}
+Welche (Meinung| Ansicht |Haltung) hat {persona} (zu | von | über) {utterance}
+(frage|fragen Sie) {persona}, was (sie|er|es) zu {utterance} (zu sagen hat| denkt | meint)
+(stelle eine Frage an | befrage) {persona} (in Bezug auf | über | zu) {utterance}
+Welche (Meinung| Ansicht |Haltung) hat {persona} (zu | von | über) {utterance}
+frage {persona}  (über| zu) (ihre|seine|ihrer|seiner) (Perspektive|Meinung) {utterance}
+frage {persona} (nach | über | zu) {utterance}
+frage {persona} nach (ihren|ihrer|seiner|seine|seinen) (Erkenntnissen|Analyse|Kommentar|Eindruck|Interpretation|Wahrnehmung|Reaktion|Standpunkt|Einstellung|Gedanken|Verständnis|Ansicht) (zu|von| über) {utterance}
+was (denkt | sagt) {persona} über {utterance}

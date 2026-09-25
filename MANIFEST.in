@@ -1,5 +1,0 @@
-recursive-include LICENSE
-recursive-include README.md
-recursive-include requirements.txt
-recursive-include ovos_persona/locale *
-recursive-include ovos_persona/ *
