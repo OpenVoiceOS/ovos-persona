@@ -409,6 +409,10 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         Returns:
             IntentHandlerMatch or None: An IntentHandlerMatch for handled persona intents (`persona:release`, `persona:summon`, `persona:list`, `persona:check`, `persona:query`) or `None` if no high-priority persona intent was matched.
         """
+        if not utterances:
+            # same reason as handle_utterance: nothing was said, so there is
+            # nothing to match. Every branch below reads utterances[0].
+            return None
         lang = lang or self.lang
         lang = standardize_lang_tag(lang)
         sess = SessionManager.get(message)
@@ -499,6 +503,10 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         Returns:
             IntentHandlerMatch or None: An IntentHandlerMatch for 'persona:release', 'persona:summon', or 'persona:query' when a medium-priority persona intent is found, otherwise None.
         """
+        if not utterances:
+            # same reason as match_high: nothing was said, so there is nothing
+            # to match. Every branch below reads utterances[0].
+            return None
         lang = lang or self.lang
         lang = standardize_lang_tag(lang)
 
@@ -584,6 +592,10 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         Returns:
             Optional[IntentHandlerMatch]: An IntentHandlerMatch of type "persona:query" when a fallback persona is resolved, `None` if no persona match or fallback is applicable.
         """
+        if not utterances:
+            # the last resort still has nothing to answer, and the match it
+            # would build reads utterances[0] twice.
+            return None
         match = self.match_medium(utterances, lang, message)
         if match:
             return match
@@ -618,7 +630,14 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         Side effects:
             Appends a tuple `("user", utterance)` to `self.message_history[session_id]`.
         """
-        utt = message.data.get("utterances")[0]
+        utterances = message.data.get("utterances") or []
+        if not utterances:
+            # a recognizer_loop:utterance carrying an empty list, or none at
+            # all, is nothing to answer: there is no user turn to remember.
+            # Indexing it raised IndexError here and lost the message.
+            LOG.debug("no utterance to record in the session history")
+            return
+        utt = utterances[0]
         sess = SessionManager.get(message)
         persona_id = self.get_active_persona(message, include_default=True)
         persona = self.personas.get(persona_id)
