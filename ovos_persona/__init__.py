@@ -59,6 +59,7 @@ class Persona:
         # was asked for, so a later question can still pick it up.
         self._memory_plugin = memory_plugin if memory_class is None else None
         self._memory_retry_at = 0.0
+        self._memory_retry_interval = 0.0
         self._memory_lock = threading.Lock()
         if memory_class is None:
             if memory_plugin:
@@ -85,8 +86,11 @@ class Persona:
     def __repr__(self):
         return f"Persona({self.name}:{list(self.solvers.loaded_modules.keys())})"
 
-    #: Seconds between attempts to load a memory plugin that was missing.
+    #: Seconds before the first re-attempt at a memory plugin that was missing.
     MEMORY_RETRY_SECONDS = 30.0
+
+    #: Ceiling for the backoff below.
+    MEMORY_RETRY_MAX_SECONDS = 1800.0
 
     def _retry_memory_plugin(self, utterance: str, sess: Session) -> None:
         """Load the configured memory plugin if it has appeared since startup.
@@ -112,7 +116,21 @@ class Persona:
             now = time.monotonic()
             if now < self._memory_retry_at:
                 return
-            self._memory_retry_at = now + self.MEMORY_RETRY_SECONDS
+            # Back off rather than scanning at a fixed 30s for the life of the
+            # process. OPM's load_plugin logs "Could not find the plugin ..." at
+            # WARNING on every miss, so a fixed interval wrote two lines a
+            # minute forever on any install whose configured memory plugin is
+            # simply not present -- where a plain startup load says it once.
+            #
+            # A bounded number of attempts would settle the log too, but it
+            # would also give up the thing this method exists for: adopting a
+            # plugin installed an hour after start. Backoff keeps that and
+            # takes the steady-state noise from ~2/min to ~2/hour.
+            previous = self._memory_retry_interval
+            interval = (self.MEMORY_RETRY_SECONDS if not previous
+                        else min(previous * 2, self.MEMORY_RETRY_MAX_SECONDS))
+            self._memory_retry_interval = interval
+            self._memory_retry_at = now + interval
             # a package installed after startup is invisible to cached finders
             importlib.invalidate_caches()
             name = self._memory_plugin
@@ -133,6 +151,7 @@ class Persona:
                 LOG.warning(f"memory plugin '{name}' could not record the first turn ({error!r})")
             self.memory = memory
             self._memory_plugin = None
+            self._memory_retry_interval = 0.0
             LOG.info(f"memory plugin '{name}' is now available; memory enabled")
 
     def get_messages(self, utterance: str, sess: Session) -> List[AgentMessage]:

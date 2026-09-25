@@ -145,3 +145,59 @@ def test_no_memory_configured_means_no_lookups():
         persona = Persona(name="test", config={"handlers": ["dummy"], "memory_module": None})
         persona.get_messages("hi", _session())
     assert calls == []
+
+
+# --------------------------------------------------------------------------
+# The review finding: a fixed interval logged forever
+# --------------------------------------------------------------------------
+
+
+def test_the_interval_backs_off_while_the_plugin_stays_missing():
+    """OPM warns on every miss, so a fixed interval never stops writing.
+
+    ``load_plugin`` logs "Could not find the plugin ..." at WARNING each time,
+    so scanning every 30s put two lines a minute in the log for the life of the
+    process, on any install whose configured memory plugin is simply absent.
+    """
+    persona = _persona(lambda name: None)
+    with patch("ovos_persona.load_memory_plugin", return_value=None):
+        seen = []
+        for _ in range(8):
+            persona._memory_retry_at = 0.0  # pretend the wait elapsed
+            persona.get_messages("hi", _session())
+            seen.append(persona._memory_retry_interval)
+
+    assert seen[0] == persona.MEMORY_RETRY_SECONDS, seen
+    assert seen == sorted(seen), f"the interval did not grow: {seen}"
+    assert seen[-1] > seen[0], f"the interval never backed off: {seen}"
+    assert max(seen) <= persona.MEMORY_RETRY_MAX_SECONDS, seen
+
+
+def test_the_backoff_is_capped():
+    persona = _persona(lambda name: None)
+    with patch("ovos_persona.load_memory_plugin", return_value=None):
+        for _ in range(40):
+            persona._memory_retry_at = 0.0
+            persona.get_messages("hi", _session())
+    assert persona._memory_retry_interval == persona.MEMORY_RETRY_MAX_SECONDS
+
+
+def test_adoption_still_works_after_the_interval_has_grown():
+    """Backoff must not become the bounded-attempts behaviour it replaced.
+
+    A bounded count would settle the log too, but it would give up the thing
+    this method exists for: adopting a plugin installed long after start.
+    """
+    persona = _persona(lambda name: None)
+    with patch("ovos_persona.load_memory_plugin", return_value=None):
+        for _ in range(10):
+            persona._memory_retry_at = 0.0
+            persona.get_messages("hi", _session())
+    assert persona._memory_retry_interval > persona.MEMORY_RETRY_SECONDS
+
+    with patch("ovos_persona.load_memory_plugin", return_value=_Memory):
+        persona._memory_retry_at = 0.0
+        persona.get_messages("hi", _session())
+
+    assert persona.memory is not None, "a late plugin was not adopted"
+    assert persona._memory_retry_interval == 0.0, "the backoff was not reset"
