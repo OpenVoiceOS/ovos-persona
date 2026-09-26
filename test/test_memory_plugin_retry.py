@@ -134,6 +134,41 @@ def test_concurrent_questions_build_one_memory():
     assert _Memory.built == 1
 
 
+def test_a_slow_plugin_does_not_hold_other_questions():
+    """Only the caller that loads waits for the constructor.
+
+    The lock is there to stop a second instance being built, not to queue
+    questions: a plugin whose constructor does network or disk I/O held every
+    other question for this persona behind it. Those are answered without
+    memory instead, and the memory is used once it is adopted.
+    """
+    release = threading.Event()
+    constructing = threading.Event()
+
+    class _SlowMemory(_Memory):
+        def __init__(self, config=None):
+            constructing.set()
+            release.wait(5)
+            super().__init__(config=config)
+
+    persona = _persona(lambda name: None)
+    with patch("ovos_persona.load_memory_plugin", return_value=_SlowMemory):
+        persona._memory_retry_at = 0.0
+        loader = threading.Thread(target=persona.get_messages,
+                                  args=("first", _session("s1")))
+        loader.start()
+        try:
+            assert constructing.wait(5)
+            started = time.monotonic()
+            persona.get_messages("second", _session("s2"))
+            assert time.monotonic() - started < 1.0, "waited for the constructor"
+            assert persona.memory is None
+        finally:
+            release.set()
+            loader.join(5)
+    assert isinstance(persona.memory, _SlowMemory)
+
+
 def test_no_memory_configured_means_no_lookups():
     """``memory_module: null`` is a choice, not a failure to recover from."""
     calls = []

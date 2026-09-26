@@ -96,9 +96,10 @@ class Persona:
         """Load the configured memory plugin if it has appeared since startup.
 
         Rate-limited: a plugin that is genuinely absent costs one entry-point
-        scan every ``MEMORY_RETRY_SECONDS``, not one per question. Serialized,
-        so concurrent questions never build two instances (the second would
-        replace the first and lose what it recorded). A plugin whose
+        scan per backoff interval, not one per question. Only one caller loads
+        at a time, so concurrent questions never build two instances (the
+        second would replace the first and lose what it recorded); the others
+        do not wait for it and are answered without memory. A plugin whose
         constructor raises is logged and retried later; the question is
         answered without memory rather than failed.
 
@@ -110,7 +111,14 @@ class Persona:
             utterance: the question being answered.
             sess: its session.
         """
-        with self._memory_lock:
+        # Non-blocking: the lock only has to stop a second instance being
+        # built. Waiting on it would hold every other question for this persona
+        # behind a plugin lookup and a constructor that may do network or disk
+        # I/O. A question that finds it taken is answered without memory, as it
+        # would have been a moment earlier, and the next one uses the memory.
+        if not self._memory_lock.acquire(blocking=False):
+            return
+        try:
             if self.memory is not None or not self._memory_plugin:
                 return  # another request finished the job
             now = time.monotonic()
@@ -153,6 +161,8 @@ class Persona:
             self._memory_plugin = None
             self._memory_retry_interval = 0.0
             LOG.info(f"memory plugin '{name}' is now available; memory enabled")
+        finally:
+            self._memory_lock.release()
 
     def get_messages(self, utterance: str, sess: Session) -> List[AgentMessage]:
         """The context for ``utterance``: from memory when there is one.
