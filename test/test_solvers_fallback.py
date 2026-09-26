@@ -21,6 +21,7 @@ from ovos_plugin_manager.templates.agents import (
 )
 from ovos_plugin_manager.templates.solvers import ChatMessageSolver, QuestionSolver
 
+from ovos_persona import Persona
 from ovos_persona.solvers import QuestionSolversService
 
 
@@ -147,6 +148,19 @@ def test_all_raise_returns_none(messages):
     assert svc.chat_completion(messages) is None
 
 
+def test_configured_fallback_downgrades_exhausted_handler_errors(messages):
+    failing = _chat_engine("ignored")
+    failing.continue_chat.side_effect = TimeoutError("backend timed out")
+    svc = _service([("failing", failing)])
+    svc.fallback_available = True
+
+    with patch("ovos_persona.solvers.LOG") as log:
+        assert svc.chat_completion(messages) is None
+
+    log.info.assert_called_once()
+    log.error.assert_not_called()
+
+
 def test_order_is_respected(messages):
     """sort_order drives which handler is consulted first."""
     a = _chat_engine("from-a")
@@ -190,6 +204,50 @@ def test_stream_retrieval_yields_document(messages):
     svc = _service([("retr", eng)])
     assert list(svc.stream_completion(messages)) == ["paris is the capital"]
 
+
+def test_persona_stream_uses_configured_fallback(messages):
+    persona = Persona.__new__(Persona)
+    persona.name = "Learning Lounge"
+    persona.config = {
+        "fallback_response": (
+            "I can help you explore this question: {utterance} "
+            "Start by comparing reliable observations and explanations."
+        ),
+    }
+    persona.solvers = MagicMock()
+    persona.solvers.stream_completion.return_value = iter([])
+    session = MagicMock(lang="en-US", system_unit="metric")
+
+    assert list(persona.stream(messages, session)) == [
+        "I can help you explore this question: what is the capital of france? "
+        "Start by comparing reliable observations and explanations."
+    ]
+
+
+def test_persona_uses_safe_default_fallback(messages):
+    persona = Persona.__new__(Persona)
+    persona.name = "Default Fallback"
+    persona.config = {}
+    persona.solvers = MagicMock()
+    persona.solvers.stream_completion.return_value = iter([])
+    session = MagicMock(lang="en-US", system_unit="metric")
+
+    assert list(persona.stream(messages, session)) == [
+        "I can help you explore this question: what is the capital of france? "
+        "Start by separating what is observed from possible explanations, "
+        "then compare reliable sources."
+    ]
+
+
+def test_persona_can_explicitly_disable_fallback(messages):
+    persona = Persona.__new__(Persona)
+    persona.name = "No Fallback"
+    persona.config = {"fallback_response": False}
+    persona.solvers = MagicMock()
+    persona.solvers.stream_completion.return_value = iter([])
+    session = MagicMock(lang="en-US", system_unit="metric")
+
+    assert list(persona.stream(messages, session)) == []
 
 # --- the last handler error survives the chain ---------------------------------
 
