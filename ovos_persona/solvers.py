@@ -81,6 +81,12 @@ def get_utterance_handler_plugins() -> Dict[str, UtteranceHandlerClass]:
     }
 
 
+#: The sort key for a handler that declares no ``priority``. Deprecated and
+#: opt-in: neither ``ChatEngine`` nor ``QuestionSolver`` declares one, so this
+#: is the value almost every handler sorts by.
+_DEFAULT_PRIORITY = 50
+
+
 class QuestionSolversService:
     def __init__(self, bus=None, config=None, sort_order=None):
         self.config_core = Configuration()
@@ -112,8 +118,20 @@ class QuestionSolversService:
     def modules(self):
         if self.sort_order:
             return [self.loaded_modules[m] for m in self.sort_order]
+        # No sort_order: load order, with a legacy `priority` still honoured.
+        #
+        # `priority` is deprecated and no handler has to declare it. Reading it
+        # as an attribute raised AttributeError for every handler that does
+        # not, which is any ChatEngine, because neither ChatEngine nor
+        # QuestionSolver declares one. A Persona always passes sort_order, so
+        # the caller that met this is a service built directly: a test cell, or
+        # the example in docs/solvers.md.
+        #
+        # `sorted` is stable, so handlers that share a value keep the order
+        # they were loaded in, and a handler that still declares a lower
+        # `priority` still comes first.
         return sorted(self.loaded_modules.values(),
-                      key=lambda k: k.priority)
+                      key=lambda k: getattr(k, "priority", _DEFAULT_PRIORITY))
 
     def shutdown(self):
         for module in self.modules:
