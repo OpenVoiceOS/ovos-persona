@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.9.0a28](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a28) (2026-09-29)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a27...0.9.0a28)
+
+**Merged pull requests:**
+
+- fix: list handlers without reading a deprecated priority attribute [\#231](https://github.com/OpenVoiceOS/ovos-persona/pull/231) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.9.0a27](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a27) (2026-09-25)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a26...0.9.0a27)
@@ -343,10 +351,6 @@
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.25a3...0.6.25a4)
 
-**Merged pull requests:**
-
-- chore\(deps\): update dependency python to 3.14 [\#121](https://github.com/OpenVoiceOS/ovos-persona/pull/121) ([renovate[bot]](https://github.com/apps/renovate))
-
 ## [0.6.25a3](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.25a3) (2025-12-19)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.25a2...0.6.25a3)
@@ -372,7 +376,6 @@
 **Merged pull requests:**
 
 - Release 0.6.25a1 [\#124](https://github.com/OpenVoiceOS/ovos-persona/pull/124) ([github-actions[bot]](https://github.com/apps/github-actions))
-- chore: Configure Renovate [\#120](https://github.com/OpenVoiceOS/ovos-persona/pull/120) ([renovate[bot]](https://github.com/apps/renovate))
 
 ## [0.6.24](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.24) (2025-11-05)
 
