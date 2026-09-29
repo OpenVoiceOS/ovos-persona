@@ -1,5 +1,8 @@
+import importlib
 import json
 import os
+import threading
+import time
 from os.path import join, dirname, expanduser, isdir
 from typing import Optional, Dict, List, Union, Iterable
 
@@ -51,6 +54,13 @@ class Persona:
 
         memory_plugin = self.config.get("memory_module", "ovos-agents-short-term-memory-plugin")
         memory_class = load_memory_plugin(memory_plugin) if memory_plugin else None
+        # A memory plugin missing now may be installed moments later -- a
+        # skill installer finishing after the pipeline loaded. Remember what
+        # was asked for, so a later question can still pick it up.
+        self._memory_plugin = memory_plugin if memory_class is None else None
+        self._memory_retry_at = 0.0
+        self._memory_retry_interval = 0.0
+        self._memory_lock = threading.Lock()
         if memory_class is None:
             if memory_plugin:
                 LOG.warning(f"memory plugin '{memory_plugin}' not available; short-term memory disabled")
@@ -76,7 +86,99 @@ class Persona:
     def __repr__(self):
         return f"Persona({self.name}:{list(self.solvers.loaded_modules.keys())})"
 
+    #: Seconds before the first re-attempt at a memory plugin that was missing.
+    MEMORY_RETRY_SECONDS = 30.0
+
+    #: Ceiling for the backoff below.
+    MEMORY_RETRY_MAX_SECONDS = 1800.0
+
+    def _retry_memory_plugin(self, utterance: str, sess: Session) -> None:
+        """Load the configured memory plugin if it has appeared since startup.
+
+        Rate-limited: a plugin that is genuinely absent costs one entry-point
+        scan per backoff interval, not one per question. Only one caller loads
+        at a time, so concurrent questions never build two instances (the
+        second would replace the first and lose what it recorded); the others
+        do not wait for it and are answered without memory. A plugin whose
+        constructor raises is logged and retried later; the question is
+        answered without memory rather than failed.
+
+        On success the triggering user turn is recorded: ``handle_utterance``
+        skipped it while memory was absent, and ``handle_speak`` will record
+        the answer, which would otherwise sit in history without its question.
+
+        Args:
+            utterance: the question being answered.
+            sess: its session.
+        """
+        # Non-blocking: the lock only has to stop a second instance being
+        # built. Waiting on it would hold every other question for this persona
+        # behind a plugin lookup and a constructor that may do network or disk
+        # I/O. A question that finds it taken is answered without memory, as it
+        # would have been a moment earlier, and the next one uses the memory.
+        if not self._memory_lock.acquire(blocking=False):
+            return
+        try:
+            if self.memory is not None or not self._memory_plugin:
+                return  # another request finished the job
+            now = time.monotonic()
+            if now < self._memory_retry_at:
+                return
+            # Back off rather than scanning at a fixed 30s for the life of the
+            # process. OPM's load_plugin logs "Could not find the plugin ..." at
+            # WARNING on every miss, so a fixed interval wrote two lines a
+            # minute forever on any install whose configured memory plugin is
+            # simply not present -- where a plain startup load says it once.
+            #
+            # A bounded number of attempts would settle the log too, but it
+            # would also give up the thing this method exists for: adopting a
+            # plugin installed an hour after start. Backoff keeps that and
+            # takes the steady-state noise from ~2/min to ~2/hour.
+            previous = self._memory_retry_interval
+            interval = (self.MEMORY_RETRY_SECONDS if not previous
+                        else min(previous * 2, self.MEMORY_RETRY_MAX_SECONDS))
+            self._memory_retry_interval = interval
+            self._memory_retry_at = now + interval
+            # a package installed after startup is invisible to cached finders
+            importlib.invalidate_caches()
+            name = self._memory_plugin
+            memory_class = load_memory_plugin(name)
+            if memory_class is None:
+                return
+            try:
+                memory = memory_class(config=self.config.get(name) or {})
+            except Exception as error:  # a broken plugin must not break the answer
+                LOG.warning(f"memory plugin '{name}' failed to start ({error!r}); retrying later")
+                return
+            try:
+                memory.update_history(
+                    new_messages=[AgentMessage(MessageRole.USER, utterance)],
+                    session_id=sess.session_id,
+                )
+            except Exception as error:
+                LOG.warning(f"memory plugin '{name}' could not record the first turn ({error!r})")
+            self.memory = memory
+            self._memory_plugin = None
+            self._memory_retry_interval = 0.0
+            LOG.info(f"memory plugin '{name}' is now available; memory enabled")
+        finally:
+            self._memory_lock.release()
+
     def get_messages(self, utterance: str, sess: Session) -> List[AgentMessage]:
+        """The context for ``utterance``: from memory when there is one.
+
+        A memory plugin missing at startup is looked for again here (see
+        ``_retry_memory_plugin``).
+
+        Args:
+            utterance: the question being answered.
+            sess: its session.
+
+        Returns:
+            The messages handed to the solvers.
+        """
+        if self.memory is None and self._memory_plugin:
+            self._retry_memory_plugin(utterance, sess)
         if self.memory is None:
             return [AgentMessage(MessageRole.USER, utterance)]
         return self.memory.build_conversation_context(utterance, sess.session_id)
