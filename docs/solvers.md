@@ -35,7 +35,16 @@ service = QuestionSolversService(
 )
 ```
 
-If `sort_order` is empty, plugins are sorted by their `priority` attribute (lower = tried first).
+If `sort_order` is empty, plugins are tried in `priority` order.
+
+A plugin may still declare a `priority` attribute, and a lower value is still
+tried first, but the attribute is deprecated and no plugin has to declare one:
+neither `ChatEngine` nor `QuestionSolver` declares a default. A plugin that
+declares none sorts as 50, and plugins that share a value keep their load
+order.
+
+A `Persona` always passes `sort_order`, built from its `handlers` list, so this
+paragraph describes a service built directly.
 
 `stream_completion` stops after the first handler that yields at least one sentence. It does not try the remaining handlers.
 
