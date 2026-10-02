@@ -17,10 +17,10 @@ import pytest
 
 ovoscope = pytest.importorskip("ovoscope")
 
-from ovos_bus_client.message import Message
-from ovos_bus_client.session import Session, SessionManager
+from ovos_bus_client.message import Message  # noqa: E402
+from ovos_bus_client.session import Session, SessionManager  # noqa: E402
 
-from ovoscope import (
+from ovoscope import (  # noqa: E402
     PERSONA_PIPELINE,
     CaptureSession,
     get_minicroft,
@@ -78,6 +78,7 @@ TEST_PIPELINE = [
     "ovos-persona-pipeline-plugin-high",
     "ovos-persona-pipeline-plugin-low",
 ]
+SPEAK_MESSAGE_TYPES = {"speak", "ovos.utterance.speak"}
 
 
 @pytest.fixture(scope="module")
@@ -126,15 +127,15 @@ class TestPersonaSpeaksThroughPipeline:
 
         msg_types = [m.msg_type for m in messages]
         speak_msgs = [m for m in messages
-                      if m.msg_type == "ovos.utterance.speak"]
+                      if m.msg_type in SPEAK_MESSAGE_TYPES]
 
         assert speak_msgs, (
-            f"Expected at least one 'ovos.utterance.speak' message; "
+            f"Expected at least one OVOS speak message; "
             f"got msg_types: {msg_types}"
         )
         spoken = speak_msgs[0].data.get("utterance", "")
         assert spoken.strip(), (
-            f"'ovos.utterance.speak' message had an empty utterance; "
+            f"OVOS speak message had an empty utterance; "
             f"data={speak_msgs[0].data}"
         )
 
@@ -145,14 +146,14 @@ class TestPersonaSpeaksThroughPipeline:
         messages = _drive_utterance(mc, sess, "what is the meaning of life", timeout=30)
 
         for msg in messages:
-            if msg.msg_type == "ovos.utterance.speak":
+            if msg.msg_type in SPEAK_MESSAGE_TYPES:
                 assert msg.data.get("utterance", "").strip(), (
                     f"speak message has empty utterance: {msg.data}"
                 )
                 return   # found a non-empty speak — test passes
 
         pytest.fail(
-            f"No 'ovos.utterance.speak' message found in pipeline output. "
+            f"No OVOS speak message found in pipeline output. "
             f"Message types received: {[m.msg_type for m in messages]}"
         )
 

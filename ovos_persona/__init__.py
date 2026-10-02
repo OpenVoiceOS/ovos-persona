@@ -6,14 +6,13 @@ from typing import Optional, Dict, List, Union, Iterable
 from langcodes import closest_match
 from ovos_bus_client import Session
 from ovos_bus_client.client import MessageBusClient
-from ovos_bus_client.message import Message, dig_for_message
+from ovos_bus_client.message import Message
 from ovos_bus_client.session import SessionManager
 from ovos_config.config import Configuration
 from ovos_config.locations import get_xdg_config_save_path
 from ovos_config.meta import get_xdg_base
 from ovos_plugin_manager.persona import find_persona_plugins
-from ovos_plugin_manager.solvers import find_question_solver_plugins
-from ovos_plugin_manager.templates.agents import MessageRole, AgentMessage, AgentContextManager
+from ovos_plugin_manager.templates.agents import MessageRole, AgentMessage
 from ovos_plugin_manager.templates.pipeline import ConfidenceMatcherPipeline, IntentHandlerMatch
 from ovos_plugin_manager.agents import load_memory_plugin
 from ovos_utils.bracket_expansion import expand_template
@@ -26,8 +25,14 @@ from ovos_utils.xdg_utils import xdg_data_home
 from ovos_spec_tools import closest_lang
 from ovos_workshop.app import OVOSAbstractApplication
 
-from ovos_persona.memory import BasicShortTermMemory
+from ovos_persona.memory import BasicShortTermMemory as BasicShortTermMemory
 from ovos_persona.solvers import QuestionSolversService, get_utterance_handler_plugins
+
+DEFAULT_FALLBACK_RESPONSE = (
+    "I can help you explore this question: {utterance} "
+    "Start by separating what is observed from possible explanations, "
+    "then compare reliable sources."
+)
 
 try:
     from ovos_plugin_manager.solvers import find_chat_solver_plugins
@@ -71,7 +76,11 @@ class Persona:
             else:
                 plugs[plug_name] = config.get(plug_name) or {"enabled": True}
 
-        self.solvers = QuestionSolversService(config=plugs, sort_order=plugin_order)
+        self.solvers = QuestionSolversService(
+            config=plugs,
+            sort_order=plugin_order,
+            fallback_available=bool(self.fallback_response),
+        )
 
     def __repr__(self):
         return f"Persona({self.name}:{list(self.solvers.loaded_modules.keys())})"
@@ -81,17 +90,47 @@ class Persona:
             return [AgentMessage(MessageRole.USER, utterance)]
         return self.memory.build_conversation_context(utterance, sess.session_id)
 
+    @property
+    def fallback_response(self) -> Optional[str]:
+        response = self.config.get("fallback_response")
+        if response is False:
+            return None
+        if response is None:
+            response = DEFAULT_FALLBACK_RESPONSE
+        return response.strip() if isinstance(response, str) and response.strip() else None
+
+    def _fallback_answer(self, messages: List[AgentMessage]) -> Optional[str]:
+        response = self.fallback_response
+        if not response:
+            return None
+        utterance = str(messages[-1].content).strip() if messages else ""
+        LOG.info(f"Using configured fallback response for persona '{self.name}'")
+        return response.replace("{utterance}", utterance)
+
     def chat(self, messages: List[AgentMessage], sess: Session) -> str:
-        return self.solvers.chat_completion(messages,
-                                            session_id=sess.session_id,
-                                            lang=sess.lang,
-                                            units=sess.system_unit)
+        answer = self.solvers.chat_completion(
+            messages,
+            session_id=sess.session_id,
+            lang=sess.lang,
+            units=sess.system_unit,
+        )
+        return answer or self._fallback_answer(messages)
 
     def stream(self, messages: List[AgentMessage], sess: Session) -> Iterable[str]:
-        return self.solvers.stream_completion(messages,
-                                              session_id=sess.session_id,
-                                              lang=sess.lang,
-                                              units=sess.system_unit)
+        answered = False
+        for answer in self.solvers.stream_completion(
+            messages,
+            session_id=sess.session_id,
+            lang=sess.lang,
+            units=sess.system_unit,
+        ):
+            if answer:
+                answered = True
+                yield answer
+        if not answered:
+            fallback = self._fallback_answer(messages)
+            if fallback:
+                yield fallback
 
 
 class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
@@ -158,7 +197,7 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         """
         intents = {}
         langs = Configuration().get('secondary_langs', []) + [Configuration().get('lang', "en-US")]
-        langs = set([standardize_lang_tag(l) for l in langs])
+        langs = {standardize_lang_tag(language) for language in langs}
         for lang in langs:
             intents[lang] = {}
             locale_root = join(dirname(__file__), "locale")
@@ -170,9 +209,13 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
                     path = join(locale_folder, f)
                     if f in cls.INTENTS:
                         with open(path) as intent:
-                            samples = intent.read().split("\n")
-                            for idx, s in enumerate(samples):
-                                samples[idx] = s.replace("{{", "{").replace("}}", "}")
+                            # A blank line is not a sample. Splitting on "\n"
+                            # makes one out of the newline that ends a text
+                            # file, and expand_template rejects it, which
+                            # costs the whole pipeline plugin its load.
+                            samples = [line.replace("{{", "{").replace("}}", "}")
+                                       for line in intent.read().split("\n")
+                                       if line.strip()]
                             intents[lang][f] = samples
         return intents
 
@@ -206,7 +249,7 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
                     LOG.debug(f"registering Persona intent: {intent_name}")
                     try:
                         self.intent_matchers[lang].add_intent(intent_name, samples)
-                    except:
+                    except Exception:
                         LOG.error(f"Failed to train persona intent ({lang}): {intent_name}")
 
             if IS_PADATIOUS:

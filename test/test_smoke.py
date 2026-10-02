@@ -1,11 +1,10 @@
 """Smoke tests — verify the package imports and ships its pipeline plugin
 entry-point (and no longer the bundled HiveMind agent plugin)."""
 from importlib.metadata import entry_points
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 
 def test_package_imports():
-    import ovos_persona
     from ovos_persona import Persona, PersonaService
     assert Persona is not None
     assert PersonaService is not None
@@ -66,8 +65,6 @@ def test_basic_short_term_memory_merge_consecutive_assistant():
 def test_per_session_active_personas_attribute():
     """PersonaService tracks active personas per session (not a single global)."""
     from ovos_persona import PersonaService
-    from ovos_utils.fakebus import FakeBus
-
     with patch("ovos_persona.PersonaService.load_personas"), \
          patch("ovos_persona.PersonaService.load_intent_files"), \
          patch("ovos_persona.OVOSAbstractApplication.__init__"), \

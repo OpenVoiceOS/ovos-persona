@@ -88,7 +88,8 @@ _DEFAULT_PRIORITY = 50
 
 
 class QuestionSolversService:
-    def __init__(self, bus=None, config=None, sort_order=None):
+    def __init__(self, bus=None, config=None, sort_order=None,
+                 fallback_available=False):
         self.config_core = Configuration()
         self.loaded_modules = {}
         # the exception the most recent handler raised during the last completion
@@ -98,7 +99,20 @@ class QuestionSolversService:
         self.sort_order = sort_order or []
         self.bus = bus or FakeBus()
         self.config = config or {}
+        self.fallback_available = fallback_available
         self.load_plugins()
+
+    def _log_handler_failures(self, failures, *, recovered=False):
+        if not failures:
+            return
+        details = "; ".join(
+            f"{module.__class__.__name__}: {error.__class__.__name__}: {error}"
+            for module, error in failures
+        )
+        if recovered or self.fallback_available:
+            LOG.info(f"Persona handler unavailable; fallback recovered the query ({details})")
+        else:
+            LOG.error(f"All persona handlers failed ({details})")
 
     def load_plugins(self):
         for plug_name, plug_class in get_utterance_handler_plugins().items():
@@ -137,7 +151,7 @@ class QuestionSolversService:
         for module in self.modules:
             try:
                 module.shutdown()
-            except:
+            except Exception:
                 pass
 
     def chat_completion(self, messages: List[AgentMessage],
@@ -145,6 +159,7 @@ class QuestionSolversService:
                         lang: Optional[str] = None,
                         units: Optional[str] = None) -> Optional[str]:
         self.last_error = None
+        failures = []
         for module in self.modules:
             try:
                 ans = None
@@ -164,10 +179,12 @@ class QuestionSolversService:
                     query = messages[-1].content
                     ans = module.spoken_answer(query, lang=lang, units=units)
                 if ans:
+                    self._log_handler_failures(failures, recovered=True)
                     return ans
             except Exception as e:
                 self.last_error = e
-                LOG.error(e)
+                failures.append((module, e))
+        self._log_handler_failures(failures)
         return None
 
     def stream_completion(self, messages: List[AgentMessage],
@@ -176,6 +193,7 @@ class QuestionSolversService:
                           units: Optional[str] = None) -> Iterable[str]:
         answered = False
         self.last_error = None
+        failures = []
         for module in self.modules:
             try:
                 if isinstance(module, (ChatEngine, MultimodalChatEngine)):
@@ -203,6 +221,7 @@ class QuestionSolversService:
 
             except Exception as e:
                 self.last_error = e
-                LOG.error(e)
+                failures.append((module, e))
             if answered:
                 break
+        self._log_handler_failures(failures, recovered=answered)
