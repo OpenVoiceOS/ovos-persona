@@ -140,11 +140,22 @@ class QuestionSolversService:
             except:
                 pass
 
+    @staticmethod
+    def _log_failures(failures, answered: bool):
+        # a handler that fails is only an error when nothing after it answered
+        for module, error in failures:
+            name = module.__class__.__name__
+            if answered:
+                LOG.info(f"Persona handler {name} failed, a later one answered: {error!r}")
+            else:
+                LOG.error(f"Persona handler {name} failed: {error!r}")
+
     def chat_completion(self, messages: List[AgentMessage],
                         session_id: str = "default",
                         lang: Optional[str] = None,
                         units: Optional[str] = None) -> Optional[str]:
         self.last_error = None
+        failures = []
         for module in self.modules:
             try:
                 ans = None
@@ -164,10 +175,12 @@ class QuestionSolversService:
                     query = messages[-1].content
                     ans = module.spoken_answer(query, lang=lang, units=units)
                 if ans:
+                    self._log_failures(failures, answered=True)
                     return ans
             except Exception as e:
                 self.last_error = e
-                LOG.error(e)
+                failures.append((module, e))
+        self._log_failures(failures, answered=False)
         return None
 
     def stream_completion(self, messages: List[AgentMessage],
@@ -176,6 +189,7 @@ class QuestionSolversService:
                           units: Optional[str] = None) -> Iterable[str]:
         answered = False
         self.last_error = None
+        failures = []
         for module in self.modules:
             try:
                 if isinstance(module, (ChatEngine, MultimodalChatEngine)):
@@ -203,6 +217,11 @@ class QuestionSolversService:
 
             except Exception as e:
                 self.last_error = e
-                LOG.error(e)
+                if answered:
+                    LOG.error(f"Persona handler {module.__class__.__name__} failed "
+                              f"mid-answer, the reply was cut short: {e!r}")
+                else:
+                    failures.append((module, e))
             if answered:
                 break
+        self._log_failures(failures, answered)
