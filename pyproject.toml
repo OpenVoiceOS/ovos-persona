@@ -27,6 +27,7 @@ dependencies = [
     "ovos-workshop>=9.8.1a1,<10.0.0",
     "ovos-bus-client>=1.0.0,<3.0.0",
     "ovos-config>=0.0.13,<4.0.0",
+    "ovos-spec-tools>=1.5.0a1,<2.0.0",
 ]
 
 [project.optional-dependencies]
@@ -36,7 +37,6 @@ test = [
     "pytest-timeout",
     "ovoscope<1.0.0",
     "ovos-solver-failure-plugin",
-    "ovos-spec-tools>=1.5.0a1,<2.0.0",
 ]
 
 [project.urls]
