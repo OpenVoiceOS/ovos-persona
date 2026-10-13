@@ -17,14 +17,12 @@ from ovos_plugin_manager.solvers import find_question_solver_plugins
 from ovos_plugin_manager.templates.agents import MessageRole, AgentMessage, AgentContextManager
 from ovos_plugin_manager.templates.pipeline import ConfidenceMatcherPipeline, IntentHandlerMatch
 from ovos_plugin_manager.agents import load_memory_plugin
-from ovos_utils.bracket_expansion import expand_template
 from ovos_utils.fakebus import FakeBus
-from ovos_utils.lang import standardize_lang_tag
 from ovos_utils.list_utils import flatten_list
 from ovos_utils.log import LOG
 from ovos_utils.parse import match_one, MatchStrategy
 from ovos_utils.xdg_utils import xdg_data_home
-from ovos_spec_tools import closest_lang, read_resource_file
+from ovos_spec_tools import closest_lang, expand, read_resource_file, standardize_lang
 from ovos_workshop.app import OVOSAbstractApplication
 
 from ovos_persona.memory import BasicShortTermMemory
@@ -159,7 +157,7 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         """
         intents = {}
         langs = Configuration().get('secondary_langs', []) + [Configuration().get('lang', "en-US")]
-        langs = set([standardize_lang_tag(l) for l in langs])
+        langs = {standardize_lang(l) for l in langs}
         for lang in langs:
             intents[lang] = {}
             locale_root = join(dirname(__file__), "locale")
@@ -191,7 +189,7 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
                                   f"{xdg_data_home()}/{get_xdg_base()}/intent_cache")
         intent_files = self.load_resource_files()
         for lang, intent_data in intent_files.items():
-            lang = standardize_lang_tag(lang)
+            lang = standardize_lang(lang)
             self.intent_matchers[lang] = IntentContainer(cache_dir=f"{intent_cache}/{lang}") \
                 if IS_PADATIOUS else IntentContainer()
             for intent_name in self.INTENTS:
@@ -200,7 +198,7 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
                     #  skip padatious, use keyword matching for these languages for now
                     continue
                 samples = intent_data.get(intent_name) or []
-                samples = flatten_list([expand_template(s) for s in samples])
+                samples = flatten_list([expand(s) for s in samples])
                 if samples:
                     LOG.debug(f"registering Persona intent: {intent_name}")
                     try:
@@ -413,7 +411,7 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
             # nothing to match. Every branch below reads utterances[0].
             return None
         lang = lang or self.lang
-        lang = standardize_lang_tag(lang)
+        lang = standardize_lang(lang)
         sess = SessionManager.get(message)
         active_persona = self.get_active_persona(message, include_default=False)
         if active_persona and self.voc_match(utterances[0], "Release", lang):
@@ -507,7 +505,7 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
             # to match. Every branch below reads utterances[0].
             return None
         lang = lang or self.lang
-        lang = standardize_lang_tag(lang)
+        lang = standardize_lang(lang)
 
         sess = SessionManager.get(message)
         active_persona = self.get_active_persona(message, include_default=False)
