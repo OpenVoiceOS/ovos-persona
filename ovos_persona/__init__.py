@@ -1,6 +1,7 @@
 import json
 import os
 from os.path import join, dirname, expanduser, isdir
+from pathlib import Path
 from typing import Optional, Dict, List, Union, Iterable
 
 from langcodes import closest_match
@@ -23,7 +24,7 @@ from ovos_utils.list_utils import flatten_list
 from ovos_utils.log import LOG
 from ovos_utils.parse import match_one, MatchStrategy
 from ovos_utils.xdg_utils import xdg_data_home
-from ovos_spec_tools import closest_lang
+from ovos_spec_tools import closest_lang, read_resource_file
 from ovos_workshop.app import OVOSAbstractApplication
 
 from ovos_persona.memory import BasicShortTermMemory
@@ -151,7 +152,7 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         """
         Load intent sample texts from this package's locale resources for configured languages.
         
-        For each language in Configuration().get('secondary_langs') plus the primary language (Configuration().get('lang')), locate the package locale directory for that language and collect files whose names match entries in cls.INTENTS. Each matching file is read as newline-separated samples; doubled braces `{{` / `}}` in samples are collapsed to single `{` / `}`. Missing languages or intent files are skipped.
+        For each language in Configuration().get('secondary_langs') plus the primary language (Configuration().get('lang')), locate the package locale directory for that language and collect files whose names match entries in cls.INTENTS. Each matching file is read with `ovos_spec_tools.read_resource_file`, one sample per line, blank and comment lines dropped; doubled braces `{{` / `}}` in samples are collapsed to single `{` / `}`. Missing languages or intent files are skipped.
         
         Returns:
             dict: Mapping from language tag to a dict of intent name -> list of sample strings, i.e. {language: {intent_name: [sample, ...], ...}, ...}.
@@ -169,11 +170,9 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
                 for f in os.listdir(locale_folder):
                     path = join(locale_folder, f)
                     if f in cls.INTENTS:
-                        with open(path) as intent:
-                            samples = intent.read().split("\n")
-                            for idx, s in enumerate(samples):
-                                samples[idx] = s.replace("{{", "{").replace("}}", "}")
-                            intents[lang][f] = samples
+                        samples = read_resource_file(Path(path))
+                        intents[lang][f] = [s.replace("{{", "{").replace("}}", "}")
+                                            for s in samples]
         return intents
 
     def load_intent_files(self):
