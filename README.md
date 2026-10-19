@@ -100,13 +100,14 @@ Example: a persona using a local OpenAI-compatible server. Save this as `~/.conf
 ```json
 {
   "name": "My Local LLM",
-  "handlers": [
-    "ovos-solver-openai-plugin"
+  "solvers": [
+    "ovos-chat-openai-plugin"
   ],
-  "ovos-solver-openai-plugin": {
+  "ovos-chat-openai-plugin": {
     "api_url": "https://llama.smartgic.io/v1",
     "key": "sk-xxxx",
-    "system_prompt": "helpful, creative, clever, and very friendly."
+    "system_prompt": "You are a helpful assistant who gives very short and factual answers in maximum twenty words and you don't use emojis",
+    "model": "llama3.1:8b"
   }
 }
 ```
