@@ -10,11 +10,11 @@ See [docs/index.md](docs/index.md) for the architecture and API reference.
 
 1. Update the core and install the plugin:
    ```bash
-   pip install -U "ovos-core>=0.5.1" ovos-persona
+   pip install --pre -U "ovos-core>=0.5.1" ovos-persona
    ```
 2. Install or update the plugins and skills a persona needs:
    ```bash
-   pip install -U skill-wolfie ovos-skill-wikipedia ovos-skill-wikihow skill-wordnet ovos-openai-plugin
+   pip install --pre -U skill-wolfie ovos-skill-wikipedia ovos-skill-wikihow skill-wordnet ovos-openai-plugin
    ```
 3. Uninstall the ChatGPT fallback skill, since `ovos-persona` replaces it:
    ```bash
@@ -67,7 +67,7 @@ See [docs/index.md](docs/index.md) for the architecture and API reference.
 ## Installation
 
 ```bash
-pip install ovos-persona
+pip install --pre ovos-persona
 ```
 
 ---
@@ -119,14 +119,14 @@ Example: OldSchoolBot, a persona built from non-LLM solvers.
 {
   "name": "OldSchoolBot",
   "handlers": [
-    "ovos-solver-wikipedia-plugin",
-    "ovos-solver-ddg-plugin",
-    "ovos-solver-plugin-wolfram-alpha",
-    "ovos-solver-wordnet-plugin",
+    "ovos-wikipedia-plugin",
+    "ovos-ddg-plugin",
+    "ovos-wolfram-alpha-plugin",
+    "ovos-wordnet-plugin",
     "ovos-solver-rivescript-plugin",
     "ovos-solver-failure-plugin"
   ],
-  "ovos-solver-plugin-wolfram-alpha": {"appid": "Y7353-xxxxxx"}
+  "ovos-wolfram-alpha-plugin": {"appid": "Y7353-xxxxxx"}
 }
 ```
 Behavior:

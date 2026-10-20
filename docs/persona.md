@@ -29,7 +29,7 @@ Raises `ValueError` if the config provides no handler plugins.
 | Key | Description |
 |---|---|
 | `handlers` | Ordered list of utterance handler plugin entry point names (preferred key) |
-| `solvers` | Same as `handlers` (legacy alias) |
+| `solvers` | Alias of `handlers` |
 | `memory_module` | Entry point name of the memory plugin (default: `ovos-agents-short-term-memory-plugin`) |
 | `<plugin_name>` | Per-plugin configuration dict passed to each handler |
 
@@ -37,10 +37,10 @@ Raises `ValueError` if the config provides no handler plugins.
 {
   "name": "MyChatBot",
   "handlers": [
-    "ovos-solver-openai-plugin",
-    "ovos-solver-wolfram-alpha-plugin"
+    "ovos-chat-openai-plugin",
+    "ovos-wolfram-alpha-plugin"
   ],
-  "ovos-solver-openai-plugin": {
+  "ovos-chat-openai-plugin": {
     "api_url": "https://api.openai.com/v1",
     "key": "sk-..."
   },
@@ -59,7 +59,7 @@ Set `memory_module` to `null` or `""` to disable memory entirely:
 ```json
 {
   "name": "Stateless",
-  "handlers": ["ovos-solver-openai-plugin"],
+  "handlers": ["ovos-chat-openai-plugin"],
   "memory_module": null
 }
 ```
@@ -92,7 +92,7 @@ Both methods delegate to `QuestionSolversService`, passing `sess.lang` and `sess
 
 ```python
 repr(persona)
-# → "Persona(MyChatBot:['ovos-solver-openai-plugin', 'ovos-solver-wolfram-alpha-plugin'])"
+# → "Persona(MyChatBot:['ovos-wolfram-alpha-plugin', 'ovos-chat-openai-plugin'])"
 ```
 
 ---
