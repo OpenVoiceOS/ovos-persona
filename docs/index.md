@@ -41,6 +41,7 @@ Pipeline (ConfidenceMatcherPipeline)
 
 | Document | Contents |
 |---|---|
+| [set-up-personas.md](set-up-personas.md) | Set up memory, a persona per device, several personas on one server, and the move from solvers, with measured runs |
 | [persona-service.md](persona-service.md) | `PersonaService`: pipeline integration, intent matching, bus events |
 | [persona.md](persona.md) | `Persona` class: solvers, memory, chat/stream API |
 | [solvers.md](solvers.md) | `QuestionSolversService`: plugin types, ordering, completion |
