@@ -30,8 +30,8 @@ The `sort_order` parameter (set from the persona's `handlers` list) controls the
 
 ```python
 service = QuestionSolversService(
-    config={"ovos-solver-openai-plugin": {"enabled": True}},
-    sort_order=["ovos-solver-wolfram-alpha-plugin", "ovos-solver-openai-plugin"]
+    config={"ovos-chat-openai-plugin": {"enabled": True}},
+    sort_order=["ovos-wolfram-alpha-plugin", "ovos-chat-openai-plugin"]
 )
 ```
 
@@ -99,15 +99,15 @@ Each handler plugin is configured by its entry point name inside the persona con
 
 ```json
 {
-  "handlers": ["ovos-solver-openai-plugin", "ovos-solver-wolfram-alpha-plugin"],
-  "ovos-solver-openai-plugin": {
+  "handlers": ["ovos-chat-openai-plugin", "ovos-wolfram-alpha-plugin"],
+  "ovos-chat-openai-plugin": {
     "enabled": true,
     "api_url": "https://api.openai.com/v1",
     "key": "sk-..."
   },
-  "ovos-solver-wolfram-alpha-plugin": {
+  "ovos-wolfram-alpha-plugin": {
     "enabled": true,
-    "key": "..."
+    "appid": "..."
   }
 }
 ```

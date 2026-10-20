@@ -50,7 +50,7 @@ The filename (without `.json`) is used as the persona name unless the JSON provi
     "model": "gpt-4"
   },
   "ovos-wolfram-alpha-plugin": {
-    "key": "..."
+    "appid": "..."
   }
 }
 ```
@@ -63,7 +63,7 @@ The filename (without `.json`) is used as the persona name unless the JSON provi
 |---|---|---|---|
 | `name` | `str` | No | Display name (overrides filename) |
 | `handlers` | `List[str]` | **Yes** | Ordered list of utterance handler plugin entry point names |
-| `solvers` | `List[str]` | No | Alias for `handlers` (legacy) |
+| `solvers` | `List[str]` | No | Alias for `handlers` |
 | `memory_module` | `str` | No | Memory plugin entry point name. Default: `ovos-agents-short-term-memory-plugin`. Set to `null` to disable. |
 | `<plugin_name>` | `dict` | No | Per-plugin config dict, passed directly to the plugin constructor |
 
