@@ -47,7 +47,8 @@ The filename (without `.json`) is used as the persona name unless the JSON provi
   "ovos-chat-openai-plugin": {
     "api_url": "https://api.openai.com/v1",
     "key": "sk-...",
-    "model": "gpt-4"
+    "model": "gpt-4",
+    "allow_system_prompts": true
   },
   "ovos-wolfram-alpha-plugin": {
     "appid": "..."
@@ -129,12 +130,28 @@ Install any `opm.agents.memory` plugin and reference it by entry point name:
 {
   "name": "LongMemory",
   "handlers": ["ovos-chat-openai-plugin"],
+  "ovos-chat-openai-plugin": {
+    "api_url": "http://localhost:8080/v1",
+    "key": "sk-none",
+    "model": "my-model",
+    "allow_system_prompts": true
+  },
   "memory_module": "ovos-memory-plugin-longterm",
   "ovos-memory-plugin-longterm": {
+    "api_url": "http://localhost:8080/v1",
+    "model": "my-model",
+    "backend": "sqlite",
     "db_path": "~/.local/share/mycroft/persona_memory.db"
   }
 }
 ```
+
+The short-term memory `system_prompt` and the context of memory plugins reach
+the chat model as system messages. `ovos-chat-openai-plugin` removes system
+messages unless `allow_system_prompts` is `true`, and logs
+`dropped 1 system message(s) before the request`. The long-term plugin calls
+the chat server at its own `api_url` to write the summaries. See the
+[Set up personas](set-up-personas.md) for measured runs.
 
 ---
 [← HiveMind](hivemind.md) · [Home](index.md)

@@ -24,8 +24,8 @@ To use a different memory backend, set `memory_module` in the persona config to 
 
 | Key | Default | Description |
 |---|---|---|
-| `max_history` | `5` | Maximum number of messages to retain per session |
-| `system_prompt` | `""` | System prompt prepended to every context |
+| `max_history` | `5` | Maximum number of messages to retain per session. One exchange is two messages. In the bus flow, the question being answered takes one slot, so an odd number keeps whole exchanges. A caller that writes the question and the answer as a pair keeps whole exchanges with an even number |
+| `system_prompt` | `""` | System prompt prepended to every context, as a system message. `ovos-chat-openai-plugin` sends it only with `allow_system_prompts: true` |
 
 ---
 

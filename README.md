@@ -2,7 +2,7 @@
 
 `PersonaPipeline` adds multi-persona management to OpenVoiceOS (OVOS). Personas are configurable virtual assistants: each one assigns its own set of solver plugins to answer queries, so you can customize how OVOS handles a conversation.
 
-See [docs/index.md](docs/index.md) for the architecture and API reference.
+See [docs/set-up-personas.md](docs/set-up-personas.md) for setups with measured runs, and [docs/index.md](docs/index.md) for the architecture and API reference.
 
 ---
 
