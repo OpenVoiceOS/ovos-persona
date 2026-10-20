@@ -10,6 +10,7 @@ no network access or LLM downloads are required (ovos-solver-failure-plugin only
 import json
 import os
 import tempfile
+from types import SimpleNamespace
 
 import pytest
 
@@ -46,12 +47,15 @@ def _release_msg(session: Session, persona_name: str) -> Message:
     return _msg(session, "persona:release", {"persona": persona_name})
 
 
-def _utterance_msg(session: Session, utterance: str) -> Message:
-    return _msg(session, "recognizer_loop:utterance", {"utterances": [utterance]})
+def _query_msg(session: Session, utterance: str) -> Message:
+    return _msg(session, "persona:query", {"utterance": utterance})
 
 
-def _speak_msg(session: Session, utterance: str) -> Message:
-    return _msg(session, "speak", {"utterance": utterance})
+def _answer_with_acknowledgement(persona):
+    """Stand in for the LLM: acknowledge the last message of the context."""
+    persona.solvers = SimpleNamespace(
+        stream_completion=lambda messages, **kw: iter(
+            [f"acknowledged {messages[-1].content.split()[-1]}"]))
 
 
 # ---------------------------------------------------------------------------
@@ -186,13 +190,13 @@ class TestMemoryIsolation:
         sess1 = SessionManager.sessions["s1"]
         sess2 = SessionManager.sessions["s2"]
 
-        # drive the REAL handlers (no summon -> both use the default persona)
-        svc.handle_utterance(_utterance_msg(sess1, "my secret is s1-token"))
-        svc.handle_speak(_speak_msg(sess1, "acknowledged s1-token"))
-        svc.handle_utterance(_utterance_msg(sess2, "my secret is s2-token"))
-        svc.handle_speak(_speak_msg(sess2, "acknowledged s2-token"))
-
         persona = svc.personas[svc.default_persona]
+        _answer_with_acknowledgement(persona)
+
+        # drive the REAL handler (no summon -> both use the default persona)
+        svc.handle_persona_query(_query_msg(sess1, "my secret is s1-token"))
+        svc.handle_persona_query(_query_msg(sess2, "my secret is s2-token"))
+
         assert persona.memory is not None, "default short-term memory must always be available"
 
         h1 = [m.content for m in persona.memory.get_history("s1")]
@@ -213,11 +217,14 @@ class TestMemoryIsolation:
         svc.handle_persona_summon(_summon_msg(sess1, "Alice"))
         svc.handle_persona_summon(_summon_msg(sess2, "Bob"))
 
-        svc.handle_utterance(_utterance_msg(sess1, "this is for Alice"))
-        svc.handle_utterance(_utterance_msg(sess2, "this is for Bob"))
-
         alice = svc.personas["Alice"]
         bob = svc.personas["Bob"]
+        _answer_with_acknowledgement(alice)
+        _answer_with_acknowledgement(bob)
+
+        svc.handle_persona_query(_query_msg(sess1, "this is for Alice"))
+        svc.handle_persona_query(_query_msg(sess2, "this is for Bob"))
+
         assert "this is for Alice" in [m.content for m in alice.memory.get_history("s1")]
         assert "this is for Bob" in [m.content for m in bob.memory.get_history("s2")]
         # Alice never saw s2's turn; Bob never saw s1's

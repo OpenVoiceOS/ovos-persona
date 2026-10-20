@@ -79,6 +79,9 @@ class BasicShortTermMemory(AgentContextManager):
         # for any non-verbal actions that OVOS may take
         while message_history and message_history[-1].role == MessageRole.USER:
             message_history.pop()
+        # a window cut between a question and its answer starts with an answer
+        while message_history and message_history[0].role == MessageRole.ASSISTANT:
+            message_history.pop(0)
 
         if self.system_prompt.strip():
             message_history.insert(0, AgentMessage(role=MessageRole.SYSTEM, content=self.system_prompt.strip()))

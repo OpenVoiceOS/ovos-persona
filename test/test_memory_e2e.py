@@ -144,7 +144,7 @@ def test_multi_session_isolation_interleaved():
 def test_memory_injected_across_turns():
     """`build_conversation_context` is exactly what `Persona.get_messages`
     calls to assemble each turn's prompt. After a turn is persisted (as
-    PersonaService.handle_utterance/handle_speak do), the next turn's context
+    PersonaService.handle_persona_query does), the next turn's context
     must carry the prior exchange — proving memory is injected end-to-end."""
     mem = BasicShortTermMemory(config={"max_history": 20})
     sid = "e2e-mem-session"
@@ -155,10 +155,9 @@ def test_memory_injected_across_turns():
     assert ctx1[-1] == q1
     assert len(ctx1) == 1
 
-    # Persist the turn the way PersonaService persists user + assistant events.
+    # Persist the exchange the way Persona.remember does: one call.
     a1 = "Paris."
-    mem.update_history([_user(q1)], sid)
-    mem.update_history([_assistant(a1)], sid)
+    mem.update_history([_user(q1), _assistant(a1)], sid)
 
     # Turn 2: the assembled context must now carry the prior exchange.
     q2 = "and its population?"

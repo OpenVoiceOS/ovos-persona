@@ -80,6 +80,15 @@ class Persona:
             return [AgentMessage(MessageRole.USER, utterance)]
         return self.memory.build_conversation_context(utterance, sess.session_id)
 
+    def remember(self, utterance: str, answer: str, sess: Session) -> None:
+        """Record one whole exchange in the memory of ``sess.session_id``."""
+        if self.memory is None:
+            return
+        self.memory.update_history(
+            [AgentMessage(MessageRole.USER, utterance),
+             AgentMessage(MessageRole.ASSISTANT, answer)],
+            sess.session_id)
+
     def chat(self, messages: List[AgentMessage], sess: Session) -> str:
         return self.solvers.chat_completion(messages,
                                             session_id=sess.session_id,
@@ -109,8 +118,8 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
             - Initializes base application and confidence-matching pipeline.
             - Loads personas from configured paths and plugin providers.
             - Loads per-language intent matcher files.
-            - Registers message-bus event handlers for persona operations and utterance/speak events.
-            - Initializes runtime state: `message_history` (per-session history), `active_personas` (per-session active persona), `personas`, `intent_matchers`, `blacklist`, and `_active_sessions`.
+            - Registers message-bus event handlers for persona operations.
+            - Initializes runtime state: `active_personas` (per-session active persona), `personas`, `intent_matchers`, `blacklist`, and `_active_sessions`.
         """
         bus = bus or FakeBus()
         config = config or Configuration().get("intents", {}).get("persona", {})
@@ -136,8 +145,6 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
                        handler_info='mycroft.skill.handler', is_intent=True)
         self.add_event('persona:release', self.handle_persona_release,
                        handler_info='mycroft.skill.handler', is_intent=True)
-        self.add_event("speak", self.handle_speak)
-        self.add_event("recognizer_loop:utterance", self.handle_utterance)
         # OVOS-PERSONA-1 §8.5 out-of-band query / §8.7 discovery (bus-level,
         # outside the pipeline; registered directly on the bus, not as intents)
         self.bus.on("ovos.persona.query", self.handle_oob_query)
@@ -614,55 +621,6 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
                                       utterance=utterances[0])
 
     # bus events
-    def handle_utterance(self, message):
-        """
-        Store the incoming user utterance in the per-session message history.
-        
-        Parameters:
-            message: Bus message object containing a `data` dict with an `utterances` list.
-                The first element of that list is taken as the user utterance. The session
-                is resolved via SessionManager.get(message); its `session_id` is used as
-                the key in `self.message_history`.
-        
-        Side effects:
-            Appends a tuple `("user", utterance)` to `self.message_history[session_id]`.
-        """
-        utterances = message.data.get("utterances") or []
-        if not utterances:
-            # a recognizer_loop:utterance carrying an empty list, or none at
-            # all, is nothing to answer: there is no user turn to remember.
-            # Indexing it raised IndexError here and lost the message.
-            LOG.debug("no utterance to record in the session history")
-            return
-        utt = utterances[0]
-        sess = SessionManager.get(message)
-        persona_id = self.get_active_persona(message, include_default=True)
-        persona = self.personas.get(persona_id)
-        if persona and persona.memory:
-            persona.memory.update_history(
-                new_messages=[AgentMessage(MessageRole.USER, utt)],
-                session_id=sess.session_id
-            )
-
-    def handle_speak(self, message):
-        """
-        Store a system/AI utterance in the session's short-term message history.
-        
-        Appends a tuple ("ai", utterance) to self.message_history for the session identified by the incoming bus message if that session already has a history entry. If the session has no existing history entry, no action is taken.
-        
-        Parameters:
-            message: Bus message object containing `data["utterance"]` and session info retrievable via SessionManager.get(message).
-        """
-        utt = message.data.get("utterance")
-        sess = SessionManager.get(message)
-        persona_id = self.get_active_persona(message, include_default=True)
-        persona = self.personas.get(persona_id)
-        if persona and persona.memory:
-            persona.memory.update_history(
-                new_messages=[AgentMessage(MessageRole.ASSISTANT, utt)],
-                session_id=sess.session_id
-            )
-
     def handle_persona_check(self, message: Optional[Message] = None):
         """
         Announces the currently active persona for the message's session.
@@ -714,7 +672,7 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         sess = SessionManager.get(message)
         utt = message.data["utterance"]
 
-        handled = False
+        answers = []
         self._active_sessions[sess.session_id] = True
         for ans in self.query(utt, persona_id, sess):
             if not self._active_sessions[sess.session_id]: # stopped
@@ -722,10 +680,15 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
                 return
             if ans:  # might be None
                 self.speak(ans)
-                handled = True
-        if not handled:
-            self.speak_dialog("persona_error", {"persona": persona_id})
+                answers.append(ans.strip())
         self._active_sessions[sess.session_id] = False
+        if answers:
+            try:
+                self.personas[persona_id].remember(utt, " ".join(answers), sess)
+            except Exception as e:
+                LOG.error(f"Persona {persona_id} could not record the exchange: {e!r}")
+        else:
+            self.speak_dialog("persona_error", {"persona": persona_id})
 
     def handle_persona_summon(self, message):
         """
