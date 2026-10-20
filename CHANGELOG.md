@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.9.0a32](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a32) (2026-10-20)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a31...0.9.0a32)
+
+**Merged pull requests:**
+
+- fix: record each persona exchange whole, keyed by session [\#244](https://github.com/OpenVoiceOS/ovos-persona/pull/244) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.9.0a31](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a31) (2026-10-20)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a30...0.9.0a31)
@@ -280,7 +288,7 @@
 
 ## [0.7.5a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.5a1) (2026-06-05)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a4...0.7.5a1)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a5...0.7.5a1)
 
 **Merged pull requests:**
 
@@ -288,13 +296,13 @@
 - fix\(i18n\): normalize locale folders to canonical BCP-47 [\#158](https://github.com/OpenVoiceOS/ovos-persona/pull/158) ([JarbasAl](https://github.com/JarbasAl))
 - Change 'persona' to 'system\_prompt' in README [\#157](https://github.com/OpenVoiceOS/ovos-persona/pull/157) ([denics](https://github.com/denics))
 
-## [0.7.4a4](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.4a4) (2026-03-29)
-
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a5...0.7.4a4)
-
 ## [0.7.4a5](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.4a5) (2026-03-29)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a3...0.7.4a5)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a4...0.7.4a5)
+
+## [0.7.4a4](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.4a4) (2026-03-29)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a3...0.7.4a4)
 
 ## [0.7.4a3](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.4a3) (2026-03-29)
 
@@ -343,10 +351,6 @@
 ## [0.7.1a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.1a1) (2026-01-23)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.0a1...0.7.1a1)
-
-**Merged pull requests:**
-
-- fix: ensure "ovos.utterance.handled" is emitted [\#135](https://github.com/OpenVoiceOS/ovos-persona/pull/135) ([JarbasAl](https://github.com/JarbasAl))
 
 ## [0.7.0a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.0a1) (2026-01-23)
 
