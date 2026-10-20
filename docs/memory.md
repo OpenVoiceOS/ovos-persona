@@ -24,7 +24,7 @@ To use a different memory backend, set `memory_module` in the persona config to 
 
 | Key | Default | Description |
 |---|---|---|
-| `max_history` | `5` | Maximum number of messages to retain per session. One exchange is two messages. In the bus flow, the question being answered takes one slot, so an odd number keeps whole exchanges. A caller that writes the question and the answer as a pair keeps whole exchanges with an even number |
+| `max_history` | `5` | Maximum number of messages to retain per session. One exchange is two messages. The persona writes the question and the answer as a pair. When the limit cuts an exchange in two, the context drops the answer that has no question |
 | `system_prompt` | `""` | System prompt prepended to every context, as a system message. `ovos-chat-openai-plugin` sends it only with `allow_system_prompts: true` |
 
 ---
@@ -40,7 +40,7 @@ Each `AgentMessage` has a `role` (`USER`, `ASSISTANT`, or `SYSTEM`) and `content
 Appends messages to the session history with two normalisation rules:
 
 - **Hanging user messages**: if the last stored message is `USER` and the next message is also `USER`, the last one is dropped (e.g. an utterance that produced no response).
-- **Consecutive assistant messages**: if both the last stored and the next message are `ASSISTANT`, they are merged into a single message with a newline separator (e.g. multiple `speak` events from one response).
+- **Consecutive assistant messages**: if both the last stored and the next message are `ASSISTANT`, they are merged into a single message with a newline separator (e.g. a caller that records an answer in several calls).
 
 After appending, history is truncated to the most recent `max_history` messages.
 

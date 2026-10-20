@@ -97,12 +97,13 @@ Per-session streaming state is tracked in `self._active_sessions`.
 
 ## Memory Integration
 
-`PersonaService` listens to bus events to maintain conversation history:
+`handle_persona_query` records the exchange it handled. When the answer is complete, it calls `Persona.remember(utterance, answer, sess)` on the persona that answered. This is one `update_history` call with the user message and the assistant message, keyed by the `session_id` of the query message. The answer is the spoken sentences joined with a space.
 
-- `recognizer_loop:utterance` → appends `MessageRole.USER` to the active persona's memory
-- `speak` → appends `MessageRole.ASSISTANT` to the active persona's memory
+The service does not listen to `recognizer_loop:utterance` or `speak`. The memory of a persona holds only the exchanges that persona answered. A reply from a skill, or a turn with another persona, never enters it. An answer that the user stopped, and a query that produced no answer, are not recorded. `PersonaService.query()` and the `ovos.persona.query` out-of-band request do not record.
 
-This keeps history consistent even when responses span multiple `speak` events.
+A memory plugin receives a whole exchange per call. It does not need to buffer.
+
+The handler records the exchange before it returns, so `ovos.utterance.handled` waits for the memory write. A text client that sends its next turn after that signal always finds the last exchange in memory. A backend that extracts facts with a language model adds its extraction time to the wait.
 
 ---
 
@@ -130,8 +131,6 @@ Templates use bracket expansion (`[word1|word2]`). Training uses padatious when 
 | `persona:list` | `handle_persona_list` | Speak all persona names |
 | `persona:check` | `handle_persona_check` | Speak currently active persona |
 | `persona:release` | `handle_persona_release` | Clear active persona |
-| `recognizer_loop:utterance` | `handle_utterance` | Record user message in memory |
-| `speak` | `handle_speak` | Record assistant message in memory |
 
 ## Bus Events Emitted
 

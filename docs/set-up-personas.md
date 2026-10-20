@@ -40,17 +40,18 @@ device has its own session, so each device has its own history.
         "system_prompt": "You are a home assistant. Answer in at most fifteen words."
       },
       "memory_module": "ovos-agents-short-term-memory-plugin",
-      "ovos-agents-short-term-memory-plugin": {"max_history": 7}
+      "ovos-agents-short-term-memory-plugin": {"max_history": 6}
     }
     ```
 
-    `max_history` counts messages, not exchanges. The question that the persona
-    is answering takes one slot of the window. A value of `7` gives the model
-    the last three exchanges and the new question. An even value, such as `6`,
-    starts the history with an answer that has no question.
+    `max_history` counts messages, not exchanges. The persona stores each
+    exchange as a question and an answer. A value of `6` gives the model the
+    last three exchanges and the new question. When the limit cuts an exchange
+    in two, the persona drops the answer that has no question.
 
-2. Run this script. It sends the same two bus events that `ovos-core` sends
-   around each answer. The persona records the history from these events:
+2. Run this script. It sends the `persona:query` message that `ovos-core`
+   sends when the persona pipeline matches an utterance. The persona records
+   each exchange when it has finished the answer:
 
     ```python
     from ovos_bus_client.message import Message
@@ -60,17 +61,16 @@ device has its own session, so each device has its own history.
 
     bus = FakeBus()
     svc = PersonaService(bus=bus, config={"personas_path": "personas"})
+    spoken = []
+    bus.on("speak", lambda msg: spoken.append(msg.data["utterance"]))
 
 
     def say(text, device):
         sess = Session(device)
         sess.persona_id = "helper"
-        ctx = {"session": sess.serialize()}
-        # ovos-core emits these two events around every answer; the persona records both
-        bus.emit(Message("recognizer_loop:utterance", {"utterances": [text]}, ctx))
-        answer = " ".join(svc.query(text, "helper", sess))
-        bus.emit(Message("speak", {"utterance": answer}, ctx))
-        print(f"{device}> {text}\n  {answer}")
+        spoken.clear()
+        bus.emit(Message("persona:query", {"utterance": text}, {"session": sess.serialize()}))
+        print(f"{device}> {text}\n  {' '.join(spoken)}")
 
 
     say("My name is Rita. I parked on level 3.", "living-room")
@@ -85,7 +85,7 @@ Output:
 
 ```
 living-room> My name is Rita. I parked on level 3.
-  Hello Rita, your car is parked on Level 3, parking attendant will assist you soon.
+  Hello Rita, your car is parked on Level 3, parking spot 12 if needed.
 living-room> Which level did I park on? Answer with the number only.
   3
 garage> Where did I park? If you do not know, say UNKNOWN.
@@ -95,7 +95,7 @@ living-room> Tell me one fact about the weather.
 living-room> Tell me one fact about music.
   The Beatles released their iconic album "Sgt. Pepper's Lonely Hearts Club Band" in 1967.
 living-room> Tell me one fact about cooking.
-  Boiling water is a crucial step for cooking pasta, typically at 212°F (100°C).
+  Boiling water is a great way to cook eggs, with perfect results every time.
 living-room> Where did I park? If you do not know, say UNKNOWN.
   UNKNOWN
 ```
@@ -280,14 +280,12 @@ A persona with one unknown or uninstalled name does not load. The log says
 
 ## Known limits
 
-- `max_history` counts messages, and the question being answered takes one
-  slot. In the bus flow, an odd value, such as the default `5`, gives the model
-  whole exchanges. An even value starts the history with an answer. A server
-  that writes each question and answer as a pair, such as `ovos-persona-server`,
-  keeps whole exchanges with an even value.
+- `max_history` counts messages. The persona stores each exchange as two
+  messages. When the limit cuts an exchange in two, the persona drops the
+  answer that has no question.
 - The default short-term memory is in RAM. A restart clears it.
-- `PersonaService.query()` does not record history. The `recognizer_loop:utterance`
-  and `speak` bus events record it.
+- `PersonaService.query()` does not record history. The `persona:query` handler
+  records each exchange it answers, as one user message and one assistant message.
 - `ovos-chat-openai-plugin` removes system messages unless
   `allow_system_prompts` is `true`. Memory plugins that add context as a
   system message have no effect without it.
