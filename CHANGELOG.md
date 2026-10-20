@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.9.0a31](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a31) (2026-10-20)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a30...0.9.0a31)
+
+**Merged pull requests:**
+
+- fix\(deps\): accept ovos-plugin-manager 3 [\#238](https://github.com/OpenVoiceOS/ovos-persona/pull/238) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.9.0a30](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a30) (2026-10-20)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a29...0.9.0a30)
@@ -355,11 +363,6 @@
 ## [0.6.25a6](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.25a6) (2026-01-19)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.25a4...0.6.25a6)
-
-**Merged pull requests:**
-
-- pt/translate [\#134](https://github.com/OpenVoiceOS/ovos-persona/pull/134) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
-- es-es/translate [\#133](https://github.com/OpenVoiceOS/ovos-persona/pull/133) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
 
 ## [0.6.25a4](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.25a4) (2025-12-19)
 
