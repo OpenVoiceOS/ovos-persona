@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.9.0a29](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a29) (2026-10-20)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a28...0.9.0a29)
+
+**Merged pull requests:**
+
+- docs: describe the latest alpha only [\#239](https://github.com/OpenVoiceOS/ovos-persona/pull/239) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+- Modify LLM persona example config  in README [\#237](https://github.com/OpenVoiceOS/ovos-persona/pull/237) ([timonvanhasselt](https://github.com/timonvanhasselt))
+- Log a failing persona handler at error only when nothing answered [\#235](https://github.com/OpenVoiceOS/ovos-persona/pull/235) ([goldyfruit](https://github.com/goldyfruit))
+- Use ovos-spec-tools instead of the deprecated ovos-utils helpers [\#234](https://github.com/OpenVoiceOS/ovos-persona/pull/234) ([goldyfruit](https://github.com/goldyfruit))
+
 ## [0.9.0a28](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a28) (2026-09-29)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a27...0.9.0a28)
@@ -253,7 +264,7 @@
 
 ## [0.7.5a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.5a1) (2026-06-05)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a5...0.7.5a1)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a3...0.7.5a1)
 
 **Merged pull requests:**
 
@@ -261,17 +272,17 @@
 - fix\(i18n\): normalize locale folders to canonical BCP-47 [\#158](https://github.com/OpenVoiceOS/ovos-persona/pull/158) ([JarbasAl](https://github.com/JarbasAl))
 - Change 'persona' to 'system\_prompt' in README [\#157](https://github.com/OpenVoiceOS/ovos-persona/pull/157) ([denics](https://github.com/denics))
 
-## [0.7.4a5](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.4a5) (2026-03-29)
+## [0.7.4a3](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.4a3) (2026-03-29)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a4...0.7.4a5)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a4...0.7.4a3)
 
 ## [0.7.4a4](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.4a4) (2026-03-29)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a3...0.7.4a4)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a5...0.7.4a4)
 
-## [0.7.4a3](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.4a3) (2026-03-29)
+## [0.7.4a5](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.4a5) (2026-03-29)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a2...0.7.4a3)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.7.4a2...0.7.4a5)
 
 ## [0.7.4a2](https://github.com/OpenVoiceOS/ovos-persona/tree/0.7.4a2) (2026-03-29)
 
@@ -355,27 +366,13 @@
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.25a2...0.6.25a3)
 
-**Merged pull requests:**
-
-- Release 0.6.25a3 [\#128](https://github.com/OpenVoiceOS/ovos-persona/pull/128) ([github-actions[bot]](https://github.com/apps/github-actions))
-- chore\(deps\): update actions/checkout action to v6 [\#125](https://github.com/OpenVoiceOS/ovos-persona/pull/125) ([renovate[bot]](https://github.com/apps/renovate))
-
 ## [0.6.25a2](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.25a2) (2025-12-19)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.25a1...0.6.25a2)
 
-**Merged pull requests:**
-
-- Release 0.6.25a2 [\#127](https://github.com/OpenVoiceOS/ovos-persona/pull/127) ([github-actions[bot]](https://github.com/apps/github-actions))
-- chore\(deps\): update actions/setup-python action to v6 [\#126](https://github.com/OpenVoiceOS/ovos-persona/pull/126) ([renovate[bot]](https://github.com/apps/renovate))
-
 ## [0.6.25a1](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.25a1) (2025-12-18)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.6.24...0.6.25a1)
-
-**Merged pull requests:**
-
-- Release 0.6.25a1 [\#124](https://github.com/OpenVoiceOS/ovos-persona/pull/124) ([github-actions[bot]](https://github.com/apps/github-actions))
 
 ## [0.6.24](https://github.com/OpenVoiceOS/ovos-persona/tree/0.6.24) (2025-11-05)
 
