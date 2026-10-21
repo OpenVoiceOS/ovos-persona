@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.9.0a35](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a35) (2026-10-21)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a34...0.9.0a35)
+
+**Merged pull requests:**
+
+- fix: an exact persona name wins over a substring or shared-word match [\#246](https://github.com/OpenVoiceOS/ovos-persona/pull/246) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.9.0a34](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a34) (2026-10-21)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a33...0.9.0a34)
