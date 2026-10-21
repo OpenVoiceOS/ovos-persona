@@ -472,7 +472,7 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
                     persona = self.match_persona(persona)
                     if persona: # name in intent must match a registered persona
                         return IntentHandlerMatch(match_type='persona:query',
-                                                  match_data={"utterance": query,
+                                                  match_data={"query": query,
                                                               "lang": lang,
                                                               "persona": persona},
                                                   skill_id="persona.openvoiceos",
@@ -573,10 +573,8 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
                 elif name == "ask.intent" and persona:  # if persona name not in match, its a misclassification
                     persona = self.match_persona(persona)
                     if persona and query:  # else its a misclassification
-                        utterance = match["entities"].pop("query")
                         return IntentHandlerMatch(match_type='persona:query',
-                                                  match_data={"utterance": utterance,
-                                                              "lang": lang,
+                                                  match_data={"lang": lang,
                                                               "persona": persona},
                                                   skill_id="persona.openvoiceos",
                                                   utterance=utterances[0])
@@ -656,7 +654,8 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         
         Parameters:
             message: MessageBus message object containing at minimum:
-                - data["utterance"]: the user's utterance text to send to the persona.
+                - data["query"]: the question to send to the persona, when the user named the persona in the utterance.
+                - data["utterance"]: the user's utterance text, sent to the persona when no query is present.
                 - optional data["lang"]: language code to use for the query; falls back to the session language.
         """
         if not self.personas:
@@ -670,7 +669,7 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
             return
 
         sess = SessionManager.get(message)
-        utt = message.data["utterance"]
+        utt = message.data.get("query") or message.data["utterance"]
 
         answers = []
         self._active_sessions[sess.session_id] = True

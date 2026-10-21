@@ -126,7 +126,7 @@ Templates use bracket expansion (`[word1|word2]`). Training uses padatious when 
 
 | Event | Handler | Description |
 |---|---|---|
-| `persona:query` | `handle_persona_query` | Route utterance to named persona and speak result |
+| `persona:query` | `handle_persona_query` | Send the question to the persona and speak the result. The question is `data.query` when the user named the persona, else `data.utterance` |
 | `persona:summon` | `handle_persona_summon` | Set active persona |
 | `persona:list` | `handle_persona_list` | Speak all persona names |
 | `persona:check` | `handle_persona_check` | Speak currently active persona |
