@@ -1,0 +1,6 @@
+(pregunta|pregúntalle|consulta|solicita) (a|á|ao) {persona} (a súa|pola súa) (perspectiva|opinión|reflexión|interpretación|postura|visión) (sobre|de|acerca de) {utterance}
+(pregunta|pregúntalle|consulta|solicita) (a|á|ao) {persona} (sobre|acerca de|respecto a) {utterance}
+(pregunta|pregúntalle|consulta|solicita) (a|á|ao) {persona} (que|o que) (ten que dicir|pensa|di|sabe) sobre {utterance}
+pregúntalle (a|á|ao) {persona} (que comparta|) a súa (perspectiva|opinión) (sobre|de|acerca de) {utterance}
+pide (a|á|ao) {persona} (o seu|a súa) (coñecemento|análise|comentario|impresión|percepción|reacción|punto de vista) (sobre|de|acerca de) {utterance}
+que (pensa|di) (o|a|) {persona} sobre {utterance}

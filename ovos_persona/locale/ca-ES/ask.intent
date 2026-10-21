@@ -1,0 +1,6 @@
+(pregunta|demana|consulta) (a|al|a la) {persona} (la seva|pel seu|per la seva) (perspectiva|opinió|anàlisi|impressió|interpretació|punt de vista) (sobre|de) {utterance}
+(pregunta|demana|consulta|interroga) (a|al|a la) {persona} (sobre|respecte a|referent a) {utterance}
+(pregunta|demana|consulta) (a|al|a la) {persona} què (diu|pensa|ha de dir) sobre {utterance}
+pregunta (a|al|a la) {persona} (de compartir|) la seva (perspectiva|opinió) (sobre|de) {utterance}
+què (pensa|diu) (el|la|) {persona} sobre {utterance}
+(obté|cerca|busca) (la|una) (perspectiva|opinió|interpretació) de {persona} (sobre|de) {utterance}

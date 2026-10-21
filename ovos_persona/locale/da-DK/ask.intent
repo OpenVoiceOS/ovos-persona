@@ -1,0 +1,8 @@
+(forespørgsel|undersøgelse|anmodning|søg|spørgsmål|spørg|forespørg|forhør|stil et spørgsmål til) {persona} (vedrørende|om) {utterance}
+(forespørgsel|undersøgelse|anmodning|søg|spørgsmål|spørg|spørg|få) {persona} (perspektiv|mening|tanker|synspunkt|fortolkning|feedback|standpunkt|syn) (af|på) {utterance}
+(forespørg|sonder|anmod|søg|spørgsmål|spørg|forespørg|forhør) {persona} for deres syn på {utterance}
+bede {persona} om (deres|) (indsigt|analyse|kommentar|indtryk|fortolkning|opfattelse|reaktion|standpunkt|tag|tanker|forståelse|synspunkt) (på|af) {utterance}
+hvad siger {persona} (tænk|siger) om {utterance}
+spørg {persona} (om|at dele|) deres (perspektiv|opinion) (om|af|på) {utterance}
+spørg {persona} om {utterance}
+spørg {persona}, hvad de (har at sige|mener) om {utterance}
