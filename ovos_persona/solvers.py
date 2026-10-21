@@ -165,9 +165,10 @@ class QuestionSolversService:
                                                     lang=lang, units=units)
                     ans = response.content
                 elif isinstance(module, (RetrievalEngine, DocumentIndexerEngine, QAIndexerEngine)):
-                    document, conf = module.query(messages[-1].content,
-                                                  lang=lang, k=1)[0]
-                    ans = document
+                    results = module.query(messages[-1].content,
+                                           lang=lang, k=1)
+                    if results:
+                        ans = results[0][0]
                 elif isinstance(module, ChatMessageSolver):
                     ans = module.get_chat_completion(messages=messages, lang=lang, units=units)
                 elif isinstance(module, QuestionSolver):
@@ -200,10 +201,11 @@ class QuestionSolversService:
                         answered = True
                         yield response
                 elif isinstance(module, (RetrievalEngine, DocumentIndexerEngine, QAIndexerEngine)):
-                    document, conf = module.query(messages[-1].content,
-                                                  lang=lang, k=1)[0]
-                    answered = True
-                    yield document
+                    results = module.query(messages[-1].content,
+                                           lang=lang, k=1)
+                    if results and results[0][0]:
+                        answered = True
+                        yield results[0][0]
                 elif isinstance(module, ChatMessageSolver):
                     for ans in module.stream_chat_utterances(messages=messages, lang=lang, units=units):
                         answered = True

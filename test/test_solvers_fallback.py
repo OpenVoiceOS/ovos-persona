@@ -224,3 +224,61 @@ def test_last_error_is_kept_on_stream():
     svc = _service([("a", m)])
     assert list(svc.stream_completion([AgentMessage(MessageRole.USER, "hi")])) == []
     assert svc.last_error is exc
+
+
+# --- a retriever with no hit is a non-answer, not a failure -------------------------
+
+def _empty_retrieval_engine():
+    m = MagicMock(spec=RetrievalEngine)
+    m.query.return_value = []
+    return m
+
+
+@patch("ovos_persona.solvers.LOG")
+def test_empty_retrieval_falls_through_to_next_solver(log, messages):
+    svc = _service([("retr", _empty_retrieval_engine()), ("chat", _chat_engine("paris"))])
+    assert svc.chat_completion(messages) == "paris"
+    assert svc.last_error is None
+    log.info.assert_not_called()
+    log.error.assert_not_called()
+
+
+@patch("ovos_persona.solvers.LOG")
+def test_empty_retrieval_alone_is_no_answer_without_error(log, messages):
+    svc = _service([("retr", _empty_retrieval_engine())])
+    assert svc.chat_completion(messages) is None
+    assert svc.last_error is None
+    log.error.assert_not_called()
+
+
+@patch("ovos_persona.solvers.LOG")
+def test_empty_retrieval_falls_through_on_stream(log, messages):
+    chat = MagicMock(spec=ChatEngine)
+    chat.stream_sentences.return_value = iter(["paris", "is the capital"])
+    svc = _service([("retr", _empty_retrieval_engine()), ("chat", chat)])
+    assert list(svc.stream_completion(messages)) == ["paris", "is the capital"]
+    assert svc.last_error is None
+    log.info.assert_not_called()
+    log.error.assert_not_called()
+
+
+@patch("ovos_persona.solvers.LOG")
+def test_blank_retrieval_document_falls_through_on_stream(log, messages):
+    blank = MagicMock(spec=RetrievalEngine)
+    blank.query.return_value = [("", 0.0)]
+    chat = MagicMock(spec=ChatEngine)
+    chat.stream_sentences.return_value = iter(["paris"])
+    svc = _service([("retr", blank), ("chat", chat)])
+    assert list(svc.stream_completion(messages)) == ["paris"]
+    assert svc.last_error is None
+
+
+def test_index_error_raised_by_a_plugin_is_still_recorded(messages):
+    exc = IndexError("plugin bug")
+    broken = MagicMock(spec=RetrievalEngine)
+    broken.query.side_effect = exc
+    svc = _service([("retr", broken)])
+    assert svc.chat_completion(messages) is None
+    assert svc.last_error is exc
+    assert list(svc.stream_completion(messages)) == []
+    assert svc.last_error is exc
