@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.9.0a33](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a33) (2026-10-21)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a32...0.9.0a33)
+
+**Merged pull requests:**
+
+- fix: treat an empty retrieval result as no answer in the solver chain [\#247](https://github.com/OpenVoiceOS/ovos-persona/pull/247) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.9.0a32](https://github.com/OpenVoiceOS/ovos-persona/tree/0.9.0a32) (2026-10-20)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-persona/compare/0.9.0a31...0.9.0a32)
