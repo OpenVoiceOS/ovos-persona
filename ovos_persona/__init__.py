@@ -20,7 +20,7 @@ from ovos_plugin_manager.agents import load_memory_plugin
 from ovos_utils.fakebus import FakeBus
 from ovos_utils.list_utils import flatten_list
 from ovos_utils.log import LOG
-from ovos_utils.parse import match_one, MatchStrategy
+from ovos_utils.parse import match_all, MatchStrategy
 from ovos_utils.xdg_utils import xdg_data_home
 from ovos_spec_tools import closest_lang, expand, read_resource_file, standardize_lang
 from ovos_workshop.app import OVOSAbstractApplication
@@ -299,7 +299,8 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
 
     def match_persona(self, persona: str):
         """
-        Finds the registered persona name that best matches the given input using case-insensitive partial token-set fuzzy matching.
+        Finds the registered persona name that best matches the given input using an exact case-insensitive match first, then partial token-set fuzzy
+        matching with whole-name token-set scoring as the tie-break.
         
         Parameters:
             persona (str): Candidate persona name or phrase to match against registered personas.
@@ -309,10 +310,22 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
         """
         if not persona:
             return None
+        if persona in self.personas:
+            return persona
+        names = list(self.personas)
+        exact = [n for n in names if n.casefold() == persona.strip().casefold()]
+        if exact:
+            return exact[0]
         # TODO - make MatchStrategy configurable
-        match, score = match_one(persona, list(self.personas),
-                                 strategy=MatchStrategy.PARTIAL_TOKEN_SET_RATIO, 
-                                 ignore_case=True)
+        partial = dict(match_all(persona, names,
+                                 strategy=MatchStrategy.PARTIAL_TOKEN_SET_RATIO,
+                                 ignore_case=True))
+        whole = dict(match_all(persona, names,
+                               strategy=MatchStrategy.TOKEN_SET_RATIO,
+                               ignore_case=True))
+        # personas sharing a word tie on the partial score: the whole-name score breaks the tie
+        match = max(names, key=lambda n: (partial[n], whole[n]), default=None)
+        score = partial.get(match, 0)
         LOG.debug(f"Closest persona: {match} - {score}")
         return match if score >= 0.7 else None
 
@@ -530,29 +543,26 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
             match = {}
             query = utterances[0].lower()
 
-            # adapt-like matching for querying a persona
-            if any(name.lower() in query for name in self.personas):
+            # adapt-like matching for querying a persona, the longest name wins
+            # so that "oldremotestream" is not read as "remotestream"
+            mentioned = max((n for n in self.personas if n.lower() in query),
+                            key=len, default=None)
+            if mentioned:
                 if (self.voc_match(query, "ask", lang=closest_lang) and
                         self.voc_match(query, "opinion", lang=closest_lang)):
-                    for name in self.personas:
-                        if name.lower() in query:
-                            query = self.remove_voc(query, "ask", lang=closest_lang)
-                            query = self.remove_voc(query, "opinion", lang=closest_lang)
-                            query = self.remove_voc(query, "persona", lang=closest_lang)
-                            match = {"name": "ask.intent",
-                                     "conf": 0.85,
-                                     "entities": {"persona": name, "query": query}}
-                            break
+                    query = self.remove_voc(query, "ask", lang=closest_lang)
+                    query = self.remove_voc(query, "opinion", lang=closest_lang)
+                    query = self.remove_voc(query, "persona", lang=closest_lang)
+                    match = {"name": "ask.intent",
+                             "conf": 0.85,
+                             "entities": {"persona": mentioned, "query": query}}
 
                 elif self.voc_match(query, "summon", lang=closest_lang):
-                    for name in self.personas:
-                        if name.lower() in query:
-                            query = self.remove_voc(query, "summon", lang=closest_lang)
-                            query = self.remove_voc(query, "persona", lang=closest_lang)
-                            match = {"name": "summon.intent",
-                                     "conf": 0.85,
-                                     "entities": {"persona": name, "query": query}}
-                            break
+                    query = self.remove_voc(query, "summon", lang=closest_lang)
+                    query = self.remove_voc(query, "persona", lang=closest_lang)
+                    match = {"name": "summon.intent",
+                             "conf": 0.85,
+                             "entities": {"persona": mentioned, "query": query}}
 
             name =  match.get("name")
 
