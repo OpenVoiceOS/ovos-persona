@@ -78,7 +78,7 @@ Routes directly to the active persona (or default persona if `handle_fallback: t
 svc.get_persona("ChatGPT")   # → closest registered persona name
 ```
 
-Uses `MatchStrategy.PARTIAL_TOKEN_SET_RATIO` with a minimum score of `0.7`. Returns `None` if no persona is close enough. Falls back to the active persona or default persona when `persona` is empty.
+An exact persona name wins first, then a name that differs only in letter case. Otherwise the match uses `MatchStrategy.PARTIAL_TOKEN_SET_RATIO` with a minimum score of `0.7`. When two names share the best score, the one with the higher `MatchStrategy.TOKEN_SET_RATIO` score wins. Returns `None` if no persona is close enough. Falls back to the active persona or default persona when `persona` is empty.
 
 ---
 
