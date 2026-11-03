@@ -54,6 +54,10 @@ Raises `ValueError` if the config provides no handler plugins.
 
 If `memory_module` is set (and not empty), the plugin is loaded via `load_memory_plugin()`. The default is `BasicShortTermMemory` from this package.
 
+If the plugin is not installed, the persona answers without memory and looks for the plugin again on each question, logging a warning each time. Installing it takes effect on the next question, with no restart. If a plugin found this way raises in its constructor, the question is still answered without memory and the next question tries again.
+
+This applies only to a plugin that was missing at startup. A constructor that raises while the persona is being created stops that persona from loading: `PersonaService.load_personas` logs the error and skips it, and `register_persona` raises it.
+
 Set `memory_module` to `null` or `""` to disable memory entirely:
 
 ```json

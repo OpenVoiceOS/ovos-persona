@@ -1,5 +1,7 @@
+import importlib
 import json
 import os
+import threading
 from os.path import join, dirname, expanduser, isdir
 from pathlib import Path
 from typing import Optional, Dict, List, Union, Iterable
@@ -50,6 +52,10 @@ class Persona:
 
         memory_plugin = self.config.get("memory_module", "ovos-agents-short-term-memory-plugin")
         memory_class = load_memory_plugin(memory_plugin) if memory_plugin else None
+        # Installing a missing plugin should not need a restart. Remember what
+        # was asked for, so the next question can pick it up.
+        self._memory_plugin = memory_plugin if memory_class is None else None
+        self._memory_lock = threading.Lock()
         if memory_class is None:
             if memory_plugin:
                 LOG.warning(f"memory plugin '{memory_plugin}' not available; short-term memory disabled")
@@ -75,7 +81,67 @@ class Persona:
     def __repr__(self):
         return f"Persona({self.name}:{list(self.solvers.loaded_modules.keys())})"
 
+    def _load_missing_memory_plugin(self) -> None:
+        """Look again for a memory plugin that was missing at startup.
+
+        Runs for each question until the plugin is found, so installing it takes
+        effect on the next question without a restart. Until then every question
+        pays for one entry-point scan and logs one warning, which keeps the log
+        pointing at the problem while someone is using the persona.
+
+        Only one caller loads at a time, so concurrent questions never build two
+        instances (the second would replace the first and lose what it
+        recorded); the others do not wait for it and are answered without
+        memory. A plugin whose constructor raises is logged and tried again on
+        the next question; the question is answered without memory rather than
+        failed.
+
+        Adoption writes nothing itself: ``remember`` records the whole exchange,
+        question and answer together, once the answer completes, so the question
+        that triggered the adoption is recorded by that call and not twice.
+        """
+        # Non-blocking: the lock only has to stop a second instance being
+        # built. Waiting on it would hold every other question for this persona
+        # behind a plugin lookup and a constructor that may do network or disk
+        # I/O. A question that finds it taken is answered without memory, as it
+        # would have been a moment earlier, and the next one uses the memory.
+        if not self._memory_lock.acquire(blocking=False):
+            return
+        try:
+            if self.memory is not None or not self._memory_plugin:
+                return  # another request finished the job
+            # a package installed after startup is invisible to cached finders
+            importlib.invalidate_caches()
+            name = self._memory_plugin
+            memory_class = load_memory_plugin(name)
+            if memory_class is None:
+                return
+            try:
+                memory = memory_class(config=self.config.get(name) or {})
+            except Exception as error:  # a broken plugin must not break the answer
+                LOG.warning(f"memory plugin '{name}' failed to start ({error!r}); memory stays disabled")
+                return
+            self.memory = memory
+            self._memory_plugin = None
+            LOG.info(f"memory plugin '{name}' is now available; memory enabled")
+        finally:
+            self._memory_lock.release()
+
     def get_messages(self, utterance: str, sess: Session) -> List[AgentMessage]:
+        """The context for ``utterance``: from memory when there is one.
+
+        A memory plugin missing at startup is looked for again here (see
+        ``_load_missing_memory_plugin``).
+
+        Args:
+            utterance: the question being answered.
+            sess: its session.
+
+        Returns:
+            The messages handed to the solvers.
+        """
+        if self.memory is None and self._memory_plugin:
+            self._load_missing_memory_plugin()
         if self.memory is None:
             return [AgentMessage(MessageRole.USER, utterance)]
         return self.memory.build_conversation_context(utterance, sess.session_id)
