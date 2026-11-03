@@ -1,0 +1,8 @@
+Onderzoek {persona}'s (perspectief|mening|gedachten|standpunt|interpretatie|feedback|houding|visie) over {utterance}.
+Raadpleeg {persona} over (het perspectief|de mening|de gedachten|het standpunt|de interpretatie|de feedback|de houding|de visie) met betrekking tot {utterance}.
+Vraag {persona} naar (het perspectief|de mening|de gedachten|het standpunt|de interpretatie|de feedback|de houding|de visie) over {utterance}.
+Vraag {persona} om (een perspectief|een mening|gedachten|een standpunt|een interpretatie|feedback|een houding|een visie) over {utterance}.
+vraag {persona} om (hun|) (inzichten|analyse|commentaar|indruk|interpretatie|waarneming|reactie|standpunt|gedachten|begrip|standpunt) (over|van) {uiting}
+vraag {persona} over {utterance}
+vraag {persona} wat ze (te zeggen hebben |denken) over {uiting}
+wat denkt {persona} over {uiting}

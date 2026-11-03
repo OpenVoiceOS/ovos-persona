@@ -1,0 +1,8 @@
+(consulta|sonda|solicita|busca|questiona|pergunta|interroga) {persona} (a perspectiva|a opinião|os pensamentos|o ponto de vista|feedback|posição|visão) (de|sobre) {utterance}
+(consulta|sonda|solicita|busca|questiona|pergunta|interroga) {persona} (a respeito de|sobre) {utterance}
+(consulta|sonda|solicita|busca|questiona|pergunta|interroga) {persona} qual a opinião (sobre|quanto a|a respeito de) {utterance}
+(pergunta|perguntar|pergunte) (a|ao) {persona} (o|por) (sua|seu|) (análise|comentário|impressão|interpretação|percepção|reação|ponto de vista) (sobre|de) {utterance}
+o que {persona} (pensa|diz) sobre {utterance}
+pergunte a {persona} (sobre|para compartilhar|) sua (perspectiva|opinião) (sobre|de|a cerca de) {utterance}
+pergunte a {persona} o que (tem a dizer|pensa) sobre {utterance}
+pergunte a {persona} sobre {utterance}
