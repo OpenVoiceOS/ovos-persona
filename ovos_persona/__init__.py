@@ -4,7 +4,6 @@ from os.path import join, dirname, expanduser, isdir
 from pathlib import Path
 from typing import Optional, Dict, List, Union, Iterable
 
-from langcodes import closest_match
 from ovos_bus_client import Session
 from ovos_bus_client.client import MessageBusClient
 from ovos_bus_client.message import Message, dig_for_message
@@ -444,10 +443,10 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
                                       updated_session=self._with_persona_id(sess, None))
 
         supported_langs = list(self.intent_matchers.keys())
-        closest_lang, distance = closest_match(lang, supported_langs, max_distance=10)
-        if closest_lang != "und":
+        matched_lang = closest_lang(lang, supported_langs)
+        if matched_lang is not None:
             match = None
-            match = match or self.intent_matchers[closest_lang].calc_intent(utterances[0].lower()) or {}
+            match = match or self.intent_matchers[matched_lang].calc_intent(utterances[0].lower()) or {}
             name = match.name if hasattr(match, "name") else match.get("name")
             conf = match.conf if hasattr(match, "conf") else match.get("conf", 0)
             if conf < self.config.get("min_intent_confidence", 0.6):
@@ -538,8 +537,8 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
                                       updated_session=self._with_persona_id(sess, None))
 
         supported_langs = list(self.intent_matchers.keys())
-        closest_lang, distance = closest_match(lang, supported_langs, max_distance=10)
-        if closest_lang != "und":
+        matched_lang = closest_lang(lang, supported_langs)
+        if matched_lang is not None:
             match = {}
             query = utterances[0].lower()
 
@@ -548,18 +547,18 @@ class PersonaService(ConfidenceMatcherPipeline, OVOSAbstractApplication):
             mentioned = max((n for n in self.personas if n.lower() in query),
                             key=len, default=None)
             if mentioned:
-                if (self.voc_match(query, "ask", lang=closest_lang) and
-                        self.voc_match(query, "opinion", lang=closest_lang)):
-                    query = self.remove_voc(query, "ask", lang=closest_lang)
-                    query = self.remove_voc(query, "opinion", lang=closest_lang)
-                    query = self.remove_voc(query, "persona", lang=closest_lang)
+                if (self.voc_match(query, "ask", lang=matched_lang) and
+                        self.voc_match(query, "opinion", lang=matched_lang)):
+                    query = self.remove_voc(query, "ask", lang=matched_lang)
+                    query = self.remove_voc(query, "opinion", lang=matched_lang)
+                    query = self.remove_voc(query, "persona", lang=matched_lang)
                     match = {"name": "ask.intent",
                              "conf": 0.85,
                              "entities": {"persona": mentioned, "query": query}}
 
-                elif self.voc_match(query, "summon", lang=closest_lang):
-                    query = self.remove_voc(query, "summon", lang=closest_lang)
-                    query = self.remove_voc(query, "persona", lang=closest_lang)
+                elif self.voc_match(query, "summon", lang=matched_lang):
+                    query = self.remove_voc(query, "summon", lang=matched_lang)
+                    query = self.remove_voc(query, "persona", lang=matched_lang)
                     match = {"name": "summon.intent",
                              "conf": 0.85,
                              "entities": {"persona": mentioned, "query": query}}
