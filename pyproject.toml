@@ -11,7 +11,7 @@ readme = "README.md"
 authors = [
     { name = "JarbasAI", email = "jarbasai@mailfence.com" },
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -23,11 +23,10 @@ dependencies = [
     "ovos-openai-plugin>=2.0.7a8,<3.0.0",
     "ovos-solver-failure-plugin",
     "ovos-utils>=0.8.0a1,<1.0.0",
-    "langcodes",
     "ovos-workshop>=9.8.1a1,<10.0.0",
     "ovos-bus-client>=1.0.0,<3.0.0",
     "ovos-config>=0.0.13,<4.0.0",
-    "ovos-spec-tools>=1.5.0a1,<2.0.0",
+    "ovos-spec-tools[langcodes]>=1.17.1a1,<2.0.0",
 ]
 
 [project.optional-dependencies]
